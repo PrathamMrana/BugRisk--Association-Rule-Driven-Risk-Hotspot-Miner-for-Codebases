@@ -215,6 +215,111 @@ function HeroEngine() {
   );
 }
 
+/* ─── Hero Section ───────────────────────────────────────────────────────── */
+function Hero({ onLogin }) {
+  return (
+    <section style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingTop: 80,
+      position: 'relative',
+    }}>
+      <div style={{
+        width: '100%',
+        maxWidth: 1100,
+        margin: '0 auto',
+        padding: '0 24px',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: 60,
+        alignItems: 'center',
+      }}>
+        {/* Left Headline */}
+        <div>
+          <h1 style={{
+            fontSize: '56px',
+            fontWeight: 900,
+            lineHeight: 1.05,
+            letterSpacing: '-2px',
+            color: '#FFFFFF',
+            marginBottom: 20,
+          }}>
+            STOP REACTING.<br />
+            <span style={{
+              background: 'linear-gradient(135deg, #7C3AED 0%, #6366F1 50%, #38BDF8 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}>START PREDICTING.</span>
+          </h1>
+
+          <p style={{
+            fontSize: 16,
+            color: '#9CA3AF',
+            lineHeight: 1.6,
+            marginBottom: 36,
+            maxWidth: 480,
+          }}>
+            BugRisk discovers hidden defect patterns using association rule mining, surfacing hotspots before they trigger production failure.
+          </p>
+
+          <div style={{ display: 'flex', gap: 14 }}>
+            <button
+              onClick={onLogin}
+              style={{
+                background: 'linear-gradient(135deg, #7C3AED, #6366F1, #38BDF8)',
+                color: '#fff',
+                border: 'none',
+                padding: '12px 28px',
+                borderRadius: 8,
+                fontSize: 14,
+                fontWeight: 700,
+                cursor: 'pointer',
+                boxShadow: '0 0 50px rgba(124, 58, 237, 0.3)',
+                transition: 'transform 0.2s',
+              }}
+              onMouseEnter={(e) => (e.target.style.transform = 'translateY(-1px)')}
+              onMouseLeave={(e) => (e.target.style.transform = 'none')}
+            >
+              Launch Demo
+            </button>
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                color: '#fff',
+                padding: '12px 28px',
+                borderRadius: 8,
+                fontSize: 14,
+                fontWeight: 600,
+                textDecoration: 'none',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={(e) => (e.target.style.background = 'rgba(255, 255, 255, 0.06)')}
+              onMouseLeave={(e) => (e.target.style.background = 'rgba(255, 255, 255, 0.02)')}
+            >
+              GitHub
+            </a>
+          </div>
+        </div>
+
+        {/* Right Canvas */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97, y: 15 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <HeroEngine />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 /* ─── Moment 2: Apple Product Experience Showcase ───────────────────────── */
 function Showcase() {
   const screenshots = [
