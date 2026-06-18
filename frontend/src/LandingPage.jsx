@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const GITHUB_URL = 'https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases';
 
@@ -22,9 +22,9 @@ function Navbar({ onLogin }) {
         top: 0, left: 0, right: 0,
         zIndex: 100,
         padding: '0 24px',
-        background: 'rgba(2, 3, 8, 0.9)',
-        borderBottom: '1px solid rgba(217, 164, 65, 0.15)',
-        backdropFilter: 'blur(8px)',
+        background: 'rgba(2, 3, 8, 0.95)',
+        borderBottom: '1px solid rgba(217, 164, 65, 0.25)',
+        backdropFilter: 'blur(10px)',
       }}
     >
       <div style={{ maxWidth: 1400, margin: '0 auto', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -38,18 +38,18 @@ function Navbar({ onLogin }) {
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 10, fontWeight: 900, color: '#020308',
             }}>B</div>
-            <span style={{ fontWeight: 900, fontSize: 15, color: '#F5F5F5', letterSpacing: '0.05em', fontFamily: 'monospace' }}>BUGRISK // SECURE_CORE</span>
+            <span style={{ fontWeight: 900, fontSize: 14, color: '#F5F5F5', letterSpacing: '0.05em', fontFamily: 'monospace' }}>BUGRISK // SECURE_CORE</span>
           </div>
 
           {/* Links */}
-          <div style={{ display: 'flex', gap: 28 }}>
+          <div style={{ display: 'flex', gap: 24 }}>
             <button
               onClick={() => handleScrollTo('clarity')}
               style={{ background: 'none', border: 'none', color: '#7E8A9A', fontSize: 11, fontWeight: 700, cursor: 'pointer', transition: 'color 0.2s', fontFamily: 'monospace', textTransform: 'uppercase' }}
               onMouseEnter={(e) => (e.target.style.color = '#D9A441')}
               onMouseLeave={(e) => (e.target.style.color = '#7E8A9A')}
             >
-              [ Clarity ]
+              [ CLARITY ]
             </button>
             <button
               onClick={() => handleScrollTo('topology')}
@@ -57,7 +57,7 @@ function Navbar({ onLogin }) {
               onMouseEnter={(e) => (e.target.style.color = '#D9A441')}
               onMouseLeave={(e) => (e.target.style.color = '#7E8A9A')}
             >
-              [ Topology ]
+              [ TOPOLOGY ]
             </button>
             <button
               onClick={() => handleScrollTo('architecture')}
@@ -65,7 +65,7 @@ function Navbar({ onLogin }) {
               onMouseEnter={(e) => (e.target.style.color = '#D9A441')}
               onMouseLeave={(e) => (e.target.style.color = '#7E8A9A')}
             >
-              [ Architecture ]
+              [ PIPELINE ]
             </button>
             <button
               onClick={() => handleScrollTo('terminal')}
@@ -73,7 +73,7 @@ function Navbar({ onLogin }) {
               onMouseEnter={(e) => (e.target.style.color = '#D9A441')}
               onMouseLeave={(e) => (e.target.style.color = '#7E8A9A')}
             >
-              [ Terminal ]
+              [ TERMINAL ]
             </button>
           </div>
         </div>
@@ -121,33 +121,48 @@ function HudCorners() {
   );
 }
 
-/* ─── HUD Card Component ────────────────────────────────────────────────── */
-function HudCard({ title, subtitle, desc, sysCode }) {
+/* ─── Cinematic Title Component ─────────────────────────────────────────── */
+function CinematicTitle({ lines }) {
   return (
     <div style={{
-      position: 'relative',
-      border: '1px solid rgba(217, 164, 65, 0.15)',
-      background: 'rgba(217, 164, 65, 0.01)',
-      padding: '28px',
-      height: '320px',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
+      width: '100%',
+      borderTop: '1px solid rgba(217, 164, 65, 0.25)',
+      borderBottom: '1px solid rgba(217, 164, 65, 0.25)',
+      padding: '24px 0',
+      marginBottom: '32px',
     }}>
-      <HudCorners />
-      
-      <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
-          <span style={{ fontSize: 9, color: '#D9A441', fontWeight: 'bold', letterSpacing: '0.15em', fontFamily: 'monospace' }}>{sysCode}</span>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#47E38C', boxShadow: '0 0 6px #47E38C' }} />
+      {lines.map((line, idx) => (
+        <div
+          key={idx}
+          style={{
+            fontSize: '52px',
+            fontWeight: 900,
+            lineHeight: 0.95,
+            letterSpacing: '0.05em',
+            fontFamily: 'monospace',
+            color: idx === lines.length - 1 ? '#D9A441' : '#F5F5F5',
+            textTransform: 'uppercase',
+          }}
+        >
+          {line}
         </div>
-        <h3 style={{ fontSize: 18, fontWeight: 900, color: '#F5F5F5', marginBottom: 14, textTransform: 'uppercase', fontFamily: 'monospace', letterSpacing: '-0.5px' }}>{title}</h3>
-        <p style={{ fontSize: 13, color: '#7E8A9A', lineHeight: 1.5, fontFamily: 'monospace' }}>{desc}</p>
-      </div>
+      ))}
+    </div>
+  );
+}
 
-      <div style={{ fontSize: 9, color: '#7E8A9A', fontFamily: 'monospace', borderTop: '1px solid rgba(217, 164, 65, 0.05)', paddingTop: 14, letterSpacing: '0.05em' }}>
-        SECURE_CORE // TELEMETRY_ACTIVE
-      </div>
+/* ─── Telemetry Text Component ──────────────────────────────────────────── */
+function TelemetryOverlay({ text }) {
+  return (
+    <div style={{
+      fontFamily: 'monospace',
+      fontSize: '9px',
+      color: '#7E8A9A',
+      letterSpacing: '0.08em',
+      opacity: 0.5,
+      marginBottom: 16,
+    }}>
+      [TELEMETRY_REF: {text}]
     </div>
   );
 }
@@ -180,9 +195,9 @@ function HeroEngine() {
   };
 
   const nodes = [
-    { id: 'auth', label: 'module=auth', x: 140, y: 90, color: '#D9A441' },
-    { id: 'java', label: 'language=java', x: 120, y: 190, color: '#D9A441' },
-    { id: 'jwt', label: 'tech_stack=jwt', x: 150, y: 290, color: '#D9A441' },
+    { id: 'auth', label: 'module=auth', x: 130, y: 90, color: '#D9A441' },
+    { id: 'java', label: 'language=java', x: 110, y: 190, color: '#D9A441' },
+    { id: 'jwt', label: 'tech_stack=jwt', x: 140, y: 290, color: '#D9A441' },
     { id: 'critical', label: 'severity=critical', x: 380, y: 190, color: '#FF5A5A', isOutcome: true },
   ];
 
@@ -276,7 +291,6 @@ function HeroEngine() {
               zIndex: 10,
             }}
           >
-            {/* Minimal glowing point port */}
             <div style={{
               width: isHovered ? 10 : 6,
               height: isHovered ? 10 : 6,
@@ -286,7 +300,6 @@ function HeroEngine() {
               transition: 'all 0.2s ease',
             }} />
 
-            {/* Typography Label */}
             <div style={{
               position: 'absolute',
               top: '50%',
@@ -340,7 +353,7 @@ function HeroEngine() {
   );
 }
 
-/* ─── Hero Section (100vh) ──────────────────────────────────────────────── */
+/* ─── Scene 1: Hero Section (100vh) ──────────────────────────────────────── */
 function Hero({ onLogin }) {
   return (
     <section style={{
@@ -455,7 +468,7 @@ function Hero({ onLogin }) {
   );
 }
 
-/* ─── Section 2: Clarity (100vh) ────────────────────────────────────────── */
+/* ─── Section 2: Defect Clarity (100vh Command-Center Composition) ──────── */
 function Clarity() {
   return (
     <section
@@ -469,47 +482,101 @@ function Clarity() {
         zIndex: 2,
       }}
     >
-      <div style={{ width: '100%', maxWidth: 1400, margin: '0 auto', padding: '0 24px' }}>
-        <h2 style={{
-          fontSize: '32px',
-          fontWeight: 900,
-          color: '#F5F5F5',
-          letterSpacing: '0.1em',
-          marginBottom: 60,
-          fontFamily: 'monospace',
-          borderBottom: '1px solid rgba(217, 164, 65, 0.15)',
-          paddingBottom: 20,
-        }}>
-          // UNPRECEDENTED DEFECT CLARITY
-        </h2>
+      <div style={{
+        width: '100%',
+        maxWidth: 1400,
+        margin: '0 auto',
+        padding: '0 24px',
+        display: 'grid',
+        gridTemplateColumns: '1.1fr 0.9fr',
+        gap: 64,
+        alignItems: 'center',
+      }}>
+        {/* Left side: Cinematic title & description */}
+        <div>
+          <CinematicTitle lines={['UNPRECEDENTED', 'DEFECT', 'CLARITY']} />
+          <p style={{
+            fontSize: '14px',
+            color: '#7E8A9A',
+            lineHeight: 1.6,
+            maxWidth: '460px',
+            fontFamily: 'monospace',
+          }}>
+            BugRisk targets structural codebase patterns instead of raw metrics. By processing log configurations and transactions as transactions, our system isolates critical anomaly paths instantly.
+          </p>
+          <div style={{ height: '80px' }} />
+          <TelemetryOverlay text="SYS_ANALYSIS_VER_2.4" />
+        </div>
 
+        {/* Right side: Command center HUD system display */}
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          border: '1px solid rgba(217, 164, 65, 0.2)',
+          background: 'rgba(2, 3, 8, 0.85)',
+          padding: '36px',
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
           gap: 28,
         }}>
-          <HudCard
-            sysCode="SYS_LOAD // 01"
-            title="Rule Mining Engine"
-            desc="Runs parallelized FP-Growth tree recursive patterns on execution transaction dumps, computing confidence levels and mathematical lift limits under 8ms."
-          />
-          <HudCard
-            sysCode="SYS_LOAD // 02"
-            title="ML Pattern Analysis"
-            desc="Identifies outlier frequencies and clusters logs via high-dimensional Jaccard matrices, isolating anomalous sequences before build propagation."
-          />
-          <HudCard
-            sysCode="SYS_LOAD // 03"
-            title="Explainability Layer"
-            desc="Exposes exact logical links tracking files, stack traces, database states, and authorization contexts. Zero black-box uncertainty."
-          />
+          <HudCorners />
+
+          {/* Module 1 */}
+          <div style={{ display: 'flex', gap: 20 }}>
+            <div style={{ fontFamily: 'monospace', fontSize: '12px', fontWeight: 900, color: '#D9A441' }}>
+              [01]
+            </div>
+            <div>
+              <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#F5F5F5', fontFamily: 'monospace', marginBottom: 6, textTransform: 'uppercase' }}>
+                Rule Mining Engine
+              </h3>
+              <p style={{ fontSize: '12px', color: '#7E8A9A', fontFamily: 'monospace', lineHeight: 1.5 }}>
+                Processes parallelized transactions in execution dumps to compute confidence levels under 8ms.
+              </p>
+            </div>
+          </div>
+
+          {/* Connective dots */}
+          <div style={{ borderLeft: '1px dashed rgba(217, 164, 65, 0.25)', height: 20, marginLeft: 14 }} />
+
+          {/* Module 2 */}
+          <div style={{ display: 'flex', gap: 20 }}>
+            <div style={{ fontFamily: 'monospace', fontSize: '12px', fontWeight: 900, color: '#D9A441' }}>
+              [02]
+            </div>
+            <div>
+              <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#F5F5F5', fontFamily: 'monospace', marginBottom: 6, textTransform: 'uppercase' }}>
+                ML Pattern Analysis
+              </h3>
+              <p style={{ fontSize: '12px', color: '#7E8A9A', fontFamily: 'monospace', lineHeight: 1.5 }}>
+                Clusters log contexts using Jaccard matrix coefficients to prevent defect propagation.
+              </p>
+            </div>
+          </div>
+
+          {/* Connective dots */}
+          <div style={{ borderLeft: '1px dashed rgba(217, 164, 65, 0.25)', height: 20, marginLeft: 14 }} />
+
+          {/* Module 3 */}
+          <div style={{ display: 'flex', gap: 20 }}>
+            <div style={{ fontFamily: 'monospace', fontSize: '12px', fontWeight: 900, color: '#D9A441' }}>
+              [03]
+            </div>
+            <div>
+              <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#F5F5F5', fontFamily: 'monospace', marginBottom: 6, textTransform: 'uppercase' }}>
+                Explainability Layer
+              </h3>
+              <p style={{ fontSize: '12px', color: '#7E8A9A', fontFamily: 'monospace', lineHeight: 1.5 }}>
+                Traces stack context and permission layers, ensuring transparent root-cause diagnostics.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-/* ─── Section 3: Topology (100vh) ───────────────────────────────────────── */
+/* ─── Section 3: Global Codebase Topology (100vh Centralized Graph) ─────── */
 function Topology() {
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
@@ -519,7 +586,7 @@ function Topology() {
     const rect = containerRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setMouseOffset({ x: x * 15, y: y * 15 });
+    setMouseOffset({ x: x * 20, y: y * 20 });
   };
 
   const handleMouseLeave = () => {
@@ -527,11 +594,11 @@ function Topology() {
   };
 
   const nodes = [
-    { id: 1, x: 250, y: 180, color: '#D9A441', r: 7 }, // Root Codebase
-    { id: 2, x: 120, y: 100, color: '#D9A441', r: 5 },
-    { id: 3, x: 380, y: 90, color: '#D9A441', r: 5 },
-    { id: 4, x: 350, y: 270, color: '#FF5A5A', r: 5 }, // Hotspot
-    { id: 5, x: 150, y: 260, color: '#D9A441', r: 5 },
+    { id: 1, x: 340, y: 220, color: '#D9A441', r: 8 }, // Core
+    { id: 2, x: 200, y: 120, color: '#D9A441', r: 5 },
+    { id: 3, x: 480, y: 110, color: '#D9A441', r: 5 },
+    { id: 4, x: 450, y: 320, color: '#FF5A5A', r: 5 }, // Hotspot
+    { id: 5, x: 220, y: 310, color: '#D9A441', r: 5 },
   ];
 
   const connections = [
@@ -563,69 +630,26 @@ function Topology() {
         margin: '0 auto',
         padding: '0 24px',
         display: 'grid',
-        gridTemplateColumns: '1fr 1.1fr',
+        gridTemplateColumns: '0.8fr 1.2fr',
         gap: 64,
         alignItems: 'center',
       }}>
-        {/* Left Side: Stats and HUD indicators */}
+        {/* Left Side: Cinematic Title and Text */}
         <div>
-          <h2 style={{
-            fontSize: '32px',
-            fontWeight: 900,
-            color: '#F5F5F5',
-            letterSpacing: '0.1em',
-            marginBottom: 40,
-            fontFamily: 'monospace',
-          }}>
-            // GLOBAL CODEBASE TOPOLOGY
-          </h2>
-          
+          <CinematicTitle lines={['GLOBAL', 'CODEBASE', 'TOPOLOGY']} />
           <p style={{
             fontSize: '14px',
             color: '#7E8A9A',
             lineHeight: 1.6,
-            marginBottom: 48,
-            maxWidth: 480,
             fontFamily: 'monospace',
+            marginBottom: 32,
           }}>
-            An interactive representation of software transactions. The system builds structural dependency vectors, calculating rule clustering distances in real time.
+            Active directory scanner overlay mapping file clusters, dependency loops, and high-risk transactional paths across container limits.
           </p>
-
-          {/* Grid Stats Block (Bloomberg Terminal Style) */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 20,
-            fontFamily: 'monospace',
-          }}>
-            {[
-              { val: '2400+', label: 'RULES MINED' },
-              { val: '92%', label: 'CONFIDENCE' },
-              { val: '5.54x', label: 'LIFT' },
-              { val: '18', label: 'CRITICAL HOTSPOTS', isDanger: true },
-            ].map((stat, i) => (
-              <div
-                key={i}
-                style={{
-                  border: '1px solid rgba(217, 164, 65, 0.15)',
-                  background: 'rgba(2, 3, 8, 0.9)',
-                  padding: '16px 20px',
-                  position: 'relative',
-                }}
-              >
-                <HudCorners />
-                <div style={{ fontSize: '28px', fontWeight: 900, color: stat.isDanger ? '#FF5A5A' : '#D9A441', marginBottom: 4 }}>
-                  {stat.val}
-                </div>
-                <div style={{ fontSize: '9px', color: '#7E8A9A', letterSpacing: '0.1em' }}>
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
+          <TelemetryOverlay text="SYS_RADAR_RESOLVER_10" />
         </div>
 
-        {/* Right Side: Large Interactive Network (Radar HUD style) */}
+        {/* Right Side: Huge Centralized Network with Corner Statistics */}
         <div
           ref={containerRef}
           onMouseMove={handleMouseMove}
@@ -633,7 +657,7 @@ function Topology() {
           style={{
             position: 'relative',
             width: '100%',
-            height: '420px',
+            height: '460px',
             border: '1px solid rgba(217, 164, 65, 0.15)',
             background: 'rgba(2, 3, 8, 0.65)',
             overflow: 'hidden',
@@ -641,26 +665,25 @@ function Topology() {
         >
           <HudCorners />
 
-          {/* Concentric radar range lines */}
+          {/* Dotted Radar Lines */}
           <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-            <circle cx="250" cy="210" r="75" stroke="rgba(217, 164, 65, 0.08)" strokeDasharray="3 3" fill="none" />
-            <circle cx="250" cy="210" r="140" stroke="rgba(217, 164, 65, 0.05)" strokeDasharray="3 3" fill="none" />
-            <circle cx="250" cy="210" r="200" stroke="rgba(217, 164, 65, 0.03)" strokeDasharray="3 3" fill="none" />
+            <circle cx="340" cy="230" r="80" stroke="rgba(217, 164, 65, 0.08)" strokeDasharray="3 3" fill="none" />
+            <circle cx="340" cy="230" r="160" stroke="rgba(217, 164, 65, 0.05)" strokeDasharray="3 3" fill="none" />
+            <circle cx="340" cy="230" r="240" stroke="rgba(217, 164, 65, 0.03)" strokeDasharray="3 3" fill="none" />
 
-            {/* Orbiting Satellite node */}
+            {/* Orbiting particles */}
             <circle r="3" fill="#D9A441">
-              <animateMotion dur="14s" repeatCount="indefinite" path="M 250,135 A 75,75 0 1,1 250,285 A 75,75 0 1,1 250,135" />
+              <animateMotion dur="12s" repeatCount="indefinite" path="M 340,150 A 80,80 0 1,1 340,310 A 80,80 0 1,1 340,150" />
             </circle>
             <circle r="2" fill="#FF5A5A">
-              <animateMotion dur="24s" repeatCount="indefinite" path="M 250,70 A 140,140 0 1,1 250,350 A 140,140 0 1,1 250,70" />
+              <animateMotion dur="20s" repeatCount="indefinite" path="M 340,70 A 160,160 0 1,1 340,390 A 160,160 0 1,1 340,70" />
             </circle>
 
-            {/* Topology Graph Group with Mouse Parallax */}
+            {/* Main Network Group with Parallax */}
             <g style={{
               transform: `translate3d(${mouseOffset.x}px, ${mouseOffset.y}px, 0)`,
-              transition: 'transform 0.2s ease-out',
+              transition: 'transform 0.25s ease-out',
             }}>
-              {/* Connection paths */}
               {connections.map((c, i) => {
                 const f = nodes.find(n => n.id === c.from);
                 const t = nodes.find(n => n.id === c.to);
@@ -668,33 +691,32 @@ function Topology() {
                 return (
                   <g key={i}>
                     <line
-                      x1={f.x} y1={f.y + 30} x2={t.x} y2={t.y + 30}
-                      stroke="rgba(217, 164, 65, 0.12)"
-                      strokeWidth={1}
+                      x1={f.x} y1={f.y + 10} x2={t.x} y2={t.y + 10}
+                      stroke="rgba(217, 164, 65, 0.15)"
+                      strokeWidth={1.5}
                     />
                     <circle r="2" fill="#D9A441">
                       <animateMotion
-                        dur="3.5s"
+                        dur="3.2s"
                         repeatCount="indefinite"
-                        path={`M ${f.x},${f.y + 30} L ${t.x},${t.y + 30}`}
+                        path={`M ${f.x},${f.y + 10} L ${t.x},${t.y + 10}`}
                       />
                     </circle>
                   </g>
                 );
               })}
 
-              {/* Node points */}
               {nodes.map(n => (
                 <g key={n.id}>
                   <circle
-                    cx={n.x} cy={n.y + 30} r={n.r + 4}
+                    cx={n.x} cy={n.y + 10} r={n.r + 5}
                     fill="transparent"
                     stroke={n.color}
                     strokeWidth={1}
                     style={{ animation: 'pulseGlow 2.5s infinite' }}
                   />
                   <circle
-                    cx={n.x} cy={n.y + 30} r={n.r}
+                    cx={n.x} cy={n.y + 10} r={n.r}
                     fill={n.color}
                   />
                 </g>
@@ -702,9 +724,29 @@ function Topology() {
             </g>
           </svg>
 
-          {/* Compass grid coordinates */}
-          <div style={{ position: 'absolute', bottom: 12, left: 16, fontFamily: 'monospace', fontSize: '9px', color: '#7E8A9A' }}>
-            BEARING // LOCALHOST.MAP
+          {/* Symmetrical Corner Stats Overlay ( Bloomberg HUD style ) */}
+          {/* Top Left */}
+          <div style={{ position: 'absolute', top: 20, left: 20, fontFamily: 'monospace' }}>
+            <div style={{ fontSize: '16px', fontWeight: 900, color: '#D9A441' }}>2400+</div>
+            <div style={{ fontSize: '8px', color: '#7E8A9A' }}>RULES MINED</div>
+          </div>
+
+          {/* Top Right */}
+          <div style={{ position: 'absolute', top: 20, right: 20, fontFamily: 'monospace', textAlign: 'right' }}>
+            <div style={{ fontSize: '16px', fontWeight: 900, color: '#D9A441' }}>92%</div>
+            <div style={{ fontSize: '8px', color: '#7E8A9A' }}>CONFIDENCE</div>
+          </div>
+
+          {/* Bottom Left */}
+          <div style={{ position: 'absolute', bottom: 20, left: 20, fontFamily: 'monospace' }}>
+            <div style={{ fontSize: '16px', fontWeight: 900, color: '#D9A441' }}>5.54x</div>
+            <div style={{ fontSize: '8px', color: '#7E8A9A' }}>LIFT LIMIT</div>
+          </div>
+
+          {/* Bottom Right */}
+          <div style={{ position: 'absolute', bottom: 20, right: 20, fontFamily: 'monospace', textAlign: 'right' }}>
+            <div style={{ fontSize: '16px', fontWeight: 900, color: '#FF5A5A' }}>18</div>
+            <div style={{ fontSize: '8px', color: '#7E8A9A' }}>CRITICAL HOTSPOTS</div>
           </div>
         </div>
       </div>
@@ -712,16 +754,16 @@ function Topology() {
   );
 }
 
-/* ─── Section 4: Architecture Pipeline (100vh) ────────────────────────── */
+/* ─── Section 4: Vertical Architecture Pipeline (100vh) ─────────────────── */
 function Architecture() {
-  const steps = [
-    { label: 'CSV', detail: 'Ingestion raw log streams', status: 'SYS_ON' },
-    { label: 'Spring Boot', detail: 'Validation Gateway Controller', status: 'SYS_ACTIVE' },
-    { label: 'FastAPI', detail: 'Background Task Dispatcher', status: 'SYS_ON' },
-    { label: 'FP Growth', detail: 'Recursive Miner Algorithm', status: 'SYS_RECUR' },
-    { label: 'Postgres', detail: 'Relational Transaction Logs', status: 'SYS_WRITE' },
-    { label: 'Redis', detail: 'High performance Eviction Cache', status: 'SYS_HIT' },
-    { label: 'Dashboard', detail: 'Telemetry visualizer interface', status: 'SYS_MOUNT' },
+  const pipelineSteps = [
+    { label: 'CSV', status: 'INGEST', detail: 'Parse execution logs' },
+    { label: 'Spring Boot', status: 'ROUTING', detail: 'Route gateway controller' },
+    { label: 'FastAPI', status: 'PIPELINE', detail: 'Process transaction patterns' },
+    { label: 'FP Growth', status: 'MINING', detail: 'Build trie execution tree' },
+    { label: 'Postgres', status: 'STORAGE', detail: 'Write patterns & relations' },
+    { label: 'Redis', status: 'CACHE', detail: 'Handle active cache blocks' },
+    { label: 'Dashboard', status: 'RENDER', detail: 'Expose explainable diagnostics' }
   ];
 
   return (
@@ -736,90 +778,112 @@ function Architecture() {
         zIndex: 2,
       }}
     >
-      <div style={{ width: '100%', maxWidth: 1400, margin: '0 auto', padding: '0 24px' }}>
-        <h2 style={{
-          fontSize: '32px',
-          fontWeight: 900,
-          color: '#F5F5F5',
-          letterSpacing: '0.1em',
-          marginBottom: 60,
-          fontFamily: 'monospace',
-          borderBottom: '1px solid rgba(217, 164, 65, 0.15)',
-          paddingBottom: 20,
-        }}>
-          // ARCHITECTURE PIPELINE
-        </h2>
+      <div style={{
+        width: '100%',
+        maxWidth: 1400,
+        margin: '0 auto',
+        padding: '0 24px',
+        display: 'grid',
+        gridTemplateColumns: '1.1fr 0.9fr',
+        gap: 64,
+        alignItems: 'center',
+      }}>
+        {/* Left Column: Title and Description */}
+        <div>
+          <CinematicTitle lines={['ARCHITECTURE', 'PIPELINE']} />
+          <p style={{
+            fontSize: '14px',
+            color: '#7E8A9A',
+            lineHeight: 1.6,
+            fontFamily: 'monospace',
+          }}>
+            Fully containerized data ingestion flow. Moving transaction traces from multi-tenant gateways down to tree mining processes and relational databases.
+          </p>
+          <div style={{ height: '80px' }} />
+          <TelemetryOverlay text="FLOW_SCHEMA_ACTIVE" />
+        </div>
 
-        {/* Large Animated Pipeline Layout */}
+        {/* Right Column: Vertical Animated Pipeline (No Boxes) */}
         <div style={{
           display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          gap: 16,
-          alignItems: 'stretch',
+          flexDirection: 'column',
+          alignItems: 'center',
           position: 'relative',
+          padding: '20px 0',
           width: '100%',
+          maxWidth: '440px',
+          margin: '0 auto',
         }}>
-          {steps.map((step, idx) => (
+          {pipelineSteps.map((step, idx) => (
             <React.Fragment key={idx}>
-              {/* Node Card */}
+              {/* Pipeline Node (Pure Text & status LED) */}
               <div style={{
-                flex: 1,
-                minWidth: '150px',
-                border: '1px solid rgba(217, 164, 65, 0.15)',
-                background: 'rgba(2, 3, 8, 0.95)',
-                padding: '20px 16px',
+                width: '100%',
+                display: 'grid',
+                gridTemplateColumns: '120px 1fr',
+                alignItems: 'center',
+                gap: 20,
                 position: 'relative',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
+                zIndex: 2,
               }}>
-                <HudCorners />
-                <div>
-                  <div style={{ fontSize: '10px', color: '#D9A441', fontFamily: 'monospace', marginBottom: 12 }}>
-                    {step.status}
-                  </div>
-                  <h3 style={{ fontSize: '15px', fontWeight: 950, color: '#F5F5F5', textTransform: 'uppercase', fontFamily: 'monospace', marginBottom: 8 }}>
-                    {step.label}
-                  </h3>
-                  <p style={{ fontSize: '11px', color: '#7E8A9A', fontFamily: 'monospace', lineHeight: 1.4 }}>
-                    {step.detail}
-                  </p>
+                <div style={{
+                  fontFamily: 'monospace',
+                  fontSize: '10px',
+                  color: '#D9A441',
+                  textAlign: 'right',
+                  letterSpacing: '0.05em',
+                }}>
+                  [{step.status}]
                 </div>
                 
-                {/* Visual pulse status bar */}
-                <div style={{
-                  height: '2px',
-                  width: '100%',
-                  background: 'rgba(217, 164, 65, 0.08)',
-                  marginTop: 16,
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  {/* Status Dot */}
                   <div style={{
-                    position: 'absolute',
-                    height: '100%',
-                    width: '30%',
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
                     background: '#D9A441',
-                    boxShadow: '0 0 8px #F6C453',
-                    animation: 'flowBeam 1.5s infinite linear',
+                    boxShadow: '0 0 6px #F6C453',
                   }} />
+                  <div>
+                    <span style={{ fontSize: '13px', fontWeight: 900, color: '#F5F5F5', fontFamily: 'monospace', textTransform: 'uppercase' }}>
+                      {step.label}
+                    </span>
+                    <span style={{ fontSize: '10px', color: '#7E8A9A', fontFamily: 'monospace', marginLeft: 12 }}>
+                      // {step.detail}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              {/* Connecting line between blocks */}
-              {idx < steps.length - 1 && (
+              {/* Vertical link connector with flowing beams */}
+              {idx < pipelineSteps.length - 1 && (
                 <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '0 4px',
-                  color: '#D9A441',
-                  fontSize: '14px',
-                  fontWeight: 900,
-                  fontFamily: 'monospace',
+                  position: 'relative',
+                  width: '100%',
+                  height: '36px',
+                  display: 'grid',
+                  gridTemplateColumns: '120px 1fr',
                 }}>
-                  ➔
+                  <div />
+                  <div style={{
+                    position: 'relative',
+                    borderLeft: '2px dashed rgba(217, 164, 65, 0.25)',
+                    marginLeft: '2px', // align with the dot center
+                    height: '100%',
+                    overflow: 'hidden',
+                  }}>
+                    {/* Beam pulse */}
+                    <div style={{
+                      position: 'absolute',
+                      width: '2px',
+                      height: '12px',
+                      left: '-2px',
+                      background: '#D9A441',
+                      boxShadow: '0 0 8px #F6C453',
+                      animation: 'flowBeamVertical 1.6s infinite linear',
+                    }} />
+                  </div>
                 </div>
               )}
             </React.Fragment>
@@ -830,7 +894,7 @@ function Architecture() {
   );
 }
 
-/* ─── Section 5: AI Command Terminal (100vh) ────────────────────────────── */
+/* ─── Section 5: AI Command Terminal (100vh Fullscreen Command Console) ─── */
 function Terminal() {
   const initialLogs = [
     'SYS // SYSTEM INITIALIZATION START',
@@ -877,7 +941,7 @@ function Terminal() {
       } else {
         logStr = `SYS // telemetry buffer flush; active_connections=${Math.floor(10 + Math.random() * 12)}`;
       }
-      setLogList(prev => [...prev.slice(-14), logStr]);
+      setLogList(prev => [...prev.slice(-15), logStr]);
     }, 1800);
     return () => clearInterval(interval);
   }, []);
@@ -895,27 +959,25 @@ function Terminal() {
       }}
     >
       <div style={{ width: '100%', maxWidth: 1400, margin: '0 auto', padding: '0 24px' }}>
-        <h2 style={{
-          fontSize: '32px',
-          fontWeight: 900,
-          color: '#F5F5F5',
-          letterSpacing: '0.1em',
-          marginBottom: 60,
-          fontFamily: 'monospace',
-          borderBottom: '1px solid rgba(217, 164, 65, 0.15)',
-          paddingBottom: 20,
-        }}>
-          // AI COMMAND TERMINAL
-        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '0.8fr 1.2fr', gap: 64, alignItems: 'center', marginBottom: 40 }}>
+          <div>
+            <CinematicTitle lines={['AI', 'COMMAND', 'TERMINAL']} />
+          </div>
+          <div>
+            <p style={{ fontSize: '13px', color: '#7E8A9A', fontFamily: 'monospace', lineHeight: 1.5 }}>
+              CLASSIFIED ENVIRONMENT SECURITY LEVEL 3 // ANOMALY RESOLVER INTERFACE
+            </p>
+          </div>
+        </div>
 
-        {/* HUD Terminal Panel Layout */}
+        {/* Huge Multi-Pane HUD Console spanning full width */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1.2fr 0.8fr',
           gap: 28,
           alignItems: 'stretch',
         }}>
-          {/* Left Panel: Stream Logs Console */}
+          {/* Left Console Monitor */}
           <div style={{
             border: '1px solid rgba(217, 164, 65, 0.2)',
             background: 'rgba(2, 3, 8, 0.95)',
@@ -940,7 +1002,6 @@ function Terminal() {
               <span style={{ color: '#47E38C' }}>● LIVE_STREAMING</span>
             </div>
 
-            {/* Scrollable logs area */}
             <div style={{
               fontFamily: 'monospace',
               fontSize: '11px',
@@ -962,7 +1023,7 @@ function Terminal() {
             </div>
           </div>
 
-          {/* Right Panel: Rule Database Feed */}
+          {/* Right Console Monitor */}
           <div style={{
             border: '1px solid rgba(217, 164, 65, 0.2)',
             background: 'rgba(2, 3, 8, 0.95)',
@@ -987,7 +1048,6 @@ function Terminal() {
                 ANOMALY DETECTOR FEED
               </div>
 
-              {/* Table details */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontFamily: 'monospace', fontSize: '11px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(217,164,65,0.05)', paddingBottom: 6 }}>
                   <span style={{ color: '#7E8A9A' }}>HOTSPOT FILE</span>
@@ -1009,7 +1069,7 @@ function Terminal() {
             </div>
 
             <div style={{ fontSize: '10px', color: '#7E8A9A', fontFamily: 'monospace' }}>
-              SECURITY ENVIRONMENT ACCESS PROTOCOL LEVEL 3
+              SECURE PROTOCOL LEVEL 3 ACCESS ONLY
             </div>
           </div>
         </div>
@@ -1018,7 +1078,7 @@ function Terminal() {
   );
 }
 
-/* ─── Final CTA Section (100vh) ─────────────────────────────────────────── */
+/* ─── Final CTA Section (100vh Fullscreen) ──────────────────────────────── */
 function FinalCTA({ onLogin }) {
   return (
     <section
@@ -1027,13 +1087,14 @@ function FinalCTA({ onLogin }) {
         height: '100vh',
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'center',
         background: 'transparent',
         position: 'relative',
         zIndex: 2,
         overflow: 'hidden',
       }}
     >
-      {/* Perspective grid floor background at the very bottom */}
+      {/* Perspective Grid Floor */}
       <div style={{
         position: 'absolute',
         bottom: 0,
@@ -1069,42 +1130,73 @@ function FinalCTA({ onLogin }) {
         {/* Soft Radial Gold Spotlight Behind Heading */}
         <div style={{
           position: 'absolute',
-          width: '500px',
-          height: '500px',
+          width: '600px',
+          height: '600px',
           borderRadius: '50%',
           top: '40%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          background: 'radial-gradient(circle, rgba(217, 164, 65, 0.06) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(217, 164, 65, 0.07) 0%, transparent 70%)',
           pointerEvents: 'none',
           zIndex: -1,
           filter: 'blur(30px)',
         }} />
 
-        <h2 style={{
-          fontSize: '48px',
-          fontWeight: 900,
-          color: '#F5F5F5',
-          letterSpacing: '-1.5px',
-          lineHeight: 1.1,
-          textAlign: 'center',
-          marginBottom: 36,
-          fontFamily: 'monospace',
-          maxWidth: '820px',
-        }}>
-          READY TO UNDERSTAND YOUR CODEBASE<br />BEFORE IT BREAKS?
-        </h2>
+        {/* Floating Particles */}
+        <div style={{
+          position: 'absolute',
+          top: '30px',
+          left: '15%',
+          width: '6px',
+          height: '6px',
+          borderRadius: '50%',
+          background: '#D9A441',
+          boxShadow: '0 0 10px #F6C453',
+          animation: 'pulseGlow 3s infinite',
+        }} />
 
-        <div style={{ display: 'flex', gap: 14, marginBottom: 100 }}>
+        <div style={{
+          position: 'absolute',
+          bottom: '100px',
+          right: '15%',
+          width: '6px',
+          height: '6px',
+          borderRadius: '50%',
+          background: '#FF5A5A',
+          boxShadow: '0 0 10px #FF5A5A',
+          animation: 'pulseGlow 4s infinite',
+        }} />
+
+        {/* Massive dividing layout */}
+        <div style={{
+          width: '100%',
+          borderTop: '1px solid rgba(217, 164, 65, 0.25)',
+          borderBottom: '1px solid rgba(217, 164, 65, 0.25)',
+          padding: '40px 0',
+          marginBottom: '48px',
+          textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '48px', fontWeight: 900, lineHeight: 1.1, letterSpacing: '0.05em', color: '#F5F5F5', fontFamily: 'monospace' }}>
+            READY TO UNDERSTAND
+          </div>
+          <div style={{ fontSize: '48px', fontWeight: 900, lineHeight: 1.1, letterSpacing: '0.05em', color: '#D9A441', fontFamily: 'monospace' }}>
+            YOUR CODEBASE
+          </div>
+          <div style={{ fontSize: '48px', fontWeight: 900, lineHeight: 1.1, letterSpacing: '0.05em', color: '#F5F5F5', fontFamily: 'monospace' }}>
+            BEFORE IT BREAKS?
+          </div>
+        </div>
+
+        <div style={{ marginBottom: 96 }}>
           <button
             onClick={onLogin}
             style={{
               background: '#D9A441',
               color: '#020308',
               border: 'none',
-              padding: '12px 32px',
+              padding: '14px 40px',
               borderRadius: 0,
-              fontSize: 13,
+              fontSize: 14,
               fontWeight: 800,
               cursor: 'pointer',
               fontFamily: 'monospace',
@@ -1115,30 +1207,8 @@ function FinalCTA({ onLogin }) {
             onMouseEnter={(e) => (e.target.style.background = '#F6C453')}
             onMouseLeave={(e) => (e.target.style.background = '#D9A441')}
           >
-            INITIALIZE PLATFORM
+            [ INITIALIZE PLATFORM ]
           </button>
-          <a
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              background: 'transparent',
-              border: '1px solid rgba(217, 164, 65, 0.3)',
-              color: '#D9A441',
-              padding: '12px 32px',
-              borderRadius: 0,
-              fontSize: 13,
-              fontWeight: 700,
-              textDecoration: 'none',
-              fontFamily: 'monospace',
-              letterSpacing: '0.05em',
-              transition: 'border 0.2s',
-            }}
-            onMouseEnter={(e) => (e.target.style.borderColor = '#D9A441')}
-            onMouseLeave={(e) => (e.target.style.borderColor = 'rgba(217, 164, 65, 0.3)')}
-          >
-            VIEW GITHUB
-          </a>
         </div>
 
         {/* Footer info directly below CTA (NO additional spacing) */}
@@ -1154,8 +1224,8 @@ function FinalCTA({ onLogin }) {
           fontFamily: 'monospace',
           opacity: 0.5,
         }}>
-          <span>BUGRISK // PLATFORM SECURITY LEVEL 3</span>
-          <span>© 2026 · ALL RIGHTS RESERVED</span>
+          <span>BUGRISK // SECURE_CORE</span>
+          <span>2026 // ESTABLISHING SCANNER CONNECTIVITY</span>
         </div>
       </div>
     </section>
@@ -1164,11 +1234,10 @@ function FinalCTA({ onLogin }) {
 
 /* ─── Main Landing Page Redesign ─────────────────────────────────────────── */
 export default function LandingPage({ onLogin }) {
-  // Generate coordinates for HUD background floating particles
-  const particles = Array.from({ length: 15 }).map((_, i) => ({
+  const particles = Array.from({ length: 18 }).map((_, i) => ({
     id: i,
-    left: `${(i * 7 + 5) % 100}%`,
-    top: `${(i * 13 + 8) % 100}%`,
+    left: `${(i * 7 + 3) % 100}%`,
+    top: `${(i * 13 + 5) % 100}%`,
     size: ((i * 3) % 3) + 1.5,
     delay: `${(i * 0.4).toFixed(1)}s`,
     duration: `${10 + (i * 2) % 10}s`
@@ -1191,6 +1260,17 @@ export default function LandingPage({ onLogin }) {
         backgroundSize: '32px 32px',
         pointerEvents: 'none',
         zIndex: 1,
+      }} />
+
+      {/* Subtle Scanlines Overlay */}
+      <div style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%)',
+        backgroundSize: '100% 4px',
+        zIndex: 99,
+        pointerEvents: 'none',
+        opacity: 0.08,
       }} />
 
       {/* Floating Gold HUD Particles */}
@@ -1230,6 +1310,10 @@ export default function LandingPage({ onLogin }) {
         @keyframes flowBeam {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(330%); }
+        }
+        @keyframes flowBeamVertical {
+          0% { transform: translateY(-100%); }
+          100% { transform: translateY(330%); }
         }
         @keyframes pulseGlow {
           0%, 100% { opacity: 0.2; transform: scale(1); }
