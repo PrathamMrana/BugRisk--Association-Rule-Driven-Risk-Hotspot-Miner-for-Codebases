@@ -1,0 +1,3 @@
+module,subsystem,language,tech_stack,bug_type,severity
+auth,security,Java,JWT,security,critical
+database,database,Java,PostgreSQL,performance,high

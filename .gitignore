@@ -1,0 +1,47 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# ── Java / Maven ──────────────────────────────────────────────────────────────
+backend/target/
+*.class
+*.jar
+*.war
+
+# ── Node / npm ────────────────────────────────────────────────────────────────
+node_modules/
+frontend/node_modules/
+frontend/dist/
+npm-debug.log*
+yarn-error.log*
+.npm
+
+# ── Docker volumes & local DB ────────────────────────────────────────────────
+.pgdata/
+*.log
+
+# ── IDE / OS ──────────────────────────────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+Thumbs.db
+
+# ── Secrets / env ─────────────────────────────────────────────────────────────
+.env
+.env.*
+*.pem
+*.key
+
+# ── Scratch / artifacts ───────────────────────────────────────────────────────
+scratch/
+artifacts/
