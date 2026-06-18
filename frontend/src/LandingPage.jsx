@@ -36,35 +36,35 @@ function Navbar({ onLogin }) {
         transition: 'all 0.3s ease',
       }}
     >
-      <div style={{ maxWidth: 1200, margin: '0 auto', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {/* Left Side Logo & Links */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 40 }}>
           {/* Logo */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <div style={{
               width: 24, height: 24, borderRadius: 5,
-              background: 'linear-gradient(135deg, #7C3AED, #6366F1, #38BDF8)',
+              background: 'linear-gradient(135deg, #7C3AED, #38BDF8, #EC4899)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 12, fontWeight: 900, color: 'white',
             }}>B</div>
-            <span style={{ fontWeight: 800, fontSize: 16, color: '#FFFFFF', letterSpacing: '-0.3px' }}>BugRisk</span>
+            <span style={{ fontWeight: 800, fontSize: 16, color: '#F8FAFC', letterSpacing: '-0.3px' }}>BugRisk</span>
           </div>
 
           {/* Links */}
           <div style={{ display: 'flex', gap: 24 }}>
             <button
               onClick={() => handleScrollTo('product')}
-              style={{ background: 'none', border: 'none', color: '#9CA3AF', fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'color 0.2s' }}
-              onMouseEnter={(e) => (e.target.style.color = '#fff')}
-              onMouseLeave={(e) => (e.target.style.color = '#9CA3AF')}
+              style={{ background: 'none', border: 'none', color: '#94A3B8', fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'color 0.2s' }}
+              onMouseEnter={(e) => (e.target.style.color = '#F8FAFC')}
+              onMouseLeave={(e) => (e.target.style.color = '#94A3B8')}
             >
               Product
             </button>
             <button
               onClick={() => handleScrollTo('technology')}
-              style={{ background: 'none', border: 'none', color: '#9CA3AF', fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'color 0.2s' }}
-              onMouseEnter={(e) => (e.target.style.color = '#fff')}
-              onMouseLeave={(e) => (e.target.style.color = '#9CA3AF')}
+              style={{ background: 'none', border: 'none', color: '#94A3B8', fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'color 0.2s' }}
+              onMouseEnter={(e) => (e.target.style.color = '#F8FAFC')}
+              onMouseLeave={(e) => (e.target.style.color = '#94A3B8')}
             >
               Technology
             </button>
@@ -72,9 +72,9 @@ function Navbar({ onLogin }) {
               href="https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases/blob/master/README.md"
               target="_blank"
               rel="noreferrer"
-              style={{ color: '#9CA3AF', fontSize: 13, fontWeight: 500, textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={(e) => (e.target.style.color = '#fff')}
-              onMouseLeave={(e) => (e.target.style.color = '#9CA3AF')}
+              style={{ color: '#94A3B8', fontSize: 13, fontWeight: 500, textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={(e) => (e.target.style.color = '#F8FAFC')}
+              onMouseLeave={(e) => (e.target.style.color = '#94A3B8')}
             >
               Docs
             </a>
@@ -82,9 +82,9 @@ function Navbar({ onLogin }) {
               href={GITHUB_URL}
               target="_blank"
               rel="noreferrer"
-              style={{ color: '#9CA3AF', fontSize: 13, fontWeight: 500, textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={(e) => (e.target.style.color = '#fff')}
-              onMouseLeave={(e) => (e.target.style.color = '#9CA3AF')}
+              style={{ color: '#94A3B8', fontSize: 13, fontWeight: 500, textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={(e) => (e.target.style.color = '#F8FAFC')}
+              onMouseLeave={(e) => (e.target.style.color = '#94A3B8')}
             >
               GitHub
             </a>
@@ -97,7 +97,7 @@ function Navbar({ onLogin }) {
           style={{
             background: 'rgba(255, 255, 255, 0.05)',
             border: '1px solid rgba(255, 255, 255, 0.08)',
-            color: '#FFFFFF',
+            color: '#F8FAFC',
             padding: '6px 14px',
             borderRadius: 6,
             fontSize: 12,
@@ -106,12 +106,12 @@ function Navbar({ onLogin }) {
             transition: 'all 0.2s',
           }}
           onMouseEnter={(e) => {
-            e.target.style.background = '#fff';
-            e.target.style.color = '#000';
+            e.target.style.background = '#F8FAFC';
+            e.target.style.color = '#020617';
           }}
           onMouseLeave={(e) => {
             e.target.style.background = 'rgba(255, 255, 255, 0.05)';
-            e.target.style.color = '#fff';
+            e.target.style.color = '#F8FAFC';
           }}
         >
           Launch App
@@ -149,10 +149,10 @@ function HeroEngine() {
   };
 
   const nodes = [
-    { id: 'auth', label: 'module=auth', x: 120, y: 90, color: '#6366F1' },
-    { id: 'java', label: 'language=Java', x: 100, y: 190, color: '#7C3AED' },
-    { id: 'jwt', label: 'package=JWT', x: 130, y: 290, color: '#38BDF8' },
-    { id: 'critical', label: 'severity=critical', x: 410, y: 190, color: '#EF4444', isOutcome: true },
+    { id: 'auth', label: 'auth', x: 130, y: 90, color: '#7C3AED' },
+    { id: 'java', label: 'java', x: 110, y: 190, color: '#38BDF8' },
+    { id: 'jwt', label: 'jwt', x: 140, y: 290, color: '#EC4899' },
+    { id: 'critical', label: 'critical severity', x: 390, y: 190, color: '#F59E0B', isOutcome: true },
   ];
 
   return (
@@ -162,17 +162,17 @@ function HeroEngine() {
       style={{
         position: 'relative',
         width: '100%',
-        maxWidth: '560px',
+        maxWidth: '540px',
         height: '380px',
-        background: 'rgba(8, 12, 24, 0.45)',
-        border: '1px solid rgba(255, 255, 255, 0.04)',
+        background: 'rgba(255, 255, 255, 0.01)',
+        backdropFilter: 'blur(24px)',
+        border: '1px solid rgba(255, 255, 255, 0.05)',
         borderRadius: 16,
         overflow: 'hidden',
-        backdropFilter: 'blur(24px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.02)',
+        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.01)',
       }}
     >
       {/* Background Grid */}
@@ -218,18 +218,6 @@ function HeroEngine() {
         [RULE SCANNER: X {mousePos.x.toFixed(0)} | Y {mousePos.y.toFixed(0)}]
       </div>
 
-      {/* Radial spotlight behind outcome */}
-      <div style={{
-        position: 'absolute',
-        width: '280px',
-        height: '280px',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(239, 68, 68, 0.05) 0%, transparent 70%)',
-        left: '270px',
-        top: '50px',
-        pointerEvents: 'none',
-      }} />
-
       {/* SVG Canvas for Lines and Beams */}
       <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
         <defs>
@@ -248,7 +236,7 @@ function HeroEngine() {
           return (
             <g key={n.id}>
               <path
-                d={`M ${n.x + 80},${n.y} C ${n.x + 200},${n.y} 280,190 ${nodes[3].x - 10},190`}
+                d={`M ${n.x},${n.y} C ${n.x + 100},${n.y} 280,190 ${nodes[3].x},190`}
                 stroke={isLinkHovered ? n.color : 'rgba(255, 255, 255, 0.06)'}
                 strokeWidth={isLinkHovered ? 2.5 : 1}
                 fill="none"
@@ -258,7 +246,7 @@ function HeroEngine() {
                 <animateMotion
                   dur={`${2 + Math.random() * 1.5}s`}
                   repeatCount="indefinite"
-                  path={`M ${n.x + 80},${n.y} C ${n.x + 200},${n.y} 280,190 ${nodes[3].x - 10},190`}
+                  path={`M ${n.x},${n.y} C ${n.x + 100},${n.y} 280,190 ${nodes[3].x},190`}
                 />
               </circle>
             </g>
@@ -266,9 +254,11 @@ function HeroEngine() {
         })}
       </svg>
 
-      {/* Nodes Rendered with Divs for clean style */}
+      {/* Pure Typography Nodes (NO boxes, NO cards) */}
       {nodes.map(n => {
         const isHovered = hoveredNode === n.id;
+        const textOffsetLeft = n.isOutcome ? n.x + 16 : n.x - 12;
+        
         return (
           <div
             key={n.id}
@@ -278,22 +268,36 @@ function HeroEngine() {
               position: 'absolute',
               left: n.x,
               top: n.y,
-              transform: `translate(-50%, -50%) scale(${isHovered ? 1.05 : 1})`,
-              background: n.isOutcome ? 'rgba(239, 68, 68, 0.08)' : 'rgba(15, 23, 42, 0.85)',
-              border: `1px solid ${isHovered ? n.color : n.isOutcome ? 'rgba(239, 68, 68, 0.25)' : 'rgba(255, 255, 255, 0.06)'}`,
-              borderRadius: 6,
-              padding: '6px 12px',
-              fontFamily: 'monospace',
-              fontSize: '11px',
-              color: n.isOutcome ? '#EF4444' : '#E2E8F0',
+              transform: 'translate(-50%, -50%)',
               cursor: 'pointer',
-              boxShadow: isHovered ? `0 0 20px ${n.color}20` : n.isOutcome ? '0 0 15px rgba(239, 68, 68, 0.1)' : 'none',
-              transition: 'all 0.2s ease',
               zIndex: 10,
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: n.color, boxShadow: `0 0 6px ${n.color}` }} />
+            {/* Minimal coordinate connector dot */}
+            <div style={{
+              width: isHovered ? 12 : 8,
+              height: isHovered ? 12 : 8,
+              borderRadius: '50%',
+              background: n.color,
+              boxShadow: `0 0 15px ${n.color}`,
+              transition: 'all 0.2s ease',
+            }} />
+
+            {/* Typography Label */}
+            <div style={{
+              position: 'absolute',
+              top: '50%',
+              left: n.isOutcome ? '18px' : 'auto',
+              right: n.isOutcome ? 'auto' : '18px',
+              transform: 'translateY(-50%)',
+              fontFamily: 'monospace',
+              fontSize: '13px',
+              fontWeight: 700,
+              color: isHovered ? '#F8FAFC' : n.isOutcome ? '#F59E0B' : '#94A3B8',
+              whiteSpace: 'nowrap',
+              textShadow: isHovered ? `0 0 8px ${n.color}50` : 'none',
+              transition: 'all 0.2s ease',
+            }}>
               {n.label}
             </div>
           </div>
@@ -305,7 +309,7 @@ function HeroEngine() {
         position: 'absolute',
         bottom: 16,
         right: 16,
-        background: 'rgba(10, 15, 30, 0.8)',
+        background: 'rgba(10, 15, 30, 0.45)',
         border: '1px solid rgba(255, 255, 255, 0.05)',
         borderRadius: 8,
         padding: '10px 14px',
@@ -317,7 +321,7 @@ function HeroEngine() {
         pointerEvents: 'none',
         backdropFilter: 'blur(8px)',
       }}>
-        <div style={{ color: '#64748B' }}>REALTIME METRIC STREAM</div>
+        <div style={{ color: '#475569' }}>REALTIME METRIC STREAM</div>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: 30 }}>
           <span style={{ color: '#94A3B8' }}>confidence:</span>
           <span style={{ color: '#10B981', fontWeight: 700 }}>{metrics.confidence}%</span>
@@ -328,56 +332,56 @@ function HeroEngine() {
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: 30 }}>
           <span style={{ color: '#94A3B8' }}>support:</span>
-          <span style={{ color: '#A78BFA' }}>{metrics.support}</span>
+          <span style={{ color: '#EC4899' }}>{metrics.support}</span>
         </div>
       </div>
     </div>
   );
 }
 
-/* ─── Scene 1: Hero Scene (100vh) ────────────────────────────────────────── */
+/* ─── Scene 1: Hero Scene (90vh) ────────────────────────────────────────── */
 function Hero({ onLogin }) {
   return (
     <section style={{
-      height: '100vh',
+      height: '90vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       position: 'relative',
-      background: '#020617',
+      background: 'transparent',
       overflow: 'hidden',
     }}>
       <div style={{
         width: '100%',
-        maxWidth: 1200,
+        maxWidth: 1400,
         margin: '0 auto',
         padding: '0 24px',
         display: 'grid',
-        gridTemplateColumns: '1.05fr 0.95fr',
-        gap: 48,
+        gridTemplateColumns: '1.15fr 0.85fr',
+        gap: 64,
         alignItems: 'center',
         zIndex: 2,
       }}>
         {/* Left Side: Headline & CTA */}
         <div>
           <h1 style={{
-            fontSize: '68px',
+            fontSize: '72px',
             fontWeight: 900,
-            lineHeight: 1.02,
-            letterSpacing: '-2.8px',
-            color: '#FFFFFF',
-            marginBottom: 20,
+            lineHeight: 0.98,
+            letterSpacing: '-3px',
+            color: '#F8FAFC',
+            marginBottom: 24,
           }}>
             STOP REACTING.<br />
             <span style={{
-              background: 'linear-gradient(135deg, #7C3AED 0%, #6366F1 50%, #38BDF8 100%)',
+              background: 'linear-gradient(135deg, #7C3AED 0%, #38BDF8 50%, #EC4899 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}>START PREDICTING.</span>
           </h1>
 
           <p style={{
-            fontSize: 16,
+            fontSize: '18px',
             color: '#94A3B8',
             lineHeight: 1.6,
             marginBottom: 36,
@@ -390,7 +394,7 @@ function Hero({ onLogin }) {
             <button
               onClick={onLogin}
               style={{
-                background: 'linear-gradient(135deg, #7C3AED, #6366F1, #38BDF8)',
+                background: 'linear-gradient(135deg, #7C3AED, #38BDF8)',
                 color: '#fff',
                 border: 'none',
                 padding: '12px 28px',
@@ -443,7 +447,7 @@ function Hero({ onLogin }) {
   );
 }
 
-/* ─── Scene 2: Apple Product Sticky Experience ────────────────────────── */
+/* ─── Scene 2: Apple Product Sticky Experience (140vh) ────────────────── */
 function ProductShowcase() {
   const features = [
     {
@@ -472,7 +476,7 @@ function ProductShowcase() {
     },
     {
       id: 'algo_playground',
-      title: 'Algo Playground',
+      title: 'Playground',
       desc: 'Execution benchmark comparisons running FP-Growth tree recursion vs Apriori candidate generation.',
       src: '/screenshots/pipeline.png'
     }
@@ -480,6 +484,7 @@ function ProductShowcase() {
 
   const containerRef = useRef(null);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [isDesktop, setIsDesktop] = useState(true);
 
   // Responsive Layout detection
@@ -505,8 +510,8 @@ function ProductShowcase() {
       if (scrollableRange <= 0) return;
 
       const progress = Math.max(0, Math.min(1, scrolled / scrollableRange));
-      const idx = Math.min(4, Math.floor(progress * 5.01));
-      setActiveIdx(idx);
+      setScrollProgress(progress);
+      setActiveIdx(Math.min(4, Math.floor(progress * 5.01)));
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -537,7 +542,7 @@ function ProductShowcase() {
                   border: `1px solid ${activeIdx === i ? '#7C3AED' : 'rgba(255,255,255,0.05)'}`,
                   borderRadius: 8,
                   padding: '8px 16px',
-                  color: activeIdx === i ? '#FFFFFF' : '#94A3B8',
+                  color: activeIdx === i ? '#F8FAFC' : '#94A3B8',
                   fontSize: '12px',
                   fontWeight: 600,
                   cursor: 'pointer',
@@ -605,15 +610,16 @@ function ProductShowcase() {
       id="product"
       style={{
         position: 'relative',
-        height: '240vh',
-        background: '#020617',
-        marginTop: 0,
+        height: '140vh',
+        background: 'transparent',
+        marginTop: '80px',
+        zIndex: 2,
       }}
     >
       <div style={{
         position: 'sticky',
-        top: 0,
-        height: '100vh',
+        top: '10vh',
+        height: '80vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -621,59 +627,77 @@ function ProductShowcase() {
       }}>
         <div style={{
           width: '100%',
-          maxWidth: 1200,
+          maxWidth: 1400,
           margin: '0 auto',
           padding: '0 24px',
           display: 'grid',
-          gridTemplateColumns: '1fr 1.35fr',
+          gridTemplateColumns: '1fr 1.4fr',
           gap: 64,
           alignItems: 'center',
         }}>
-          {/* Left Column: Vertical Interactive Text Stack */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 28, maxWidth: '380px' }}>
-            {features.map((feature, i) => {
-              const isActive = activeIdx === i;
-              return (
-                <div
-                  key={feature.id}
-                  onClick={() => handleStepClick(i)}
-                  style={{
-                    cursor: 'pointer',
-                    paddingLeft: '18px',
-                    borderLeft: `2.5px solid ${isActive ? '#7C3AED' : 'rgba(255,255,255,0.05)'}`,
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                    opacity: isActive ? 1 : 0.25,
-                  }}
-                >
-                  <div style={{
-                    fontSize: '15px',
-                    fontWeight: 700,
-                    color: isActive ? '#FFFFFF' : '#94A3B8',
-                    marginBottom: '6px',
-                    fontFamily: 'monospace',
-                    letterSpacing: '-0.3px',
-                  }}>
-                    0{i + 1}. {feature.title}
+          {/* Left Column: Vertical Interactive Text Stack with visual Progress Bar */}
+          <div style={{ display: 'flex', gap: 32 }}>
+            {/* Visual vertical progress bar */}
+            <div style={{
+              width: '2px',
+              height: '240px',
+              background: 'rgba(255, 255, 255, 0.05)',
+              borderRadius: '1px',
+              position: 'relative',
+              alignSelf: 'center',
+            }}>
+              <div style={{
+                width: '100%',
+                height: `${scrollProgress * 100}%`,
+                background: 'linear-gradient(to bottom, #7C3AED, #38BDF8)',
+                borderRadius: '1px',
+                transition: 'height 0.1s ease-out',
+              }} />
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24, justifyContent: 'center' }}>
+              {features.map((feature, i) => {
+                const isActive = activeIdx === i;
+                return (
+                  <div
+                    key={feature.id}
+                    onClick={() => handleStepClick(i)}
+                    style={{
+                      cursor: 'pointer',
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                      opacity: isActive ? 1 : 0.25,
+                    }}
+                  >
+                    <div style={{
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      color: isActive ? '#F8FAFC' : '#94A3B8',
+                      marginBottom: '4px',
+                      fontFamily: 'monospace',
+                      letterSpacing: '-0.3px',
+                    }}>
+                      0{i + 1} {"   "} {feature.title}
+                    </div>
+                    {isActive && (
+                      <motion.p
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        style={{ fontSize: '13px', color: '#94A3B8', lineHeight: 1.5, margin: 0, maxWidth: '320px' }}
+                      >
+                        {feature.desc}
+                      </motion.p>
+                    )}
                   </div>
-                  {isActive && (
-                    <motion.p
-                      initial={{ opacity: 0, y: 3 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      style={{ fontSize: '13px', color: '#94A3B8', lineHeight: 1.5, margin: 0 }}
-                    >
-                      {feature.desc}
-                    </motion.p>
-                  )}
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
 
           {/* Right Column: Premium MacBook Pro Bezel with Crossfading Screen */}
           <div style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center' }}>
             <div style={{
               width: '100%',
-              maxWidth: '620px',
+              maxWidth: '680px',
               aspectRatio: '16/10',
               background: '#090d16',
               border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -753,7 +777,9 @@ function ProductShowcase() {
 /* ─── Scene 3: Technology + Topology + Integrated CTA ───────────────────── */
 function TechnologyAndCTA({ onLogin }) {
   const [hoveredTechNode, setHoveredTechNode] = useState(null);
+  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
   const [isDesktop, setIsDesktop] = useState(true);
+  const techRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
@@ -761,6 +787,18 @@ function TechnologyAndCTA({ onLogin }) {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const handleMouseMove = (e) => {
+    if (!techRef.current) return;
+    const rect = techRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setMouseOffset({ x: x * 20, y: y * 20 });
+  };
+
+  const handleMouseLeave = () => {
+    setMouseOffset({ x: 0, y: 0 });
+  };
 
   const techNodes = [
     { id: 'ingestion', label: 'Ingestion Gateway', x: 80, y: 70, color: '#38BDF8', desc: 'CSV stream validation' },
@@ -788,66 +826,36 @@ function TechnologyAndCTA({ onLogin }) {
     <section
       id="technology"
       style={{
-        padding: '80px 24px',
-        background: '#020617',
+        padding: '100px 0',
+        background: 'transparent',
         position: 'relative',
-        overflow: 'hidden',
+        zIndex: 2,
       }}
     >
-      {/* Background soft radial light glow */}
-      <div style={{
-        position: 'absolute',
-        width: '700px',
-        height: '700px',
-        borderRadius: '50%',
-        bottom: '-350px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        background: 'radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, transparent 60%)',
-        pointerEvents: 'none',
-      }} />
-
-      <style>{`
-        @keyframes flowBeam {
-          to { stroke-dashoffset: -40; }
-        }
-        @keyframes pulseGlow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.7; transform: scale(1.1); }
-        }
-        .tech-link {
-          stroke-dasharray: 8 6;
-          animation: flowBeam 1.5s linear infinite;
-        }
-        .tech-link-fast {
-          stroke-dasharray: 8 6;
-          animation: flowBeam 0.7s linear infinite;
-        }
-      `}</style>
-
       {/* Grid container for content */}
       <div style={{
-        maxWidth: 1200,
+        maxWidth: 1400,
         margin: '0 auto',
+        padding: '0 24px',
         display: 'flex',
         flexDirection: 'column',
-        gap: 80,
+        gap: 100,
       }}>
         {/* Split View: Badges + Observability Graph */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: isDesktop ? '1fr 1fr' : '1fr',
-          gap: 48,
+          gap: 64,
           alignItems: 'center',
         }}>
           {/* Left Side: Headline & Badge Cluster */}
           <div>
             <h2 style={{
-              fontSize: '44px',
+              fontSize: '48px',
               fontWeight: 850,
-              color: '#FFFFFF',
+              color: '#F8FAFC',
               lineHeight: 1.1,
-              letterSpacing: '-1.8px',
+              letterSpacing: '-2px',
               marginBottom: 20,
             }}>
               Built for scale.<br />
@@ -875,7 +883,7 @@ function TechnologyAndCTA({ onLogin }) {
                     padding: '6px 12px',
                     fontSize: 12,
                     fontWeight: 600,
-                    color: '#E2E8F0',
+                    color: '#F8FAFC',
                   }}
                 >
                   {tech}
@@ -884,16 +892,23 @@ function TechnologyAndCTA({ onLogin }) {
             </div>
           </div>
 
-          {/* Right Side: Network Topology */}
-          <div style={{
-            position: 'relative',
-            width: '100%',
-            height: '340px',
-            background: 'rgba(8, 12, 24, 0.35)',
-            border: '1px solid rgba(255, 255, 255, 0.03)',
-            borderRadius: 16,
-            overflow: 'hidden',
-          }}>
+          {/* Right Side: Network Topology Observability Panel */}
+          <div
+            ref={techRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '340px',
+              background: 'rgba(255, 255, 255, 0.01)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              borderRadius: 16,
+              overflow: 'hidden',
+              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+              backdropFilter: 'blur(20px)',
+            }}
+          >
             <svg style={{ width: '100%', height: '100%' }}>
               <defs>
                 <filter id="techGlow" x="-20%" y="-20%" width="140%" height="140%">
@@ -905,63 +920,69 @@ function TechnologyAndCTA({ onLogin }) {
                 </filter>
               </defs>
 
-              {/* Connections */}
-              {techConnections.map((conn, idx) => {
-                const fromNode = techNodes.find(n => n.id === conn.from);
-                const toNode = techNodes.find(n => n.id === conn.to);
-                if (!fromNode || !toNode) return null;
-                const isHighlighted = hoveredTechNode === conn.from || hoveredTechNode === conn.to;
-                return (
-                  <line
-                    key={idx}
-                    x1={fromNode.x}
-                    y1={fromNode.y}
-                    x2={toNode.x}
-                    y2={toNode.y}
-                    stroke={isHighlighted ? fromNode.color : 'rgba(255, 255, 255, 0.05)'}
-                    strokeWidth={isHighlighted ? 2 : 1}
-                    className={isHighlighted ? 'tech-link-fast' : 'tech-link'}
-                    style={{ transition: 'stroke 0.3s, stroke-width 0.3s' }}
-                  />
-                );
-              })}
+              {/* Group for mouse parallax translations */}
+              <g style={{
+                transform: `translate3d(${mouseOffset.x}px, ${mouseOffset.y}px, 0)`,
+                transition: 'transform 0.2s cubic-bezier(0.25, 1, 0.5, 1)',
+              }}>
+                {/* Connections */}
+                {techConnections.map((conn, idx) => {
+                  const fromNode = techNodes.find(n => n.id === conn.from);
+                  const toNode = techNodes.find(n => n.id === conn.to);
+                  if (!fromNode || !toNode) return null;
+                  const isHighlighted = hoveredTechNode === conn.from || hoveredTechNode === conn.to;
+                  return (
+                    <line
+                      key={idx}
+                      x1={fromNode.x}
+                      y1={fromNode.y}
+                      x2={toNode.x}
+                      y2={toNode.y}
+                      stroke={isHighlighted ? fromNode.color : 'rgba(255, 255, 255, 0.05)'}
+                      strokeWidth={isHighlighted ? 2.5 : 1}
+                      className={isHighlighted ? 'tech-link-fast' : 'tech-link'}
+                      style={{ transition: 'stroke 0.3s, stroke-width 0.3s' }}
+                    />
+                  );
+                })}
 
-              {/* Node points */}
-              {techNodes.map(n => {
-                const isHovered = hoveredTechNode === n.id;
-                return (
-                  <g
-                    key={n.id}
-                    onMouseEnter={() => setHoveredTechNode(n.id)}
-                    onMouseLeave={() => setHoveredTechNode(null)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <circle
-                      cx={n.x}
-                      cy={n.y}
-                      r={isHovered ? 12 : 8}
-                      fill="transparent"
-                      stroke={n.color}
-                      strokeWidth={1.5}
-                      style={{
-                        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                        animation: 'pulseGlow 2s infinite',
-                      }}
-                    />
-                    <circle
-                      cx={n.x}
-                      cy={n.y}
-                      r={isHovered ? 6 : 4}
-                      fill={n.color}
-                      filter={isHovered ? 'url(#techGlow)' : 'none'}
-                      style={{ transition: 'all 0.3s' }}
-                    />
-                  </g>
-                );
-              })}
+                {/* Pure circular topology nodes (NO boxes/labels inside graph) */}
+                {techNodes.map(n => {
+                  const isHovered = hoveredTechNode === n.id;
+                  return (
+                    <g
+                      key={n.id}
+                      onMouseEnter={() => setHoveredTechNode(n.id)}
+                      onMouseLeave={() => setHoveredTechNode(null)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <circle
+                        cx={n.x}
+                        cy={n.y}
+                        r={isHovered ? 12 : 8}
+                        fill="transparent"
+                        stroke={n.color}
+                        strokeWidth={1.5}
+                        style={{
+                          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                          animation: 'pulseGlow 2s infinite',
+                        }}
+                      />
+                      <circle
+                        cx={n.x}
+                        cy={n.y}
+                        r={isHovered ? 6 : 4}
+                        fill={n.color}
+                        filter={isHovered ? 'url(#techGlow)' : 'none'}
+                        style={{ transition: 'all 0.3s' }}
+                      />
+                    </g>
+                  );
+                })}
+              </g>
             </svg>
 
-            {/* Hover details overlay */}
+            {/* Hover details box */}
             <div style={{
               position: 'absolute',
               top: '16px',
@@ -996,32 +1017,74 @@ function TechnologyAndCTA({ onLogin }) {
           </div>
         </div>
 
-        {/* Center Bottom: Integrated Final CTA (No Separate Footer) */}
+        {/* Center Bottom: Integrated Final CTA (100px from tech section, NO separate footer) */}
         <div style={{
           textAlign: 'center',
-          paddingTop: 48,
+          paddingTop: 80,
           borderTop: '1px solid rgba(255, 255, 255, 0.03)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          position: 'relative',
           zIndex: 2,
         }}>
+          {/* Blurred Glow Background behind CTA */}
+          <div style={{
+            position: 'absolute',
+            width: '600px',
+            height: '350px',
+            borderRadius: '50%',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            background: 'radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, rgba(56, 189, 248, 0.03) 50%, transparent 70%)',
+            pointerEvents: 'none',
+            zIndex: -1,
+            filter: 'blur(50px)',
+          }} />
+
+          {/* Floating particle 1 */}
+          <div style={{
+            position: 'absolute',
+            top: '30px',
+            left: '15%',
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            background: '#38BDF8',
+            boxShadow: '0 0 10px #38BDF8',
+            animation: 'pulseGlow 3s infinite',
+          }} />
+
+          {/* Floating particle 2 */}
+          <div style={{
+            position: 'absolute',
+            bottom: '100px',
+            right: '15%',
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            background: '#EC4899',
+            boxShadow: '0 0 10px #EC4899',
+            animation: 'pulseGlow 4s infinite',
+          }} />
+
           <h2 style={{
-            fontSize: '38px',
+            fontSize: '44px',
             fontWeight: 900,
-            color: '#FFFFFF',
-            letterSpacing: '-1.2px',
+            color: '#F8FAFC',
+            letterSpacing: '-1.5px',
             lineHeight: 1.15,
             marginBottom: 32,
           }}>
             Ready to understand your codebase<br />before it breaks?
           </h2>
 
-          <div style={{ display: 'flex', gap: 14, justifyContent: 'center' }}>
+          <div style={{ display: 'flex', gap: 14, justifyContent: 'center', marginBottom: 90 }}>
             <button
               onClick={onLogin}
               style={{
-                background: 'linear-gradient(135deg, #7C3AED, #6366F1, #38BDF8)',
+                background: 'linear-gradient(135deg, #7C3AED, #38BDF8)',
                 color: '#fff',
                 border: 'none',
                 padding: '12px 28px',
@@ -1059,8 +1122,21 @@ function TechnologyAndCTA({ onLogin }) {
             </a>
           </div>
 
-          <div style={{ marginTop: 96, opacity: 0.3, fontSize: '11px', color: '#94A3B8', fontFamily: 'monospace' }}>
-            BUGRISK PLATFORM · ALL RIGHTS RESERVED
+          {/* Footer details directly below (NO additional spacing) */}
+          <div style={{
+            width: '100%',
+            borderTop: '1px solid rgba(255, 255, 255, 0.03)',
+            paddingTop: 32,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontSize: '11px',
+            color: '#94A3B8',
+            fontFamily: 'monospace',
+            opacity: 0.4,
+          }}>
+            <span>BUGRISK PLATFORM</span>
+            <span>© 2026 · ALL RIGHTS RESERVED</span>
           </div>
         </div>
       </div>
@@ -1075,9 +1151,57 @@ export default function LandingPage({ onLogin }) {
       background: '#020617',
       minHeight: '100vh',
       fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-      color: '#FFFFFF',
-      overflowX: 'hidden',
+      color: '#F8FAFC',
+      position: 'relative',
     }}>
+      {/* Dynamic Background Gradients */}
+      <div style={{
+        position: 'fixed',
+        top: '-10%',
+        left: '-10%',
+        width: '50vw',
+        height: '50vw',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(124, 58, 237, 0.05) 0%, transparent 75%)',
+        pointerEvents: 'none',
+        zIndex: 0,
+        animation: 'floatBlob1 25s infinite ease-in-out',
+      }} />
+      <div style={{
+        position: 'fixed',
+        bottom: '10%',
+        right: '-10%',
+        width: '60vw',
+        height: '60vw',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(56, 189, 248, 0.03) 0%, transparent 75%)',
+        pointerEvents: 'none',
+        zIndex: 0,
+        animation: 'floatBlob2 30s infinite ease-in-out',
+      }} />
+      <div style={{
+        position: 'fixed',
+        top: '40%',
+        left: '30%',
+        width: '40vw',
+        height: '40vw',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(236, 72, 153, 0.03) 0%, transparent 75%)',
+        pointerEvents: 'none',
+        zIndex: 0,
+        animation: 'floatBlob1 28s infinite ease-in-out',
+      }} />
+
+      {/* Subtle Noise Texture Overlay */}
+      <div style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        opacity: 0.015,
+        pointerEvents: 'none',
+        zIndex: 1,
+      }} />
+
       <style>{`
         html { scroll-behavior: smooth; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1085,12 +1209,36 @@ export default function LandingPage({ onLogin }) {
         ::-webkit-scrollbar-track { background: #020617; }
         ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.15); }
+        
+        @keyframes floatBlob1 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(80px, 40px) scale(1.1); }
+        }
+        @keyframes floatBlob2 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(-60px, -50px) scale(0.95); }
+        }
+        @keyframes flowBeam {
+          to { stroke-dashoffset: -40; }
+        }
+        @keyframes pulseGlow {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        .tech-link {
+          stroke-dasharray: 8 6;
+          animation: flowBeam 1.5s linear infinite;
+        }
+        .tech-link-fast {
+          stroke-dasharray: 8 6;
+          animation: flowBeam 0.7s linear infinite;
+        }
       `}</style>
 
       <Navbar onLogin={onLogin} />
       <Hero onLogin={onLogin} />
       <ProductShowcase />
-      <TechnologyAndCTA style={{ marginTop: 0 }} onLogin={onLogin} />
+      <TechnologyAndCTA onLogin={onLogin} />
     </div>
   );
 }
