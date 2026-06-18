@@ -3,6 +3,96 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const GITHUB_URL = 'https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases';
 
+/* ─── Sticky Navbar ──────────────────────────────────────────────────────── */
+function Navbar({ onLogin }) {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <motion.nav
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      style={{
+        position: 'fixed',
+        top: 0, left: 0, right: 0,
+        zIndex: 100,
+        padding: '0 24px',
+        background: scrolled ? 'rgba(3, 7, 18, 0.75)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(20px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.05)' : '1px solid transparent',
+        transition: 'all 0.3s ease',
+      }}
+    >
+      <div style={{ maxWidth: 1100, margin: '0 auto', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{
+            width: 24, height: 24, borderRadius: 5,
+            background: 'linear-gradient(135deg, #7C3AED, #6366F1, #38BDF8)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 12, fontWeight: 900, color: 'white',
+          }}>B</div>
+          <span style={{ fontWeight: 800, fontSize: 15, color: '#FFFFFF', letterSpacing: '-0.3px' }}>BugRisk</span>
+        </div>
+
+        <div style={{ display: 'flex', gap: 28 }}>
+          {['Showcase', 'Architecture'].map((l) => (
+            <a
+              key={l}
+              href={`#${l.toLowerCase()}`}
+              style={{ color: '#9CA3AF', fontSize: 13, fontWeight: 500, textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={(e) => (e.target.style.color = '#fff')}
+              onMouseLeave={(e) => (e.target.style.color = '#9CA3AF')}
+            >
+              {l}
+            </a>
+          ))}
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: '#9CA3AF', fontSize: 13, fontWeight: 500, textDecoration: 'none', transition: 'color 0.2s' }}
+            onMouseEnter={(e) => (e.target.style.color = '#fff')}
+            onMouseLeave={(e) => (e.target.style.color = '#9CA3AF')}
+          >
+            GitHub
+          </a>
+        </div>
+
+        <button
+          onClick={onLogin}
+          style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.05)',
+            color: '#FFFFFF',
+            padding: '6px 14px',
+            borderRadius: 6,
+            fontSize: 12,
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.background = '#fff';
+            e.target.style.color = '#000';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background = 'rgba(255, 255, 255, 0.03)';
+            e.target.style.color = '#fff';
+          }}
+        >
+          Launch App
+        </button>
+      </div>
+    </motion.nav>
+  );
+}
+
 /* ─── Moment 1: Hero Intelligence Engine Component ─────────────────────── */
 function HeroEngine() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
