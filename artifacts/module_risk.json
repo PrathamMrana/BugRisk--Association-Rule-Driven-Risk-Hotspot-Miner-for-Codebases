@@ -1,7 +1,49 @@
 [
   {
-    "module": "auth",
+    "module": "database",
     "risk_score": 100.0,
+    "risk_level": "CRITICAL",
+    "top_rules": [
+      {
+        "antecedent": "module=database, subsystem=database, tech_stack=PostgreSQL",
+        "consequent": "bug_type=performance, severity=high",
+        "support": 0.1,
+        "confidence": 0.9843,
+        "lift": 8.0942
+      },
+      {
+        "antecedent": "module=database, tech_stack=PostgreSQL",
+        "consequent": "bug_type=performance, severity=high",
+        "support": 0.1,
+        "confidence": 0.9158,
+        "lift": 7.5308
+      },
+      {
+        "antecedent": "module=database, subsystem=database",
+        "consequent": "bug_type=performance, severity=high",
+        "support": 0.1,
+        "confidence": 0.9091,
+        "lift": 7.4761
+      },
+      {
+        "antecedent": "subsystem=database, tech_stack=PostgreSQL",
+        "consequent": "bug_type=performance, severity=high",
+        "support": 0.1012,
+        "confidence": 0.8815,
+        "lift": 7.2494
+      },
+      {
+        "antecedent": "module=database, subsystem=database, tech_stack=PostgreSQL",
+        "consequent": "bug_type=performance",
+        "support": 0.1,
+        "confidence": 0.9843,
+        "lift": 5.3961
+      }
+    ]
+  },
+  {
+    "module": "auth",
+    "risk_score": 88.32,
     "risk_level": "CRITICAL",
     "top_rules": [
       {
@@ -42,51 +84,9 @@
     ]
   },
   {
-    "module": "database",
-    "risk_score": 49.29,
-    "risk_level": "MEDIUM",
-    "top_rules": [
-      {
-        "antecedent": "module=database, subsystem=database, tech_stack=PostgreSQL",
-        "consequent": "bug_type=performance, severity=high",
-        "support": 0.1,
-        "confidence": 0.9843,
-        "lift": 8.0942
-      },
-      {
-        "antecedent": "module=database, tech_stack=PostgreSQL",
-        "consequent": "bug_type=performance, severity=high",
-        "support": 0.1,
-        "confidence": 0.9158,
-        "lift": 7.5308
-      },
-      {
-        "antecedent": "module=database, subsystem=database",
-        "consequent": "bug_type=performance, severity=high",
-        "support": 0.1,
-        "confidence": 0.9091,
-        "lift": 7.4761
-      },
-      {
-        "antecedent": "subsystem=database, tech_stack=PostgreSQL",
-        "consequent": "bug_type=performance, severity=high",
-        "support": 0.1012,
-        "confidence": 0.8815,
-        "lift": 7.2494
-      },
-      {
-        "antecedent": "module=database, subsystem=database, tech_stack=PostgreSQL",
-        "consequent": "bug_type=performance",
-        "support": 0.1,
-        "confidence": 0.9843,
-        "lift": 5.3961
-      }
-    ]
-  },
-  {
     "module": "payment",
-    "risk_score": 32.89,
-    "risk_level": "MEDIUM",
+    "risk_score": 71.62,
+    "risk_level": "HIGH",
     "top_rules": [
       {
         "antecedent": "module=payment, subsystem=api, tech_stack=SpringBoot",
@@ -126,8 +126,50 @@
     ]
   },
   {
+    "module": "gateway",
+    "risk_score": 4.74,
+    "risk_level": "LOW",
+    "top_rules": [
+      {
+        "antecedent": "subsystem=backend, tech_stack=Kafka",
+        "consequent": "bug_type=concurrency",
+        "support": 0.0828,
+        "confidence": 0.8625,
+        "lift": 5.1958
+      },
+      {
+        "antecedent": "tech_stack=Kafka",
+        "consequent": "bug_type=concurrency",
+        "support": 0.0916,
+        "confidence": 0.5827,
+        "lift": 3.5102
+      },
+      {
+        "antecedent": "module=gateway, subsystem=backend, tech_stack=Kafka",
+        "consequent": "bug_type=concurrency",
+        "support": 0.0328,
+        "confidence": 0.9535,
+        "lift": 5.7439
+      },
+      {
+        "antecedent": "language=Java, tech_stack=Kafka",
+        "consequent": "bug_type=concurrency",
+        "support": 0.0396,
+        "confidence": 0.7444,
+        "lift": 4.4841
+      },
+      {
+        "antecedent": "module=gateway, tech_stack=Kafka",
+        "consequent": "bug_type=concurrency",
+        "support": 0.0336,
+        "confidence": 0.7636,
+        "lift": 4.6002
+      }
+    ]
+  },
+  {
     "module": "profile",
-    "risk_score": 2.83,
+    "risk_score": 4.65,
     "risk_level": "LOW",
     "top_rules": [
       {
@@ -136,6 +178,13 @@
         "support": 0.0724,
         "confidence": 0.8873,
         "lift": 5.4233
+      },
+      {
+        "antecedent": "subsystem=frontend, tech_stack=React",
+        "consequent": "bug_type=validation, severity=low",
+        "support": 0.0508,
+        "confidence": 0.6225,
+        "lift": 8.3676
       },
       {
         "antecedent": "subsystem=database",
@@ -161,71 +210,8 @@
     ]
   },
   {
-    "module": "notification",
-    "risk_score": 0.82,
-    "risk_level": "LOW",
-    "top_rules": [
-      {
-        "antecedent": "subsystem=backend, tech_stack=Kafka",
-        "consequent": "bug_type=concurrency",
-        "support": 0.0828,
-        "confidence": 0.8625,
-        "lift": 5.1958
-      },
-      {
-        "antecedent": "tech_stack=Kafka",
-        "consequent": "bug_type=concurrency",
-        "support": 0.0916,
-        "confidence": 0.5827,
-        "lift": 3.5102
-      }
-    ]
-  },
-  {
-    "module": "analytics",
-    "risk_score": 0.82,
-    "risk_level": "LOW",
-    "top_rules": [
-      {
-        "antecedent": "subsystem=backend, tech_stack=Kafka",
-        "consequent": "bug_type=concurrency",
-        "support": 0.0828,
-        "confidence": 0.8625,
-        "lift": 5.1958
-      },
-      {
-        "antecedent": "tech_stack=Kafka",
-        "consequent": "bug_type=concurrency",
-        "support": 0.0916,
-        "confidence": 0.5827,
-        "lift": 3.5102
-      }
-    ]
-  },
-  {
-    "module": "gateway",
-    "risk_score": 0.82,
-    "risk_level": "LOW",
-    "top_rules": [
-      {
-        "antecedent": "subsystem=backend, tech_stack=Kafka",
-        "consequent": "bug_type=concurrency",
-        "support": 0.0828,
-        "confidence": 0.8625,
-        "lift": 5.1958
-      },
-      {
-        "antecedent": "tech_stack=Kafka",
-        "consequent": "bug_type=concurrency",
-        "support": 0.0916,
-        "confidence": 0.5827,
-        "lift": 3.5102
-      }
-    ]
-  },
-  {
     "module": "reporting",
-    "risk_score": 0.52,
+    "risk_score": 2.62,
     "risk_level": "LOW",
     "top_rules": [
       {
@@ -236,17 +222,31 @@
         "lift": 5.4233
       },
       {
+        "antecedent": "subsystem=frontend, tech_stack=React",
+        "consequent": "bug_type=validation, severity=low",
+        "support": 0.0508,
+        "confidence": 0.6225,
+        "lift": 8.3676
+      },
+      {
         "antecedent": "tech_stack=React",
         "consequent": "bug_type=validation",
         "support": 0.08,
         "confidence": 0.5814,
         "lift": 3.5538
+      },
+      {
+        "antecedent": "subsystem=frontend, tech_stack=React",
+        "consequent": "severity=low",
+        "support": 0.0524,
+        "confidence": 0.6422,
+        "lift": 3.2564
       }
     ]
   },
   {
     "module": "search",
-    "risk_score": 0.52,
+    "risk_score": 2.62,
     "risk_level": "LOW",
     "top_rules": [
       {
@@ -257,11 +257,81 @@
         "lift": 5.4233
       },
       {
+        "antecedent": "subsystem=frontend, tech_stack=React",
+        "consequent": "bug_type=validation, severity=low",
+        "support": 0.0508,
+        "confidence": 0.6225,
+        "lift": 8.3676
+      },
+      {
         "antecedent": "tech_stack=React",
         "consequent": "bug_type=validation",
         "support": 0.08,
         "confidence": 0.5814,
         "lift": 3.5538
+      },
+      {
+        "antecedent": "subsystem=frontend, tech_stack=React",
+        "consequent": "severity=low",
+        "support": 0.0524,
+        "confidence": 0.6422,
+        "lift": 3.2564
+      }
+    ]
+  },
+  {
+    "module": "notification",
+    "risk_score": 0.95,
+    "risk_level": "LOW",
+    "top_rules": [
+      {
+        "antecedent": "subsystem=backend, tech_stack=Kafka",
+        "consequent": "bug_type=concurrency",
+        "support": 0.0828,
+        "confidence": 0.8625,
+        "lift": 5.1958
+      },
+      {
+        "antecedent": "tech_stack=Kafka",
+        "consequent": "bug_type=concurrency",
+        "support": 0.0916,
+        "confidence": 0.5827,
+        "lift": 3.5102
+      },
+      {
+        "antecedent": "subsystem=backend, tech_stack=Kafka",
+        "consequent": "severity=critical",
+        "support": 0.0512,
+        "confidence": 0.5333,
+        "lift": 1.4831
+      }
+    ]
+  },
+  {
+    "module": "analytics",
+    "risk_score": 0.95,
+    "risk_level": "LOW",
+    "top_rules": [
+      {
+        "antecedent": "subsystem=backend, tech_stack=Kafka",
+        "consequent": "bug_type=concurrency",
+        "support": 0.0828,
+        "confidence": 0.8625,
+        "lift": 5.1958
+      },
+      {
+        "antecedent": "tech_stack=Kafka",
+        "consequent": "bug_type=concurrency",
+        "support": 0.0916,
+        "confidence": 0.5827,
+        "lift": 3.5102
+      },
+      {
+        "antecedent": "subsystem=backend, tech_stack=Kafka",
+        "consequent": "severity=critical",
+        "support": 0.0512,
+        "confidence": 0.5333,
+        "lift": 1.4831
       }
     ]
   },
