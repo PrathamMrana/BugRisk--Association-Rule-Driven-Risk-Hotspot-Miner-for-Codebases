@@ -47,6 +47,7 @@ import {
 
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import 'reactflow/dist/style.css';
+import LandingPage from './LandingPage';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL
   ? `${import.meta.env.VITE_API_BASE_URL}/api/v1`
@@ -70,6 +71,8 @@ function App() {
   const [activeTab, setActiveTab] = useState(() => {
     return localStorage.getItem('bugrisk_active_tab') || 'dashboard';
   });
+  
+  const [showLogin, setShowLogin] = useState(false);
   
   // Graph exploration detail panel state
   const [selectedGraphNode, setSelectedGraphNode] = useState(null);
@@ -212,6 +215,7 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem('bugrisk_session');
     setUser(null);
+    setShowLogin(false);
     setActiveTab('dashboard');
     triggerNotification('Logged out successfully.');
   };
@@ -1069,6 +1073,9 @@ function App() {
   }, [sseLogs]);
 
   if (!user) {
+    if (!showLogin) {
+      return <LandingPage onLogin={() => setShowLogin(true)} />;
+    }
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0b0f19] px-4">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-[#0b0f19] to-[#0b0f19] pointer-events-none"></div>
@@ -1129,6 +1136,17 @@ function App() {
               <Activity size={18} />
               <span>Launch Dashboard</span>
             </button>
+
+            <div className="text-center mt-4 border-t border-slate-800/60 pt-4">
+              <button
+                type="button"
+                onClick={() => setShowLogin(false)}
+                className="text-sm text-purple-400 hover:text-purple-300 transition inline-flex items-center gap-1 font-medium bg-transparent border-none cursor-pointer"
+              >
+                <ChevronLeft size={16} />
+                <span>Back to Landing Page</span>
+              </button>
+            </div>
           </form>
         </div>
       </div>
