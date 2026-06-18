@@ -1,35 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useAnimation, useInView, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const GITHUB_URL = 'https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases';
-const DEMO_URL = '#login';
-
-/* ─── Reusable animation variants ─────────────────────────────────────────── */
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
-};
-const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.5 } },
-};
-const stagger = (delay = 0.1) => ({
-  visible: { transition: { staggerChildren: delay } },
-});
-
-function useScrollInView(threshold = 0.15) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: threshold });
-  return [ref, inView];
-}
 
 /* ─── Animated Counter ────────────────────────────────────────────────────── */
 function Counter({ target, suffix = '', duration = 2000 }) {
   const [count, setCount] = useState(0);
-  const [ref, inView] = useScrollInView(0.3);
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (!inView) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!visible) return;
     let start = 0;
     const isFloat = target % 1 !== 0;
     const steps = 60;
@@ -37,162 +31,253 @@ function Counter({ target, suffix = '', duration = 2000 }) {
     const interval = duration / steps;
     const timer = setInterval(() => {
       start += step;
-      if (start >= target) { setCount(target); clearInterval(timer); }
-      else setCount(isFloat ? parseFloat(start.toFixed(1)) : Math.floor(start));
+      if (start >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(isFloat ? parseFloat(start.toFixed(1)) : Math.floor(start));
+      }
     }, interval);
     return () => clearInterval(timer);
-  }, [inView, target, duration]);
+  }, [visible, target, duration]);
 
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-/* ─── Floating Orbs Background ───────────────────────────────────────────── */
-function FloatingOrbs() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <div style={{
-        position: 'absolute', width: 600, height: 600,
-        borderRadius: '50%', top: '-10%', left: '-5%',
-        background: 'radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%)',
-        animation: 'pulse-orb 8s ease-in-out infinite',
-      }} />
-      <div style={{
-        position: 'absolute', width: 500, height: 500,
-        borderRadius: '50%', top: '20%', right: '-10%',
-        background: 'radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)',
-        animation: 'pulse-orb 10s ease-in-out infinite 2s',
-      }} />
-      <div style={{
-        position: 'absolute', width: 400, height: 400,
-        borderRadius: '50%', bottom: '10%', left: '30%',
-        background: 'radial-gradient(circle, rgba(6,182,212,0.1) 0%, transparent 70%)',
-        animation: 'pulse-orb 12s ease-in-out infinite 4s',
-      }} />
-    </div>
-  );
-}
-
-/* ─── Animated Network Background ────────────────────────────────────────── */
-function NetworkCanvas() {
+/* ─── Interactive Hero Canvas (Magnetic Particle Network) ─────────────────── */
+function HeroCanvas() {
   const canvasRef = useRef(null);
+  const [mouse, setMouse] = useState({ x: null, y: null, active: false });
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     let animId;
-    let W = canvas.width = canvas.offsetWidth;
-    let H = canvas.height = canvas.offsetHeight;
+    let W = (canvas.width = canvas.offsetWidth);
+    let H = (canvas.height = canvas.offsetHeight);
 
-    const nodes = Array.from({ length: 40 }, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
+    const particles = Array.from({ length: 65 }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
       r: Math.random() * 2 + 1,
+      glow: Math.random() > 0.7,
     }));
 
     const draw = () => {
       ctx.clearRect(0, 0, W, H);
-      nodes.forEach(n => {
-        n.x += n.vx; n.y += n.vy;
-        if (n.x < 0 || n.x > W) n.vx *= -1;
-        if (n.y < 0 || n.y > H) n.vy *= -1;
-      });
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
+      
+      // Draw grid pattern in background
+      ctx.strokeStyle = 'rgba(124, 58, 237, 0.03)';
+      ctx.lineWidth = 1;
+      const gridSize = 50;
+      for (let x = 0; x < W; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, H);
+        ctx.stroke();
+      }
+      for (let y = 0; y < H; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
+      }
+
+      // Update and draw particles
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Bounce on borders
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+
+        // Magnet attraction
+        if (mouse.active && mouse.x !== null) {
+          const dx = mouse.x - p.x;
+          const dy = mouse.y - p.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
+          if (dist < 150) {
+            p.x += dx * 0.02;
+            p.y += dy * 0.02;
+          }
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.glow ? 'rgba(167, 139, 250, 0.6)' : 'rgba(59, 130, 246, 0.3)';
+        ctx.fill();
+      });
+
+      // Connect lines
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 130) {
             ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(124,58,237,${0.15 * (1 - dist / 120)})`;
-            ctx.lineWidth = 0.8;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            
+            // Brighten line if close to mouse
+            let isHovered = false;
+            if (mouse.active && mouse.x !== null) {
+              const mxA = mouse.x - particles[i].x;
+              const myA = mouse.y - particles[i].y;
+              const distMouse = Math.sqrt(mxA * mxA + myA * myA);
+              if (distMouse < 100) isHovered = true;
+            }
+
+            ctx.strokeStyle = isHovered 
+              ? `rgba(139, 92, 246, ${0.25 * (1 - dist / 130)})`
+              : `rgba(255, 255, 255, ${0.05 * (1 - dist / 130)})`;
+            ctx.lineWidth = isHovered ? 1.2 : 0.7;
             ctx.stroke();
           }
         }
       }
-      nodes.forEach(n => {
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(139,92,246,0.5)';
-        ctx.fill();
-      });
+
       animId = requestAnimationFrame(draw);
     };
+
     draw();
-    const resize = () => {
+
+    const handleResize = () => {
       W = canvas.width = canvas.offsetWidth;
       H = canvas.height = canvas.offsetHeight;
     };
-    window.addEventListener('resize', resize);
-    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize); };
-  }, []);
-  return <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.6 }} />;
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [mouse]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      onMouseMove={(e) => {
+        const rect = canvasRef.current.getBoundingClientRect();
+        setMouse({ x: e.clientX - rect.left, y: e.clientY - rect.top, active: true });
+      }}
+      onMouseLeave={() => setMouse({ x: null, y: null, active: false })}
+      style={{
+        position: 'absolute',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: 0,
+        pointerEvents: 'auto',
+      }}
+    />
+  );
 }
 
-/* ─── Navbar ─────────────────────────────────────────────────────────────── */
+/* ─── Sticky Navbar ──────────────────────────────────────────────────────── */
 function Navbar({ onLogin }) {
   const [scrolled, setScrolled] = useState(false);
+
   useEffect(() => {
-    const h = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', h);
-    return () => window.removeEventListener('scroll', h);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   return (
-    <motion.nav initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6, ease: 'easeOut' }}
+    <motion.nav
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
       style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 100,
         padding: '0 24px',
-        background: scrolled ? 'rgba(11,17,32,0.9)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(20px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none',
+        background: scrolled ? 'rgba(7, 10, 19, 0.75)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(24px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.05)' : '1px solid transparent',
         transition: 'all 0.3s ease',
-      }}>
+      }}
+    >
       <div style={{ maxWidth: 1200, margin: '0 auto', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{
-            width: 32, height: 32, borderRadius: 8,
+            width: 28, height: 28, borderRadius: 6,
             background: 'linear-gradient(135deg, #7C3AED, #3B82F6)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 16, fontWeight: 900, color: 'white',
+            fontSize: 14, fontWeight: 900, color: 'white',
           }}>B</div>
-          <span style={{ fontWeight: 800, fontSize: 18, color: 'white', letterSpacing: '-0.5px' }}>BugRisk</span>
-          <span style={{
-            fontSize: 10, fontWeight: 700, color: '#7C3AED',
-            background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)',
-            padding: '2px 6px', borderRadius: 4, letterSpacing: '0.05em',
-          }}>v2</span>
+          <span style={{ fontWeight: 800, fontSize: 16, color: 'white', letterSpacing: '-0.5px' }}>BugRisk</span>
         </div>
-        {/* Links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
-          {['Features', 'Architecture', 'Screenshots', 'Roadmap'].map(l => (
-            <a key={l} href={`#${l.toLowerCase()}`}
-              style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, fontWeight: 500, textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={e => e.target.style.color = '#fff'}
-              onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.6)'}>
+        {/* Center Links */}
+        <div style={{ display: 'flex', gap: 32 }}>
+          {['Architecture', 'Showcase', 'Metrics', 'Timeline'].map((l) => (
+            <a
+              key={l}
+              href={`#${l.toLowerCase()}`}
+              style={{
+                color: 'rgba(255, 255, 255, 0.5)',
+                fontSize: 13,
+                fontWeight: 500,
+                textDecoration: 'none',
+                transition: 'color 0.2s',
+              }}
+              onMouseEnter={(e) => (e.target.style.color = '#fff')}
+              onMouseLeave={(e) => (e.target.style.color = 'rgba(255, 255, 255, 0.5)')}
+            >
               {l}
             </a>
           ))}
-          <a href={GITHUB_URL} target="_blank" rel="noreferrer"
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noreferrer"
             style={{
-              color: 'rgba(255,255,255,0.7)', fontSize: 14, fontWeight: 500,
-              textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6,
-            }}>
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.138 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/>
-            </svg>
+              color: 'rgba(255, 255, 255, 0.5)',
+              fontSize: 13,
+              fontWeight: 500,
+              textDecoration: 'none',
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={(e) => (e.target.style.color = '#fff')}
+            onMouseLeave={(e) => (e.target.style.color = 'rgba(255, 255, 255, 0.5)')}
+          >
             GitHub
           </a>
-          <button onClick={onLogin} style={{
-            background: 'linear-gradient(135deg, #7C3AED, #3B82F6)',
-            color: 'white', border: 'none', padding: '8px 20px',
-            borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: 'pointer',
-            transition: 'opacity 0.2s, transform 0.2s',
-          }}
-            onMouseEnter={e => { e.target.style.opacity = '0.9'; e.target.style.transform = 'translateY(-1px)'; }}
-            onMouseLeave={e => { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }}>
-            Launch App →
+        </div>
+        {/* Launch Button */}
+        <div>
+          <button
+            onClick={onLogin}
+            style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#fff',
+              padding: '6px 16px',
+              borderRadius: 6,
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = '#fff';
+              e.target.style.color = '#000';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.05)';
+              e.target.style.color = '#fff';
+            }}
+          >
+            Launch App
           </button>
         </div>
       </div>
@@ -200,520 +285,505 @@ function Navbar({ onLogin }) {
   );
 }
 
-/* ─── Hero ───────────────────────────────────────────────────────────────── */
+/* ─── Hero Section ───────────────────────────────────────────────────────── */
 function Hero({ onLogin }) {
   return (
-    <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', paddingTop: 80 }}>
-      <NetworkCanvas />
-      <FloatingOrbs />
-      {/* Grid overlay */}
+    <section style={{
+      position: 'relative',
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+      paddingTop: 80,
+    }}>
+      <HeroCanvas />
+      {/* Background Radial Glow */}
       <div style={{
-        position: 'absolute', inset: 0,
-        backgroundImage: `linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px)`,
-        backgroundSize: '60px 60px',
+        position: 'absolute',
+        width: 800,
+        height: 800,
+        borderRadius: '50%',
+        top: '20%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        background: 'radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 65%)',
         pointerEvents: 'none',
       }} />
 
-      <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', maxWidth: 900, padding: '0 24px' }}>
-        {/* Badge */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 32 }}>
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 8,
-            background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)',
-            padding: '6px 16px', borderRadius: 100, fontSize: 13, color: '#a78bfa',
-          }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#7C3AED', animation: 'pulse 2s infinite', display: 'inline-block' }} />
-            Association Rule Mining · FP-Growth · AI Risk Analysis
-          </div>
-        </motion.div>
-
-        {/* Title */}
-        <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
-          style={{ fontSize: 'clamp(48px, 8vw, 88px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-3px', marginBottom: 24, color: 'white' }}>
-          <span style={{ display: 'block' }}>Stop Reacting.</span>
-          <span style={{
-            display: 'block',
-            background: 'linear-gradient(135deg, #7C3AED 0%, #3B82F6 50%, #06B6D4 100%)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-          }}>Start Predicting.</span>
-        </motion.h1>
-
-        {/* Subtitle */}
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }}
-          style={{ fontSize: 20, color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, marginBottom: 48, maxWidth: 680, margin: '0 auto 48px' }}>
-          BugRisk mines your defect history using <strong style={{ color: '#a78bfa' }}>FP-Growth association rules</strong> to surface hidden risk patterns, rank hotspot modules, and explain failures before they reach production.
-        </motion.p>
-
-        {/* CTA Buttons */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.35 }}
-          style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 80 }}>
-          <button onClick={onLogin} style={{
-            background: 'linear-gradient(135deg, #7C3AED, #3B82F6)',
-            color: 'white', border: 'none', padding: '14px 32px',
-            borderRadius: 12, fontSize: 16, fontWeight: 700, cursor: 'pointer',
-            boxShadow: '0 0 40px rgba(124,58,237,0.4)',
-            transition: 'all 0.25s ease',
-          }}
-            onMouseEnter={e => { e.target.style.transform = 'translateY(-2px)'; e.target.style.boxShadow = '0 0 60px rgba(124,58,237,0.6)'; }}
-            onMouseLeave={e => { e.target.style.transform = 'translateY(0)'; e.target.style.boxShadow = '0 0 40px rgba(124,58,237,0.4)'; }}>
-            🚀 Launch Demo
-          </button>
-          <a href={GITHUB_URL} target="_blank" rel="noreferrer" style={{
-            display: 'inline-flex', alignItems: 'center', gap: 8,
-            background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)',
-            color: 'white', padding: '14px 32px', borderRadius: 12,
-            fontSize: 16, fontWeight: 600, textDecoration: 'none',
-            backdropFilter: 'blur(10px)', transition: 'all 0.25s ease',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.transform = 'translateY(0)'; }}>
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.138 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/>
-            </svg>
-            View Source
-          </a>
-          <a href="#architecture" style={{
-            display: 'inline-flex', alignItems: 'center', gap: 8,
-            background: 'transparent', border: '1px solid rgba(124,58,237,0.4)',
-            color: '#a78bfa', padding: '14px 32px', borderRadius: 12,
-            fontSize: 16, fontWeight: 600, textDecoration: 'none',
-            transition: 'all 0.25s ease',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(124,58,237,0.1)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'translateY(0)'; }}>
-            Architecture ↓
-          </a>
-        </motion.div>
-
-        {/* Floating stat pills */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.8 }}
-          style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
-          {[['202+', 'Rules Mined'], ['85.7%', 'Avg Confidence'], ['5.5×', 'Avg Lift'], ['8', 'Pipeline Stages']].map(([val, label]) => (
-            <div key={label} style={{
-              background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
-              backdropFilter: 'blur(20px)', borderRadius: 12, padding: '12px 20px',
-              textAlign: 'center', minWidth: 100,
-            }}>
-              <div style={{ fontSize: 22, fontWeight: 800, color: '#a78bfa' }}>{val}</div>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 2 }}>{label}</div>
-            </div>
-          ))}
-        </motion.div>
-      </div>
-
-      {/* Scroll indicator */}
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
-        style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em' }}>SCROLL</span>
-        <div style={{ width: 1, height: 40, background: 'linear-gradient(to bottom, rgba(124,58,237,0.6), transparent)', animation: 'pulse-orb 2s ease-in-out infinite' }} />
-      </motion.div>
-    </section>
-  );
-}
-
-/* ─── Problem / Solution ─────────────────────────────────────────────────── */
-function ProblemSolution() {
-  const [ref, inView] = useScrollInView();
-  return (
-    <section style={{ padding: '120px 24px', position: 'relative' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <motion.div ref={ref} variants={stagger(0.15)} initial="hidden" animate={inView ? 'visible' : 'hidden'}>
-          <motion.div variants={fadeUp} style={{ textAlign: 'center', marginBottom: 72 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: '#7C3AED', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 16 }}>The Problem</div>
-            <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800, color: 'white', letterSpacing: '-1.5px', lineHeight: 1.1 }}>
-              Traditional debugging is <span style={{ background: 'linear-gradient(135deg, #ef4444, #f97316)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>reactive</span>
-            </h2>
+      <div style={{
+        position: 'relative',
+        zIndex: 1,
+        width: '100%',
+        maxWidth: 1200,
+        margin: '0 auto',
+        padding: '0 24px',
+        display: 'grid',
+        gridTemplateColumns: '1.2fr 0.8fr',
+        gap: 48,
+        alignItems: 'center',
+      }}>
+        {/* Left Side: Statement */}
+        <div style={{ textAlign: 'left' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              background: 'rgba(124, 58, 237, 0.07)',
+              border: '1px solid rgba(124, 58, 237, 0.2)',
+              padding: '4px 12px',
+              borderRadius: 100,
+              fontSize: 12,
+              fontWeight: 600,
+              color: '#a78bfa',
+              marginBottom: 24,
+            }}
+          >
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#7C3AED', display: 'inline-block' }} />
+            Association Rule Mining Engine
           </motion.div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: 32, alignItems: 'center' }}>
-            {/* Problem */}
-            <motion.div variants={fadeUp} style={{
-              background: 'rgba(239,68,68,0.05)', border: '1px solid rgba(239,68,68,0.2)',
-              borderRadius: 20, padding: 40,
-            }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#ef4444', letterSpacing: '0.1em', marginBottom: 24, textTransform: 'uppercase' }}>Traditional Debugging</div>
-              {['Reacts after the bug ships', 'Hard to explain to stakeholders', 'Same modules fail repeatedly', 'No pattern awareness', 'Expensive post-mortems'].map(t => (
-                <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-                  <div style={{ width: 20, height: 20, borderRadius: '50%', background: 'rgba(239,68,68,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: '#ef4444', flexShrink: 0 }}>✕</div>
-                  <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: 15 }}>{t}</span>
-                </div>
-              ))}
-            </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            style={{
+              fontSize: 'clamp(44px, 6vw, 76px)',
+              fontWeight: 900,
+              lineHeight: 0.95,
+              letterSpacing: '-2px',
+              marginBottom: 24,
+              color: '#fff',
+            }}
+          >
+            STOP REACTING.<br />
+            <span style={{
+              background: 'linear-gradient(135deg, #a78bfa 0%, #3b82f6 50%, #06b6d4 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}>START PREDICTING.</span>
+          </motion.h1>
 
-            {/* Arrow */}
-            <motion.div variants={fadeIn} style={{ textAlign: 'center' }}>
-              <div style={{
-                width: 56, height: 56, borderRadius: '50%',
-                background: 'linear-gradient(135deg, #7C3AED, #3B82F6)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 22, boxShadow: '0 0 30px rgba(124,58,237,0.4)',
-              }}>→</div>
-            </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            style={{
+              fontSize: 18,
+              color: 'rgba(255,255,255,0.45)',
+              lineHeight: 1.6,
+              marginBottom: 40,
+              maxWidth: 540,
+            }}
+          >
+            BugRisk discovers hidden defect patterns in your commit histories using association rule mining, isolating risk hotspots before they reach production.
+          </motion.p>
 
-            {/* Solution */}
-            <motion.div variants={fadeUp} style={{
-              background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.25)',
-              borderRadius: 20, padding: 40,
-            }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#7C3AED', letterSpacing: '0.1em', marginBottom: 24, textTransform: 'uppercase' }}>BugRisk</div>
-              {['Predicts risk before deployment', 'Explainable AI with association rules', 'Detects recurring defect patterns', 'Module-level risk scoring', 'Interactive graph exploration'].map(t => (
-                <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-                  <div style={{ width: 20, height: 20, borderRadius: '50%', background: 'rgba(124,58,237,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: '#a78bfa', flexShrink: 0 }}>✓</div>
-                  <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: 15 }}>{t}</span>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Feature Card ───────────────────────────────────────────────────────── */
-function FeatureCard({ icon, title, desc, tags, color, delay }) {
-  const [ref, inView] = useScrollInView();
-  const [hovered, setHovered] = useState(false);
-  return (
-    <motion.div ref={ref} variants={fadeUp} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-      transition={{ delay }}
-      onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
-      style={{
-        background: hovered ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)',
-        border: `1px solid ${hovered ? color + '50' : 'rgba(255,255,255,0.08)'}`,
-        borderRadius: 20, padding: 32,
-        transition: 'all 0.3s ease',
-        transform: hovered ? 'translateY(-6px)' : 'translateY(0)',
-        backdropFilter: 'blur(10px)',
-        cursor: 'default',
-      }}>
-      <div style={{
-        width: 48, height: 48, borderRadius: 14,
-        background: color + '20', border: `1px solid ${color}40`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: 22, marginBottom: 20,
-        boxShadow: hovered ? `0 0 20px ${color}30` : 'none',
-        transition: 'box-shadow 0.3s',
-      }}>{icon}</div>
-      <h3 style={{ fontSize: 18, fontWeight: 700, color: 'white', marginBottom: 10, letterSpacing: '-0.3px' }}>{title}</h3>
-      <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, marginBottom: 20 }}>{desc}</p>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-        {tags.map(t => (
-          <span key={t} style={{
-            fontSize: 11, fontWeight: 600, color: color,
-            background: color + '15', border: `1px solid ${color}30`,
-            padding: '3px 10px', borderRadius: 6, letterSpacing: '0.03em',
-          }}>{t}</span>
-        ))}
-      </div>
-    </motion.div>
-  );
-}
-
-/* ─── Features Section ───────────────────────────────────────────────────── */
-function Features() {
-  const features = [
-    { icon: '🔬', title: 'Dataset Intelligence', desc: 'Automatic schema validation, duplicate detection, missing value analysis, and quality scoring with completeness rates per column.', tags: ['Schema Validation', 'Quality Score', 'Completeness'], color: '#06B6D4' },
-    { icon: '⛏️', title: 'FP-Growth Mining', desc: 'Efficient frequent-pattern tree mining without candidate generation. Mines hundreds of rules from thousands of defect records in seconds.', tags: ['FP-Growth', 'Apriori', 'Support', 'Confidence', 'Lift'], color: '#7C3AED' },
-    { icon: '🎯', title: 'Risk Hotspot Scoring', desc: 'Every module gets a Defect Risk Index (0–100) weighted by rule strength, category contributions, and normalized lift factors.', tags: ['0–100 Score', 'CRITICAL', 'HIGH', 'MEDIUM', 'LOW'], color: '#ef4444' },
-    { icon: '🤖', title: 'AI Command Center', desc: 'Executive dashboard with natural-language root cause explanations, telemetry risk rankings, and severity distribution charts.', tags: ['Root Cause', 'Rankings', 'Explainability'], color: '#3B82F6' },
-    { icon: '🕸️', title: 'Graph Explorer', desc: 'ReactFlow force-weighted graph mapping associations across modules, tech stacks, languages, and defect severities. 18+ node types.', tags: ['React Flow', 'Interactive', 'Node Drilldowns'], color: '#8B5CF6' },
-    { icon: '📡', title: 'Pipeline Streaming', desc: 'Real-time 8-stage scan execution via Server-Sent Events. Watch FP-Growth mine your codebase live with animated progress tracking.', tags: ['SSE', 'Real-time', '8 Stages'], color: '#10B981' },
-    { icon: '⏱️', title: 'Risk Time Machine', desc: 'Historical scan analysis across 49+ recorded scans. Runtime trends, rule evolution charts, and dataset hash fingerprinting.', tags: ['Scan History', 'Trends', 'Comparison'], color: '#F59E0B' },
-    { icon: '📊', title: 'ML Analytics', desc: 'Mining quality metrics from PostgreSQL: avg confidence, lift distributions, rules-per-module breakdown, and severity outcome analysis.', tags: ['Confidence', 'Lift', 'Distribution'], color: '#EC4899' },
-  ];
-  return (
-    <section id="features" style={{ padding: '120px 24px' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: 72 }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: '#7C3AED', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 16 }}>Platform Features</div>
-          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800, color: 'white', letterSpacing: '-1.5px', lineHeight: 1.1 }}>
-            Everything you need to<br />
-            <span style={{ background: 'linear-gradient(135deg, #7C3AED, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              understand your codebase risk
-            </span>
-          </h2>
-        </motion.div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
-          {features.map((f, i) => <FeatureCard key={f.title} {...f} delay={i * 0.05} />)}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Architecture ───────────────────────────────────────────────────────── */
-function Architecture() {
-  const [ref, inView] = useScrollInView();
-  const layers = [
-    { label: 'React + Vite Frontend', sublabel: 'ReactFlow · Recharts · Framer Motion · Axios · SSE', color: '#3B82F6', icon: '⚛️' },
-    { label: 'Spring Boot Gateway', sublabel: 'JWT Auth · REST API · SseEmitter · WebClient', color: '#10B981', icon: '☕' },
-    { label: 'FastAPI ML Service', sublabel: 'FP-Growth · Apriori · Risk Engine · Dataset Profiler', color: '#7C3AED', icon: '🐍' },
-    { label: 'PostgreSQL + Redis', sublabel: 'Rules · Module Risks · Scan History · Cache TTL', color: '#F59E0B', icon: '🗄️' },
-    { label: 'Docker Compose', sublabel: 'Containerized · Named Volumes · Health Checks', color: '#06B6D4', icon: '🐳' },
-  ];
-  return (
-    <section id="architecture" style={{ padding: '120px 24px', position: 'relative' }}>
-      <div style={{ maxWidth: 800, margin: '0 auto' }}>
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          style={{ textAlign: 'center', marginBottom: 72 }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: '#7C3AED', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 16 }}>Architecture</div>
-          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800, color: 'white', letterSpacing: '-1.5px' }}>
-            Built for <span style={{ background: 'linear-gradient(135deg, #7C3AED, #3B82F6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>scale</span>
-          </h2>
-        </motion.div>
-        <motion.div ref={ref} variants={stagger(0.12)} initial="hidden" animate={inView ? 'visible' : 'hidden'}>
-          {layers.map((layer, i) => (
-            <React.Fragment key={layer.label}>
-              <motion.div variants={fadeUp} style={{
-                background: 'rgba(255,255,255,0.03)', border: `1px solid ${layer.color}30`,
-                borderRadius: 16, padding: '20px 28px',
-                display: 'flex', alignItems: 'center', gap: 20,
-                backdropFilter: 'blur(10px)',
-                position: 'relative',
-                boxShadow: `0 0 40px ${layer.color}08`,
-              }}>
-                <div style={{
-                  width: 48, height: 48, borderRadius: 12,
-                  background: layer.color + '15', border: `1px solid ${layer.color}30`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0,
-                }}>{layer.icon}</div>
-                <div>
-                  <div style={{ fontWeight: 700, color: 'white', fontSize: 16 }}>{layer.label}</div>
-                  <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', marginTop: 3 }}>{layer.sublabel}</div>
-                </div>
-                <div style={{
-                  marginLeft: 'auto', fontSize: 12, fontWeight: 600, color: layer.color,
-                  background: layer.color + '15', border: `1px solid ${layer.color}30`,
-                  padding: '4px 12px', borderRadius: 6,
-                }}>Layer {i + 1}</div>
-              </motion.div>
-              {i < layers.length - 1 && (
-                <motion.div variants={fadeIn} style={{ display: 'flex', justifyContent: 'center', padding: '8px 0' }}>
-                  <div style={{
-                    width: 2, height: 32,
-                    background: `linear-gradient(to bottom, ${layers[i].color}60, ${layers[i + 1].color}60)`,
-                  }} />
-                </motion.div>
-              )}
-            </React.Fragment>
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Screenshots Carousel ───────────────────────────────────────────────── */
-function Screenshots() {
-  const slides = [
-    { src: '/screenshots/command_center.png', label: 'AI Command Center', desc: '202 rules mined · database 100/100 CRITICAL · real-time risk rankings' },
-    { src: '/screenshots/rules_explorer.png', label: 'Mined Rules Database', desc: 'Paginated rules with Jaccard clustering · filter by lift, confidence, support' },
-    { src: '/screenshots/graph_explorer.png', label: 'System Graph Explorer', desc: '18-node force-weighted graph · animated pathways · node drilldowns' },
-    { src: '/screenshots/module_hotspots.png', label: 'Module Hotspots Analyzer', desc: 'Per-module risk scores · contributing rules · AI explainability brief' },
-    { src: '/screenshots/ml_analytics.png', label: 'ML Analytics Dashboard', desc: '5.54× avg lift · 85.7% confidence · 49-point scan history trends' },
-    { src: '/screenshots/pipeline.png', label: 'Pipeline Streaming', desc: 'Real-time SSE scan · dataset intelligence panel · quality scoring' },
-  ];
-  const [active, setActive] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setActive(a => (a + 1) % slides.length), 4000);
-    return () => clearInterval(t);
-  }, []);
-
-  return (
-    <section id="screenshots" style={{ padding: '120px 24px' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          style={{ textAlign: 'center', marginBottom: 56 }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: '#7C3AED', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 16 }}>Screenshots</div>
-          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800, color: 'white', letterSpacing: '-1.5px' }}>
-            See it in <span style={{ background: 'linear-gradient(135deg, #7C3AED, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>action</span>
-          </h2>
-        </motion.div>
-
-        {/* Main screenshot */}
-        <div style={{ position: 'relative', borderRadius: 24, overflow: 'hidden', marginBottom: 24, border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 40px 80px rgba(0,0,0,0.5)' }}>
-          <AnimatePresence mode="wait">
-            <motion.img key={active} src={slides[active].src} alt={slides[active].label}
-              initial={{ opacity: 0, scale: 1.02 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              style={{ width: '100%', display: 'block', maxHeight: 520, objectFit: 'cover' }} />
-          </AnimatePresence>
-          {/* Overlay label */}
-          <div style={{
-            position: 'absolute', bottom: 0, left: 0, right: 0,
-            background: 'linear-gradient(to top, rgba(11,17,32,0.95), transparent)',
-            padding: '60px 32px 28px',
-          }}>
-            <div style={{ fontWeight: 700, fontSize: 20, color: 'white' }}>{slides[active].label}</div>
-            <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', marginTop: 4 }}>{slides[active].desc}</div>
-          </div>
-        </div>
-
-        {/* Thumbnails */}
-        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${slides.length}, 1fr)`, gap: 10 }}>
-          {slides.map((s, i) => (
-            <button key={i} onClick={() => setActive(i)} style={{
-              border: `2px solid ${i === active ? '#7C3AED' : 'rgba(255,255,255,0.08)'}`,
-              borderRadius: 10, overflow: 'hidden', cursor: 'pointer', background: 'none',
-              padding: 0, transition: 'all 0.2s', opacity: i === active ? 1 : 0.5,
-              transform: i === active ? 'scale(1.03)' : 'scale(1)',
-            }}>
-              <img src={s.src} alt={s.label} style={{ width: '100%', display: 'block', height: 60, objectFit: 'cover' }} />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            style={{ display: 'flex', gap: 16 }}
+          >
+            <button
+              onClick={onLogin}
+              style={{
+                background: '#fff',
+                color: '#000',
+                border: 'none',
+                padding: '12px 28px',
+                borderRadius: 8,
+                fontSize: 15,
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.25s',
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.boxShadow = '0 0 30px rgba(255, 255, 255, 0.25)';
+                e.target.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.boxShadow = 'none';
+                e.target.style.transform = 'translateY(0)';
+              }}
+            >
+              Launch Demo
             </button>
-          ))}
+            <a
+              href="#architecture"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#fff',
+                padding: '12px 28px',
+                borderRadius: 8,
+                fontSize: 15,
+                fontWeight: 600,
+                textDecoration: 'none',
+                transition: 'all 0.25s',
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = 'rgba(255, 255, 255, 0.08)';
+                e.target.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'rgba(255, 255, 255, 0.03)';
+                e.target.style.transform = 'translateY(0)';
+              }}
+            >
+              View Architecture
+            </a>
+          </motion.div>
         </div>
+
+        {/* Right Side: Subtle floating code structure / rule preview */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          style={{
+            background: 'rgba(255, 255, 255, 0.01)',
+            border: '1px solid rgba(255, 255, 255, 0.04)',
+            borderRadius: 16,
+            padding: 24,
+            backdropFilter: 'blur(10px)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 16,
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.05em' }}>ASSOCIATION_RULE_MINING</span>
+            <div style={{ display: 'flex', gap: 6 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#EF4444' }} />
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#F59E0B' }} />
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#10B981' }} />
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ background: 'rgba(255,255,255,0.02)', padding: 12, borderRadius: 8, border: '1px solid rgba(255,255,255,0.05)' }}>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 4 }}>Antecedent Set</div>
+              <code style={{ fontSize: 13, color: '#a78bfa' }}>module=auth, language=Java, tech_stack=JWT</code>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', color: 'rgba(255,255,255,0.2)' }}>↓</div>
+            <div style={{ background: 'rgba(255,255,255,0.02)', padding: 12, borderRadius: 8, border: '1px solid rgba(255,255,255,0.05)' }}>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 4 }}>Consequent Outcome</div>
+              <code style={{ fontSize: 13, color: '#f87171' }}>bug_type=security, severity=critical</code>
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginTop: 4 }}>
+            <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.02)', padding: 8, borderRadius: 6 }}>
+              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)' }}>Support</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', marginTop: 2 }}>0.08</div>
+            </div>
+            <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.02)', padding: 8, borderRadius: 6 }}>
+              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)' }}>Confidence</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', marginTop: 2 }}>92%</div>
+            </div>
+            <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.02)', padding: 8, borderRadius: 6 }}>
+              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)' }}>Lift</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', marginTop: 2 }}>5.54x</div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
 }
 
-/* ─── Metrics ────────────────────────────────────────────────────────────── */
-function Metrics() {
-  const stats = [
-    { value: 2400, suffix: '+', label: 'Rules Mined', sub: 'across all scans' },
-    { value: 87, suffix: '%', label: 'Avg Confidence', sub: 'rule predictability' },
-    { value: 5.5, suffix: '×', label: 'Average Lift', sub: 'max 10.74×' },
-    { value: 8, suffix: '', label: 'Pipeline Stages', sub: 'SSE streaming' },
-    { value: 5, suffix: '', label: 'Microservices', sub: 'Docker Compose' },
-    { value: 100, suffix: '%', label: 'Dockerized', sub: 'prod-ready' },
+/* ─── Interactive Architecture Flow ─────────────────────────────────────── */
+function Architecture() {
+  const steps = [
+    { id: 'upload', label: 'CSV Upload', desc: 'Defect telemetry ingestion', color: '#06B6D4' },
+    { id: 'gateway', label: 'Spring Boot', desc: 'Secure gateway controller', color: '#10B981' },
+    { id: 'fastapi', label: 'FastAPI ML', desc: 'Mining orchestration agent', color: '#7C3AED' },
+    { id: 'fpgrowth', label: 'FP-Growth', desc: 'Frequent-pattern rule miner', color: '#EF4444' },
+    { id: 'dbs', label: 'Postgres + Redis', desc: 'Transactional & cached layer', color: '#F59E0B' },
+    { id: 'dashboards', label: 'Dashboards', desc: 'Interactive prediction UI', color: '#3B82F6' },
   ];
-  return (
-    <section style={{ padding: '120px 24px', position: 'relative' }}>
-      <div style={{
-        position: 'absolute', inset: 0,
-        background: 'linear-gradient(135deg, rgba(124,58,237,0.05) 0%, transparent 50%, rgba(59,130,246,0.05) 100%)',
-        pointerEvents: 'none',
-      }} />
-      <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative' }}>
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          style={{ textAlign: 'center', marginBottom: 72 }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: '#7C3AED', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 16 }}>By The Numbers</div>
-          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800, color: 'white', letterSpacing: '-1.5px' }}>
-            Validated. <span style={{ background: 'linear-gradient(135deg, #7C3AED, #3B82F6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Measured. Real.</span>
-          </h2>
-        </motion.div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 20 }}>
-          {stats.map((s, i) => (
-            <motion.div key={s.label}
-              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-              style={{
-                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: 20, padding: '32px 24px', textAlign: 'center',
-                backdropFilter: 'blur(10px)',
-              }}>
-              <div style={{ fontSize: 44, fontWeight: 900, letterSpacing: '-2px', background: 'linear-gradient(135deg, #7C3AED, #3B82F6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                <Counter target={s.value} suffix={s.suffix} />
-              </div>
-              <div style={{ fontWeight: 700, color: 'white', fontSize: 15, marginTop: 8 }}>{s.label}</div>
-              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', marginTop: 4 }}>{s.sub}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+  const [hoveredNode, setHoveredNode] = useState(null);
 
-/* ─── Tech Stack ─────────────────────────────────────────────────────────── */
-function TechStack() {
-  const techs = [
-    { name: 'React 19', icon: '⚛️', color: '#61DAFB' },
-    { name: 'Spring Boot', icon: '☕', color: '#6DB33F' },
-    { name: 'FastAPI', icon: '⚡', color: '#009688' },
-    { name: 'PostgreSQL', icon: '🐘', color: '#4169E1' },
-    { name: 'Redis', icon: '🔴', color: '#DC382D' },
-    { name: 'Docker', icon: '🐳', color: '#2496ED' },
-    { name: 'FP-Growth', icon: '🌲', color: '#FF6B35' },
-    { name: 'Apriori', icon: '📐', color: '#FFB347' },
-    { name: 'React Flow', icon: '🕸️', color: '#FF0072' },
-    { name: 'Recharts', icon: '📊', color: '#3B82F6' },
-    { name: 'JWT Auth', icon: '🔐', color: '#000000' },
-    { name: 'Framer Motion', icon: '🎞️', color: '#BB4EFF' },
-  ];
   return (
-    <section style={{ padding: '120px 24px' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          style={{ textAlign: 'center', marginBottom: 72 }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: '#7C3AED', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 16 }}>Tech Stack</div>
-          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800, color: 'white', letterSpacing: '-1.5px' }}>
-            Production-grade <span style={{ background: 'linear-gradient(135deg, #7C3AED, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>technologies</span>
-          </h2>
-        </motion.div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 14 }}>
-          {techs.map((t, i) => (
-            <motion.div key={t.name}
-              initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.04 }}
-              whileHover={{ scale: 1.06, y: -4 }}
-              style={{
-                background: 'rgba(255,255,255,0.03)', border: `1px solid ${t.color}25`,
-                borderRadius: 14, padding: '20px 16px', textAlign: 'center',
-                cursor: 'default', transition: 'border-color 0.2s',
-              }}>
-              <div style={{ fontSize: 28, marginBottom: 10 }}>{t.icon}</div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.8)' }}>{t.name}</div>
-            </motion.div>
-          ))}
+    <section id="architecture" style={{ padding: '120px 24px', background: '#070A13' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 80 }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: '#7C3AED', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Data Pipeline Flow</span>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, color: '#fff', marginTop: 12, letterSpacing: '-1px' }}>Platform Architecture Topology</h2>
         </div>
-      </div>
-    </section>
-  );
-}
 
-/* ─── Roadmap ────────────────────────────────────────────────────────────── */
-function Roadmap() {
-  const items = [
-    { icon: '🤖', title: 'LLM Root Cause Explanations', desc: 'GPT-4/Gemini integration for natural-language defect briefings per module', status: 'planned' },
-    { icon: '🐙', title: 'GitHub Integration', desc: 'Direct repo scanning without CSV export — just connect your GitHub org', status: 'planned' },
-    { icon: '🚦', title: 'CI/CD Risk Gates', desc: 'Block PRs when target module risk index exceeds configurable threshold', status: 'planned' },
-    { icon: '📈', title: 'Predictive Forecasting', desc: 'LSTM-based time-series on defect trends for forward-looking risk estimates', status: 'planned' },
-    { icon: '🔗', title: 'Multi-Repository Analysis', desc: 'Cross-repo defect correlation to find systemic architectural risk patterns', status: 'planned' },
-    { icon: '🔔', title: 'Slack / JIRA Integration', desc: 'Push critical hotspot alerts to your team and auto-tag high-risk tickets', status: 'planned' },
-  ];
-  return (
-    <section id="roadmap" style={{ padding: '120px 24px' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          style={{ textAlign: 'center', marginBottom: 72 }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: '#7C3AED', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 16 }}>Roadmap</div>
-          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800, color: 'white', letterSpacing: '-1.5px' }}>
-            What's <span style={{ background: 'linear-gradient(135deg, #7C3AED, #3B82F6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>coming next</span>
-          </h2>
-        </motion.div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
-          {items.map((item, i) => (
-            <motion.div key={item.title}
-              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-              whileHover={{ y: -4 }}
-              style={{
-                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                borderRadius: 16, padding: '24px 28px', transition: 'all 0.3s',
-              }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-                <div style={{
-                  width: 44, height: 44, borderRadius: 12, fontSize: 20,
-                  background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.2)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                }}>{item.icon}</div>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                    <h3 style={{ fontWeight: 700, color: 'white', fontSize: 15 }}>{item.title}</h3>
-                    <span style={{
-                      fontSize: 10, fontWeight: 700, color: '#7C3AED',
-                      background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)',
-                      padding: '2px 8px', borderRadius: 4, textTransform: 'uppercase', letterSpacing: '0.05em',
-                    }}>PLANNED</span>
+        {/* Animated Pipeline Nodes */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          position: 'relative',
+          flexWrap: 'wrap',
+          gap: 24,
+          padding: '40px 0',
+        }}>
+          {steps.map((step, idx) => {
+            const isHovered = hoveredNode === step.id;
+            return (
+              <React.Fragment key={step.id}>
+                {/* Node */}
+                <div
+                  onMouseEnter={() => setHoveredNode(step.id)}
+                  onMouseLeave={() => setHoveredNode(null)}
+                  style={{
+                    position: 'relative',
+                    background: 'rgba(255,255,255,0.01)',
+                    border: `1px solid ${isHovered ? step.color : 'rgba(255, 255, 255, 0.06)'}`,
+                    borderRadius: 14,
+                    padding: '24px 20px',
+                    width: 175,
+                    textAlign: 'center',
+                    cursor: 'default',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    boxShadow: isHovered ? `0 0 30px ${step.color}15` : 'none',
+                    transform: isHovered ? 'translateY(-4px)' : 'none',
+                  }}
+                >
+                  <div style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    background: `${step.color}15`,
+                    border: `1px solid ${step.color}30`,
+                    color: step.color,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 14,
+                    fontWeight: 'bold',
+                    margin: '0 auto 12px',
+                  }}>
+                    {idx + 1}
                   </div>
-                  <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.7 }}>{item.desc}</p>
+                  <div style={{ color: '#fff', fontSize: 14, fontWeight: 700 }}>{step.label}</div>
+                  <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, marginTop: 4, lineHeight: 1.3 }}>{step.desc}</div>
                 </div>
+
+                {/* Connection Arrow with pulse line */}
+                {idx < steps.length - 1 && (
+                  <div style={{
+                    flex: 1,
+                    height: 2,
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    position: 'relative',
+                    minWidth: 40,
+                    overflow: 'hidden',
+                  }}>
+                    <motion.div
+                      animate={{
+                        x: ['-100%', '100%'],
+                      }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 2,
+                        ease: 'linear',
+                      }}
+                      style={{
+                        position: 'absolute',
+                        width: '50%',
+                        height: '100%',
+                        background: `linear-gradient(to right, transparent, ${isHovered ? step.color : '#7C3AED'}, transparent)`,
+                      }}
+                    />
+                  </div>
+                )}
+              </React.Fragment>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── MacBook/Browser Screenshots Showcase ──────────────────────────────── */
+function Showcase() {
+  const screenshots = [
+    {
+      id: 'command_center',
+      label: 'AI Command Center',
+      desc: 'Real-time telemetry diagnostics tracking rules count, lift, and auto-generated explanation briefs.',
+      src: '/screenshots/command_center.png',
+    },
+    {
+      id: 'graph_explorer',
+      label: 'Graph Explorer',
+      desc: 'Force-directed mapping connecting codebase assets, tech configurations, and outcome severities.',
+      src: '/screenshots/graph_explorer.png',
+    },
+    {
+      id: 'module_hotspots',
+      label: 'Module Hotspots',
+      desc: 'Normalized Defect Risk Index indicators with radial explainability contribution meters.',
+      src: '/screenshots/module_hotspots.png',
+    },
+    {
+      id: 'ml_analytics',
+      label: 'ML Analytics',
+      desc: 'Aggregated database insights, lift metric distributions, and transaction parameter tracking.',
+      src: '/screenshots/ml_analytics.png',
+    },
+    {
+      id: 'algo_playground',
+      label: 'Algo Playground',
+      desc: 'Side-by-side execution benchmarks comparing FP-Growth tree recursion with candidate generation.',
+      src: '/screenshots/pipeline.png',
+    },
+  ];
+
+  const [activeTab, setActiveTab] = useState('command_center');
+  const activeItem = screenshots.find((s) => s.id === activeTab);
+
+  return (
+    <section id="showcase" style={{ padding: '120px 24px', background: '#090D1A' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 72 }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: '#7C3AED', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Showcase</span>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, color: '#fff', marginTop: 12, letterSpacing: '-1px' }}>Product Demonstration Interface</h2>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: 40, alignItems: 'start' }}>
+          {/* Left Panel: Tabs */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {screenshots.map((s) => {
+              const isActive = activeTab === s.id;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => setActiveTab(s.id)}
+                  style={{
+                    background: isActive ? 'rgba(255,255,255,0.03)' : 'transparent',
+                    border: '1px solid',
+                    borderColor: isActive ? 'rgba(255,255,255,0.08)' : 'transparent',
+                    borderRadius: 10,
+                    padding: '16px 20px',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    color: isActive ? '#fff' : 'rgba(255,255,255,0.4)',
+                  }}
+                >
+                  <div style={{ fontWeight: 700, fontSize: 14 }}>{s.label}</div>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeIndicator"
+                      style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginTop: 6, lineHeight: 1.4 }}
+                    >
+                      {s.desc}
+                    </motion.div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right Panel: Browser Mockup */}
+          <div style={{
+            background: '#070a13',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: 16,
+            overflow: 'hidden',
+            boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
+          }}>
+            {/* Browser Header */}
+            <div style={{
+              background: '#0b0f19',
+              padding: '12px 20px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+            }}>
+              <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#EF4444' }} />
+              <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#F59E0B' }} />
+              <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#10B981' }} />
+              <div style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.05)',
+                borderRadius: 6,
+                padding: '4px 20px',
+                fontSize: 11,
+                color: 'rgba(255,255,255,0.45)',
+                margin: '0 auto',
+                width: 250,
+                textAlign: 'center',
+              }}>
+                bugrisk.vercel.app/dashboard
               </div>
-            </motion.div>
+            </div>
+
+            {/* Screen */}
+            <div style={{ position: 'relative', height: 460, overflow: 'hidden', background: '#000' }}>
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={activeItem.id}
+                  src={activeItem.src}
+                  alt={activeItem.label}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    display: 'block',
+                  }}
+                />
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Engineering Metrics ────────────────────────────────────────────────── */
+function Metrics() {
+  const items = [
+    { value: 2400, suffix: '+', label: 'Rules Mined' },
+    { value: 87, suffix: '%', label: 'Confidence' },
+    { value: 5.5, suffix: 'x', label: 'Lift Metric' },
+    { value: 8, suffix: '', label: 'Pipeline Stages' },
+    { value: 5, suffix: '', label: 'Microservices' },
+  ];
+
+  return (
+    <section id="metrics" style={{ padding: '80px 24px', background: '#070A13', borderTop: '1px solid rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: 32,
+        }}>
+          {items.map((item) => (
+            <div key={item.label} style={{ textAlign: 'center', flex: 1, minWidth: 140 }}>
+              <div style={{
+                fontSize: 44,
+                fontWeight: 900,
+                letterSpacing: '-2px',
+                background: 'linear-gradient(135deg, #a78bfa 0%, #3b82f6 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                textShadow: '0 0 40px rgba(124, 58, 237, 0.2)',
+              }}>
+                <Counter target={item.value} suffix={item.suffix} />
+              </div>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginTop: 6, fontWeight: 500 }}>{item.label}</div>
+            </div>
           ))}
         </div>
       </div>
@@ -721,72 +791,239 @@ function Roadmap() {
   );
 }
 
-/* ─── CTA / Footer ───────────────────────────────────────────────────────── */
+/* ─── Code Intelligence Section ──────────────────────────────────────────── */
+function CodeIntelligence() {
+  return (
+    <section style={{ padding: '120px 24px', background: '#090D1A' }}>
+      <div style={{
+        maxWidth: 1200,
+        margin: '0 auto',
+        display: 'grid',
+        gridTemplateColumns: '0.9fr 1.1fr',
+        gap: 60,
+        alignItems: 'center',
+      }}>
+        {/* Left Side: Explanation */}
+        <div>
+          <span style={{ fontSize: 12, fontWeight: 700, color: '#7C3AED', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Technical Paradigm</span>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, color: '#fff', marginTop: 12, letterSpacing: '-1px', marginBottom: 20 }}>
+            Structured Pattern Intelligence
+          </h2>
+          <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6, marginBottom: 24 }}>
+            BugRisk translates transaction logs into formal, mathematical association rules. Below is a mined rule representation of a common defect pathway.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 10 }}>
+              <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14 }}>Rule Lift</span>
+              <strong style={{ color: '#fff', fontSize: 14 }}>5.54x (Strong Association)</strong>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 10 }}>
+              <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14 }}>Rule Confidence</span>
+              <strong style={{ color: '#fff', fontSize: 14 }}>92.0% (Highly Predictable)</strong>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side: Code Editor Mockup */}
+        <div style={{
+          background: '#070a13',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: 14,
+          overflow: 'hidden',
+          fontFamily: "'Fira Code', 'Courier New', Courier, monospace",
+          fontSize: 13,
+          boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+        }}>
+          {/* Header */}
+          <div style={{
+            background: '#0c0f19',
+            padding: '12px 20px',
+            borderBottom: '1px solid rgba(255,255,255,0.05)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+            <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11 }}>rules_engine.py</span>
+            <div style={{ display: 'flex', gap: 5 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }} />
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }} />
+            </div>
+          </div>
+
+          {/* Code Body */}
+          <pre style={{ margin: 0, padding: 24, lineHeight: 1.6, overflowX: 'auto', fontFamily: 'inherit', whiteSpace: 'pre-wrap' }}>
+            <span style={{ color: '#F472B6' }}>import</span> ml_miner <span style={{ color: '#F472B6' }}>as</span> miner{"\n\n"}
+            rule_context = miner.AssociationRule({"\n"}
+            {"  "}antecedents=[<span style={{ color: '#38BDF8' }}>"module=auth"</span>, <span style={{ color: '#38BDF8' }}>"language=java"</span>],{"\n"}
+            {"  "}consequents=[<span style={{ color: '#38BDF8' }}>"severity=critical"</span>]{"\n"}
+            ){"\n\n"}
+            <span style={{ color: '#6B7280' }}># Mined values extraction parameters</span>{"\n"}
+            rule_metrics = {"\n"}
+            {"  "}<span style={{ color: '#10B981' }}>"support"</span>: <span style={{ color: '#F59E0B' }}>0.08</span>,{"\n"}
+            {"  "}<span style={{ color: '#10B981' }}>"confidence"</span>: <span style={{ color: '#F59E0B' }}>0.92</span>,{"\n"}
+            {"  "}<span style={{ color: '#10B981' }}>"lift"</span>: <span style={{ color: '#F59E0B' }}>5.54</span>{"\n"}
+            {"}"}
+          </pre>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Roadmap Timeline ───────────────────────────────────────────────────── */
+function Timeline() {
+  const items = [
+    { title: 'v1.0 Release', desc: 'Frequent-pattern mining algorithm & Spring/FastAPI orchestration core.', status: 'done' },
+    { title: 'v1.5 Update', desc: 'System Graph Explorer network mapping visualizer built with React Flow.', status: 'done' },
+    { title: 'v2.0 Milestone', desc: 'Natural language root-cause explanation engine integration.', status: 'planned' },
+    { title: 'v2.5 Milestone', desc: 'Git repository webhooks triggers for automatic push scanning.', status: 'planned' },
+    { title: 'v3.0 Target', desc: 'Continuous deployment (CI/CD) pipelines quality gates integration.', status: 'planned' },
+  ];
+
+  return (
+    <section id="timeline" style={{ padding: '120px 24px', background: '#070A13' }}>
+      <div style={{ maxWidth: 700, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 72 }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: '#7C3AED', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Product Roadmap</span>
+          <h2 style={{ fontSize: '32px', fontWeight: 800, color: '#fff', marginTop: 12, letterSpacing: '-1px' }}>Timeline & Milestones</h2>
+        </div>
+
+        {/* Timeline Line */}
+        <div style={{ position: 'relative', paddingLeft: 40 }}>
+          <div style={{
+            position: 'absolute',
+            left: 19,
+            top: 0,
+            bottom: 0,
+            width: 2,
+            background: 'linear-gradient(to bottom, #7C3AED 0%, rgba(255,255,255,0.05) 100%)',
+          }} />
+
+          {items.map((item, idx) => (
+            <div key={item.title} style={{ position: 'relative', marginBottom: 48 }}>
+              {/* Dot */}
+              <div style={{
+                position: 'absolute',
+                left: -31,
+                top: 4,
+                width: 20,
+                height: 20,
+                borderRadius: '50%',
+                background: item.status === 'done' ? '#7C3AED' : '#070A13',
+                border: `2px solid ${item.status === 'done' ? '#7C3AED' : 'rgba(255, 255, 255, 0.15)'}`,
+                boxShadow: item.status === 'done' ? '0 0 15px rgba(124, 58, 237, 0.5)' : 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#fff',
+                fontSize: 10,
+              }}>
+                {item.status === 'done' ? '✓' : ''}
+              </div>
+              {/* Title & Desc */}
+              <div>
+                <h3 style={{
+                  fontSize: 16,
+                  fontWeight: 700,
+                  color: item.status === 'done' ? '#fff' : 'rgba(255,255,255,0.5)',
+                }}>
+                  {item.title}
+                </h3>
+                <p style={{
+                  fontSize: 13,
+                  color: item.status === 'done' ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,0.25)',
+                  marginTop: 6,
+                  lineHeight: 1.5,
+                }}>
+                  {item.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Final CTA ──────────────────────────────────────────────────────────── */
 function Footer({ onLogin }) {
   return (
-    <section style={{ padding: '120px 24px 80px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+    <section style={{
+      padding: '140px 24px',
+      textAlign: 'center',
+      position: 'relative',
+      overflow: 'hidden',
+      background: '#090D1A',
+    }}>
+      {/* Background radial glow */}
       <div style={{
-        position: 'absolute', inset: 0,
-        background: 'radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.12) 0%, transparent 70%)',
+        position: 'absolute',
+        inset: 0,
+        background: 'radial-gradient(circle at center 60%, rgba(124, 58, 237, 0.08) 0%, transparent 60%)',
         pointerEvents: 'none',
       }} />
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: '#7C3AED', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 24 }}>Get Started</div>
-          <h2 style={{ fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 900, color: 'white', letterSpacing: '-3px', lineHeight: 1.05, marginBottom: 24 }}>
-            Ready to mine your<br />
-            <span style={{ background: 'linear-gradient(135deg, #7C3AED, #3B82F6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              codebase risk?
-            </span>
-          </h2>
-          <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.45)', marginBottom: 48, maxWidth: 500, margin: '0 auto 48px' }}>
-            Upload your defect dataset, run FP-Growth, and get interactive risk maps in under 60 seconds.
-          </p>
-          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 80 }}>
-            <button onClick={onLogin} style={{
-              background: 'linear-gradient(135deg, #7C3AED, #3B82F6)',
-              color: 'white', border: 'none', padding: '16px 40px',
-              borderRadius: 14, fontSize: 17, fontWeight: 700, cursor: 'pointer',
-              boxShadow: '0 0 60px rgba(124,58,237,0.5)', transition: 'all 0.25s',
-            }}
-              onMouseEnter={e => { e.target.style.transform = 'translateY(-2px)'; e.target.style.boxShadow = '0 0 80px rgba(124,58,237,0.7)'; }}
-              onMouseLeave={e => { e.target.style.transform = 'translateY(0)'; e.target.style.boxShadow = '0 0 60px rgba(124,58,237,0.5)'; }}>
-              🚀 Launch BugRisk
-            </button>
-            <a href={GITHUB_URL} target="_blank" rel="noreferrer" style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
-              color: 'white', padding: '16px 40px', borderRadius: 14,
-              fontSize: 17, fontWeight: 600, textDecoration: 'none', transition: 'all 0.25s',
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.transform = 'translateY(0)'; }}>
-              ⭐ Star on GitHub
-            </a>
-          </div>
-        </motion.div>
 
-        {/* Footer bottom */}
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 40 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16, maxWidth: 900, margin: '0 auto' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{
-                width: 28, height: 28, borderRadius: 7,
-                background: 'linear-gradient(135deg, #7C3AED, #3B82F6)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 13, fontWeight: 900, color: 'white',
-              }}>B</div>
-              <span style={{ fontWeight: 700, color: 'white', fontSize: 15 }}>BugRisk</span>
-              <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 13 }}>· Association Rule-Driven Defect Intelligence</span>
-            </div>
-            <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-              <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)' }}>Built by <strong style={{ color: 'rgba(255,255,255,0.7)' }}>Pratham Rana</strong></span>
-              <a href={GITHUB_URL} target="_blank" rel="noreferrer"
-                style={{ fontSize: 13, color: '#7C3AED', textDecoration: 'none', fontWeight: 600 }}>
-                GitHub →
-              </a>
-            </div>
-          </div>
+      <div style={{ position: 'relative', zIndex: 1, maxWidth: 800, margin: '0 auto' }}>
+        <h2 style={{
+          fontSize: 'clamp(32px, 5vw, 60px)',
+          fontWeight: 900,
+          color: '#fff',
+          letterSpacing: '-2px',
+          lineHeight: 1.05,
+          marginBottom: 24,
+        }}>
+          Ready to understand your codebase<br />
+          before it breaks?
+        </h2>
+        <p style={{
+          fontSize: 17,
+          color: 'rgba(255,255,255,0.45)',
+          marginBottom: 40,
+          maxWidth: 500,
+          margin: '0 auto 40px',
+        }}>
+          Upload your commits database, run FP-Growth algorithms, and map risks in under 60 seconds.
+        </p>
+        <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
+          <button
+            onClick={onLogin}
+            style={{
+              background: '#fff',
+              color: '#000',
+              border: 'none',
+              padding: '12px 32px',
+              borderRadius: 8,
+              fontSize: 15,
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: 'all 0.25s',
+            }}
+            onMouseEnter={(e) => (e.target.style.boxShadow = '0 0 30px rgba(255,255,255,0.3)')}
+            onMouseLeave={(e) => (e.target.style.boxShadow = 'none')}
+          >
+            Launch BugRisk
+          </button>
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#fff',
+              padding: '12px 32px',
+              borderRadius: 8,
+              fontSize: 15,
+              fontWeight: 600,
+              textDecoration: 'none',
+              transition: 'all 0.25s',
+            }}
+            onMouseEnter={(e) => (e.target.style.background = 'rgba(255, 255, 255, 0.08)')}
+            onMouseLeave={(e) => (e.target.style.background = 'rgba(255, 255, 255, 0.03)')}
+          >
+            Star on GitHub
+          </a>
         </div>
       </div>
     </section>
@@ -797,32 +1034,27 @@ function Footer({ onLogin }) {
 export default function LandingPage({ onLogin }) {
   return (
     <div style={{
-      background: '#0B1120',
+      background: '#070a13',
       minHeight: '100vh',
-      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-      color: 'white',
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+      color: '#fff',
       overflowX: 'hidden',
     }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-        @keyframes pulse-orb { 0%,100%{opacity:0.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.05)} }
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
         html { scroll-behavior: smooth; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0B1120; }
-        ::-webkit-scrollbar-thumb { background: #7C3AED40; border-radius: 3px; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #070a13; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
       `}</style>
 
       <Navbar onLogin={onLogin} />
       <Hero onLogin={onLogin} />
-      <ProblemSolution />
-      <Features />
       <Architecture />
-      <Screenshots />
+      <Showcase />
       <Metrics />
-      <TechStack />
-      <Roadmap />
+      <CodeIntelligence />
+      <Timeline />
       <Footer onLogin={onLogin} />
     </div>
   );
