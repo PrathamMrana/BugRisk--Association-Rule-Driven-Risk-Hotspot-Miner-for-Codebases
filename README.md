@@ -17,7 +17,7 @@
 
 **Discover hidden defect patterns. Identify risk hotspots. Explain failures before they happen.**
 
-[Features](#-features) · [Architecture](#-architecture) · [Quick Start](#-quick-start) · [Screenshots](#-screenshots) · [API Reference](#-api-reference)
+[🌐 Live Demo](https://bugrisk-frontend.vercel.app) · [Features](#-features) · [Architecture](#-architecture) · [Quick Start](#-quick-start) · [Screenshots](#-screenshots) · [API Reference](#-api-reference)
 
 </div>
 
