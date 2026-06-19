@@ -41,10 +41,19 @@ const Navbar = ({ onLogin }) => {
             <span className="text-2xl font-black text-white tracking-tight">BugRisk</span>
           </div>
           
-          <div className="hidden md:flex items-center gap-6">
-            <a href="#engine" className="px-4 py-2 rounded-full text-sm font-bold text-slate-300 hover:text-white hover:bg-emerald-500/10 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] border border-transparent hover:border-emerald-500/30 transition-all duration-300">Platform Engine</a>
-            <a href="#features" className="px-4 py-2 rounded-full text-sm font-bold text-slate-300 hover:text-white hover:bg-cyan-500/10 hover:shadow-[0_0_20px_rgba(6,182,212,0.2)] border border-transparent hover:border-cyan-500/30 transition-all duration-300">Advanced Capabilities</a>
-            <a href="https://bugrisk-ml.onrender.com/docs" target="_blank" rel="noreferrer" className="px-4 py-2 rounded-full text-sm font-bold text-slate-300 hover:text-white hover:bg-indigo-500/10 hover:shadow-[0_0_20px_rgba(99,102,241,0.2)] border border-transparent hover:border-indigo-500/30 transition-all duration-300">API Docs</a>
+          <div className="hidden lg:flex items-center gap-4">
+            <button className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-emerald-500/10 hover:shadow-[0_0_30px_rgba(16,185,129,0.2)] border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 group">
+              <Network className="w-4 h-4 text-emerald-500 group-hover:text-emerald-400" />
+              System Graph
+            </button>
+            <button className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-cyan-500/10 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
+              <Database className="w-4 h-4 text-cyan-500 group-hover:text-cyan-400" />
+              Rules Engine
+            </button>
+            <button className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-indigo-500/10 hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] border border-slate-800 hover:border-indigo-500/50 transition-all duration-300 group">
+              <Activity className="w-4 h-4 text-indigo-500 group-hover:text-indigo-400" />
+              ML Analytics
+            </button>
           </div>
         </div>
 
