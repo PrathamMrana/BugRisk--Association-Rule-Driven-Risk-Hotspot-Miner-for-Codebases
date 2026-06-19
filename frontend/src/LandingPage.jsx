@@ -42,15 +42,15 @@ const Navbar = ({ onLogin, setPreview }) => {
           </div>
           
           <div className="hidden lg:flex items-center gap-4">
-            <button onClick={() => setPreview('/screenshots/03_graph_explorer.png')} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-emerald-500/10 hover:shadow-[0_0_30px_rgba(16,185,129,0.2)] border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 group">
+            <button onClick={() => setPreview('graph')} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-emerald-500/10 hover:shadow-[0_0_30px_rgba(16,185,129,0.2)] border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 group">
               <Network className="w-4 h-4 text-emerald-500 group-hover:text-emerald-400" />
               System Graph
             </button>
-            <button onClick={() => setPreview('/screenshots/02_rules_explorer.png')} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-cyan-500/10 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
+            <button onClick={() => setPreview('rules')} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-cyan-500/10 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
               <Database className="w-4 h-4 text-cyan-500 group-hover:text-cyan-400" />
               Rules Engine
             </button>
-            <button onClick={() => setPreview('/screenshots/05_ml_analytics.png')} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-indigo-500/10 hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] border border-slate-800 hover:border-indigo-500/50 transition-all duration-300 group">
+            <button onClick={() => setPreview('analytics')} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-indigo-500/10 hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] border border-slate-800 hover:border-indigo-500/50 transition-all duration-300 group">
               <Activity className="w-4 h-4 text-indigo-500 group-hover:text-indigo-400" />
               ML Analytics
             </button>
@@ -409,16 +409,101 @@ const Footer = () => (
   </footer>
 );
 
-const PreviewModal = ({ src, onClose }) => {
+const PreviewModal = ({ type, onClose }) => {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#020617]/90 backdrop-blur-md p-6 animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#020617]/95 backdrop-blur-2xl p-6 animate-in fade-in duration-300">
       <button 
         onClick={onClose} 
-        className="absolute top-8 right-8 p-3 rounded-full bg-slate-900/50 text-slate-400 hover:text-white hover:bg-rose-500/20 border border-slate-800 hover:border-rose-500/50 transition-all shadow-xl"
+        className="absolute top-8 right-8 p-3 rounded-full bg-slate-900/50 text-slate-400 hover:text-white hover:bg-rose-500/20 border border-slate-800 hover:border-rose-500/50 transition-all shadow-xl z-50"
       >
         <X className="w-6 h-6" />
       </button>
-      <img src={src} alt="Feature Preview" className="max-w-full max-h-full rounded-2xl border border-cyan-500/20 shadow-[0_0_100px_rgba(6,182,212,0.15)] object-contain" />
+
+      <div className="w-full max-w-[1200px] h-[80vh] rounded-3xl border border-emerald-500/20 bg-[#020617] shadow-[0_0_100px_rgba(16,185,129,0.15)] overflow-hidden relative flex flex-col">
+        {/* Mockup Header */}
+        <div className="h-16 border-b border-emerald-500/20 bg-slate-900/50 flex items-center px-6 gap-4">
+          <div className="flex gap-2">
+            <div className="w-3 h-3 rounded-full bg-rose-500/50"></div>
+            <div className="w-3 h-3 rounded-full bg-amber-500/50"></div>
+            <div className="w-3 h-3 rounded-full bg-emerald-500/50"></div>
+          </div>
+          <div className="text-sm font-mono text-emerald-400/70 ml-4 flex items-center gap-2">
+            <Terminal className="w-4 h-4" />
+            LIVE_PREVIEW_ENV
+          </div>
+        </div>
+
+        {/* Content Area */}
+        <div className="flex-1 relative p-8">
+          {type === 'graph' && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <Network className="w-24 h-24 text-emerald-500 mx-auto mb-8 animate-pulse" />
+                <h3 className="text-4xl font-black text-white mb-4 tracking-tight">Interactive Topology Graph</h3>
+                <p className="text-emerald-400 font-mono">Simulating 1,240 interconnected risk nodes...</p>
+                <div className="mt-16 flex gap-8 justify-center">
+                  {[1, 2, 3].map(i => (
+                    <motion.div 
+                      key={i}
+                      animate={{ y: [0, -30, 0], scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.4 }}
+                      className="w-20 h-20 rounded-full border border-emerald-500/50 flex items-center justify-center bg-emerald-500/10 shadow-[0_0_40px_rgba(16,185,129,0.2)] relative"
+                    >
+                      <Database className="w-8 h-8 text-emerald-400" />
+                      <div className="absolute -inset-4 border border-emerald-500/20 rounded-full animate-[spin_4s_linear_infinite]"></div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {type === 'rules' && (
+            <div className="absolute inset-0 p-8 font-mono text-sm text-cyan-400 flex flex-col gap-3 overflow-hidden">
+               <h3 className="text-3xl font-black text-white mb-8 border-b border-cyan-500/30 pb-6 font-sans tracking-tight">Global Rules Engine (Apriori)</h3>
+               <div className="flex-1 space-y-3">
+                 {[...Array(8)].map((_, i) => (
+                   <motion.div 
+                     key={i}
+                     initial={{ opacity: 0, x: -30 }}
+                     animate={{ opacity: 1, x: 0 }}
+                     transition={{ duration: 0.5, delay: i * 0.15 }}
+                     className="flex items-center justify-between bg-slate-900/50 p-5 rounded-xl border border-cyan-500/20"
+                   >
+                     <div className="flex gap-6">
+                       <span className="text-slate-500">[{new Date().toISOString()}]</span>
+                       <span className="text-white">Rule Generated: <span className="text-cyan-400">{`{auth_controller}`}</span> {'=>'} <span className="text-rose-400">{`{jwt_bypass}`}</span></span>
+                     </div>
+                     <span className="text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded font-bold">LIFT: {(Math.random() * 5 + 1).toFixed(2)}x</span>
+                   </motion.div>
+                 ))}
+               </div>
+            </div>
+          )}
+
+          {type === 'analytics' && (
+            <div className="absolute inset-0 p-8 flex flex-col items-center justify-center">
+              <h3 className="text-4xl font-black text-white mb-16 tracking-tight">Real-Time ML Analytics</h3>
+              <div className="flex items-end gap-6 h-72 border-b-2 border-l-2 border-indigo-500/30 p-8 w-3/4 relative">
+                <div className="absolute -left-12 bottom-0 text-indigo-400/50 font-mono -rotate-90 origin-bottom-left">confidence %</div>
+                {[...Array(14)].map((_, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ height: 0 }}
+                    animate={{ height: `${Math.random() * 90 + 10}%` }}
+                    transition={{ duration: 1.5, delay: i * 0.1, ease: "easeOut" }}
+                    className="flex-1 bg-gradient-to-t from-indigo-600 to-cyan-400 rounded-t-sm shadow-[0_0_30px_rgba(99,102,241,0.5)] hover:bg-white cursor-pointer transition-colors"
+                  />
+                ))}
+              </div>
+              <div className="mt-12 flex items-center gap-4 text-indigo-400 font-mono text-xl animate-pulse">
+                <Activity className="w-6 h-6" />
+                Aggregating PostgreSQL streams...
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
@@ -437,7 +522,7 @@ const LandingPage = ({ onLogin }) => {
         <CTASection onLogin={onLogin} />
       </main>
       <Footer />
-      {preview && <PreviewModal src={preview} onClose={() => setPreview(null)} />}
+      {preview && <PreviewModal type={preview} onClose={() => setPreview(null)} />}
     </div>
   );
 };
