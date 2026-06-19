@@ -1079,8 +1079,8 @@ function App() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#020617] px-4 overflow-hidden relative font-sans">
         {/* Ambient Background matching Landing Page */}
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-600/10 blur-[120px] mix-blend-screen animate-[pulse_8s_ease-in-out_infinite]"></div>
-        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-600/10 blur-[120px] mix-blend-screen animate-[pulse_10s_ease-in-out_infinite_reverse]"></div>
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-600/10 blur-[120px] mix-blend-screen animate-[pulse_8s_ease-in-out_infinite] pointer-events-none"></div>
+        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-600/10 blur-[120px] mix-blend-screen animate-[pulse_10s_ease-in-out_infinite_reverse] pointer-events-none"></div>
 
         <div className="w-full max-w-md bg-slate-900/40 backdrop-blur-3xl border border-emerald-500/20 p-10 rounded-3xl shadow-[0_0_50px_rgba(16,185,129,0.1)] relative z-10">
           <div className="text-center mb-10">
