@@ -1,1333 +1,408 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Terminal, Activity, Database, GitBranch, Cpu, Network, ShieldAlert } from 'lucide-react';
 
 const GITHUB_URL = 'https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases';
 
-/* ─── Sticky Navbar ──────────────────────────────────────────────────────── */
-function Navbar({ onLogin }) {
-  const handleScrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+const Scanlines = () => (
+  <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden opacity-5">
+    <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,1)_50%)] bg-[length:100%_4px]"></div>
+  </div>
+);
 
-  return (
-    <motion.nav
-      initial={{ y: -40, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      style={{
-        position: 'fixed',
-        top: 0, left: 0, right: 0,
-        zIndex: 100,
-        padding: '0 24px',
-        background: 'rgba(2, 3, 8, 0.95)',
-        borderBottom: '1px solid rgba(217, 164, 65, 0.25)',
-        backdropFilter: 'blur(10px)',
-      }}
-    >
-      <div style={{ maxWidth: 1400, margin: '0 auto', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        {/* Left Side Logo & Links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 48 }}>
-          {/* Logo */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{
-              width: 20, height: 20,
-              background: '#D9A441',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 10, fontWeight: 900, color: '#020308',
-            }}>B</div>
-            <span style={{ fontWeight: 900, fontSize: 14, color: '#F5F5F5', letterSpacing: '0.05em', fontFamily: 'monospace' }}>BUGRISK // SECURE_CORE</span>
-          </div>
+const GridBackground = () => (
+  <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+    <div className="absolute inset-0 bg-[linear-gradient(to_right,#E3A62B_1px,transparent_1px),linear-gradient(to_bottom,#E3A62B_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_20%,transparent_100%)]"></div>
+  </div>
+);
 
-          {/* Links */}
-          <div style={{ display: 'flex', gap: 24 }}>
-            <button
-              onClick={() => handleScrollTo('clarity')}
-              style={{ background: 'none', border: 'none', color: '#7E8A9A', fontSize: 11, fontWeight: 700, cursor: 'pointer', transition: 'color 0.2s', fontFamily: 'monospace', textTransform: 'uppercase' }}
-              onMouseEnter={(e) => (e.target.style.color = '#D9A441')}
-              onMouseLeave={(e) => (e.target.style.color = '#7E8A9A')}
-            >
-              [ CLARITY ]
-            </button>
-            <button
-              onClick={() => handleScrollTo('topology')}
-              style={{ background: 'none', border: 'none', color: '#7E8A9A', fontSize: 11, fontWeight: 700, cursor: 'pointer', transition: 'color 0.2s', fontFamily: 'monospace', textTransform: 'uppercase' }}
-              onMouseEnter={(e) => (e.target.style.color = '#D9A441')}
-              onMouseLeave={(e) => (e.target.style.color = '#7E8A9A')}
-            >
-              [ TOPOLOGY ]
-            </button>
-            <button
-              onClick={() => handleScrollTo('architecture')}
-              style={{ background: 'none', border: 'none', color: '#7E8A9A', fontSize: 11, fontWeight: 700, cursor: 'pointer', transition: 'color 0.2s', fontFamily: 'monospace', textTransform: 'uppercase' }}
-              onMouseEnter={(e) => (e.target.style.color = '#D9A441')}
-              onMouseLeave={(e) => (e.target.style.color = '#7E8A9A')}
-            >
-              [ PIPELINE ]
-            </button>
-            <button
-              onClick={() => handleScrollTo('terminal')}
-              style={{ background: 'none', border: 'none', color: '#7E8A9A', fontSize: 11, fontWeight: 700, cursor: 'pointer', transition: 'color 0.2s', fontFamily: 'monospace', textTransform: 'uppercase' }}
-              onMouseEnter={(e) => (e.target.style.color = '#D9A441')}
-              onMouseLeave={(e) => (e.target.style.color = '#7E8A9A')}
-            >
-              [ TERMINAL ]
-            </button>
-          </div>
+const Coordinates = ({ top, left, right, bottom, label }) => (
+  <div className={`absolute text-[10px] text-[#E3A62B] opacity-50 font-mono tracking-widest ${top ? 'top-4' : ''} ${bottom ? 'bottom-4' : ''} ${left ? 'left-4' : ''} ${right ? 'right-4' : ''}`}>
+    {label || `[SYS.${Math.floor(Math.random() * 1000)}.${Math.floor(Math.random() * 1000)}]`}
+  </div>
+);
+
+const Navbar = ({ onLogin }) => (
+  <nav className="fixed top-0 left-0 right-0 z-40 border-b border-[#E3A62B]/20 bg-[#05070B]/90 backdrop-blur-sm">
+    <div className="max-w-[1500px] mx-auto px-6 h-16 flex items-center justify-between font-mono text-xs tracking-widest text-[#E3A62B]">
+      <div className="flex items-center gap-8">
+        <div className="font-bold text-lg flex items-center gap-2">
+          <Activity className="w-5 h-5 text-[#FF5D5D]" />
+          BUGRISK
         </div>
-
-        {/* Right CTA */}
-        <button
-          onClick={onLogin}
-          style={{
-            background: 'transparent',
-            border: '1px solid #D9A441',
-            color: '#D9A441',
-            padding: '6px 14px',
-            borderRadius: 0,
-            fontSize: 11,
-            fontWeight: 700,
-            cursor: 'pointer',
-            fontFamily: 'monospace',
-            transition: 'all 0.2s',
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.background = '#D9A441';
-            e.target.style.color = '#020308';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.background = 'transparent';
-            e.target.style.color = '#D9A441';
-          }}
-        >
-          INITIALIZE PLATFORM
-        </button>
+        <div className="hidden md:flex gap-6 opacity-70">
+          <a href="#product" className="hover:opacity-100 hover:text-white transition-colors">PRODUCT</a>
+          <a href="#technology" className="hover:opacity-100 hover:text-white transition-colors">TECHNOLOGY</a>
+          <a href="#docs" className="hover:opacity-100 hover:text-white transition-colors">DOCS</a>
+          <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="hover:opacity-100 hover:text-white transition-colors">GITHUB</a>
+        </div>
       </div>
-    </motion.nav>
-  );
-}
-
-/* ─── HUD Corner Ticks Component ────────────────────────────────────────── */
-function HudCorners() {
-  return (
-    <>
-      <div style={{ position: 'absolute', top: -1, left: -1, width: 8, height: 8, borderTop: '2px solid #D9A441', borderLeft: '2px solid #D9A441', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', top: -1, right: -1, width: 8, height: 8, borderTop: '2px solid #D9A441', borderRight: '2px solid #D9A441', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', bottom: -1, left: -1, width: 8, height: 8, borderBottom: '2px solid #D9A441', borderLeft: '2px solid #D9A441', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', bottom: -1, right: -1, width: 8, height: 8, borderBottom: '2px solid #D9A441', borderRight: '2px solid #D9A441', pointerEvents: 'none' }} />
-    </>
-  );
-}
-
-/* ─── Cinematic Title Component ─────────────────────────────────────────── */
-function CinematicTitle({ lines }) {
-  return (
-    <div style={{
-      width: '100%',
-      borderTop: '1px solid rgba(217, 164, 65, 0.25)',
-      borderBottom: '1px solid rgba(217, 164, 65, 0.25)',
-      padding: '24px 0',
-      marginBottom: '32px',
-    }}>
-      {lines.map((line, idx) => (
-        <div
-          key={idx}
-          style={{
-            fontSize: '52px',
-            fontWeight: 900,
-            lineHeight: 0.95,
-            letterSpacing: '0.05em',
-            fontFamily: 'monospace',
-            color: idx === lines.length - 1 ? '#D9A441' : '#F5F5F5',
-            textTransform: 'uppercase',
-          }}
-        >
-          {line}
-        </div>
-      ))}
+      <button 
+        onClick={onLogin}
+        className="border border-[#E3A62B] text-[#E3A62B] px-4 py-2 hover:bg-[#E3A62B] hover:text-[#05070B] transition-all uppercase"
+      >
+        Launch App
+      </button>
     </div>
-  );
-}
+  </nav>
+);
 
-/* ─── Telemetry Text Component ──────────────────────────────────────────── */
-function TelemetryOverlay({ text }) {
-  return (
-    <div style={{
-      fontFamily: 'monospace',
-      fontSize: '9px',
-      color: '#7E8A9A',
-      letterSpacing: '0.08em',
-      opacity: 0.5,
-      marginBottom: 16,
-    }}>
-      [TELEMETRY_REF: {text}]
-    </div>
-  );
-}
-
-/* ─── Hero Animated Graph ───────────────────────────────────────────────── */
-function HeroEngine() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [hoveredNode, setHoveredNode] = useState(null);
-  const [metrics, setMetrics] = useState({ confidence: 93.4, lift: 5.62, support: 0.082 });
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setMetrics({
-        confidence: +(92.1 + Math.random() * 3.8).toFixed(1),
-        lift: +(5.24 + Math.random() * 0.75).toFixed(2),
-        support: +(0.075 + Math.random() * 0.025).toFixed(3)
-      });
-    }, 1500);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleMouseMove = (e) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
-
-  const nodes = [
-    { id: 'auth', label: 'module=auth', x: 130, y: 90, color: '#D9A441' },
-    { id: 'java', label: 'language=java', x: 110, y: 190, color: '#D9A441' },
-    { id: 'jwt', label: 'tech_stack=jwt', x: 140, y: 290, color: '#D9A441' },
-    { id: 'critical', label: 'severity=critical', x: 380, y: 190, color: '#FF5A5A', isOutcome: true },
-  ];
-
-  return (
-    <div
-      ref={containerRef}
-      onMouseMove={handleMouseMove}
-      style={{
-        position: 'relative',
-        width: '100%',
-        maxWidth: '540px',
-        height: '385px',
-        background: 'rgba(2, 3, 8, 0.85)',
-        border: '1px solid rgba(217, 164, 65, 0.15)',
-        borderRadius: 0,
-        overflow: 'hidden',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
-      }}
-    >
-      <HudCorners />
-
-      {/* Screen crosshairs */}
-      <div style={{ position: 'absolute', top: mousePos.y, left: 0, right: 0, height: '1px', borderTop: '1px dashed rgba(217, 164, 65, 0.04)', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', left: mousePos.x, top: 0, bottom: 0, width: '1px', borderLeft: '1px dashed rgba(217, 164, 65, 0.04)', pointerEvents: 'none' }} />
-
-      <div style={{
-        position: 'absolute',
-        top: 12,
-        left: 16,
-        fontFamily: 'monospace',
-        fontSize: '9px',
-        color: '#7E8A9A',
-        letterSpacing: '0.05em',
-        pointerEvents: 'none',
-      }}>
-        GRID_COORD: X {mousePos.x.toFixed(0)} | Y {mousePos.y.toFixed(0)}
-      </div>
-
-      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
-        <defs>
-          <filter id="hudGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-
-        {/* Curved connection lines */}
-        {nodes.filter(n => !n.isOutcome).map(n => {
-          const isLinkHovered = hoveredNode === n.id || hoveredNode === 'critical';
-          return (
-            <g key={n.id}>
-              <path
-                d={`M ${n.x},${n.y} C ${n.x + 80},${n.y} 270,190 ${nodes[3].x},190`}
-                stroke={isLinkHovered ? '#F6C453' : 'rgba(217, 164, 65, 0.08)'}
-                strokeWidth={isLinkHovered ? 2 : 1}
-                fill="none"
-                style={{ transition: 'stroke 0.2s, stroke-width 0.2s' }}
-              />
-              <circle r="3" fill="#D9A441" filter="url(#hudGlow)">
-                <animateMotion
-                  dur={`${1.8 + Math.random() * 1.2}s`}
-                  repeatCount="indefinite"
-                  path={`M ${n.x},${n.y} C ${n.x + 80},${n.y} 270,190 ${nodes[3].x},190`}
-                />
-              </circle>
-            </g>
-          );
-        })}
-      </svg>
-
-      {/* Pure Typography Nodes (NO cards/boxes) */}
-      {nodes.map(n => {
-        const isHovered = hoveredNode === n.id;
-        return (
-          <div
-            key={n.id}
-            onMouseEnter={() => setHoveredNode(n.id)}
-            onMouseLeave={() => setHoveredNode(null)}
-            style={{
-              position: 'absolute',
-              left: n.x,
-              top: n.y,
-              transform: 'translate(-50%, -50%)',
-              cursor: 'pointer',
-              zIndex: 10,
-            }}
-          >
-            <div style={{
-              width: isHovered ? 10 : 6,
-              height: isHovered ? 10 : 6,
-              borderRadius: '50%',
-              background: n.color,
-              boxShadow: `0 0 10px ${n.color}`,
-              transition: 'all 0.2s ease',
-            }} />
-
-            <div style={{
-              position: 'absolute',
-              top: '50%',
-              left: n.isOutcome ? '16px' : 'auto',
-              right: n.isOutcome ? 'auto' : '16px',
-              transform: 'translateY(-50%)',
-              fontFamily: 'monospace',
-              fontSize: '12px',
-              fontWeight: 700,
-              color: isHovered ? '#F5F5F5' : n.isOutcome ? '#FF5A5A' : '#7E8A9A',
-              whiteSpace: 'nowrap',
-              transition: 'all 0.2s ease',
-            }}>
-              {n.label}
-            </div>
-          </div>
-        );
-      })}
-
-      {/* Statistics stream */}
-      <div style={{
-        position: 'absolute',
-        bottom: 16,
-        right: 16,
-        background: 'rgba(2, 3, 8, 0.9)',
-        border: '1px solid rgba(217, 164, 65, 0.15)',
-        borderRadius: 0,
-        padding: '10px 14px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 4,
-        fontFamily: 'monospace',
-        fontSize: '9px',
-        pointerEvents: 'none',
-      }}>
-        <div style={{ color: '#7E8A9A', borderBottom: '1px solid rgba(217, 164, 65, 0.08)', paddingBottom: 4, marginBottom: 4 }}>LIVE METRICS</div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 24 }}>
-          <span style={{ color: '#7E8A9A' }}>confidence:</span>
-          <span style={{ color: '#47E38C', fontWeight: 700 }}>{metrics.confidence}%</span>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 24 }}>
-          <span style={{ color: '#7E8A9A' }}>lift:</span>
-          <span style={{ color: '#D9A441', fontWeight: 700 }}>{metrics.lift}x</span>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 24 }}>
-          <span style={{ color: '#7E8A9A' }}>support:</span>
-          <span style={{ color: '#F5F5F5' }}>{metrics.support}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ─── Scene 1: Hero Section (100vh) ──────────────────────────────────────── */
-function Hero({ onLogin }) {
-  return (
-    <section style={{
-      height: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'relative',
-      background: 'transparent',
-      overflow: 'hidden',
-    }}>
-      <div style={{
-        width: '100%',
-        maxWidth: 1400,
-        margin: '0 auto',
-        padding: '0 24px',
-        display: 'grid',
-        gridTemplateColumns: '1.15fr 0.85fr',
-        gap: 64,
-        alignItems: 'center',
-        zIndex: 2,
-      }}>
-        {/* Left Side: Headline & Buttons */}
-        <div>
-          <div style={{
-            fontFamily: 'monospace',
-            fontSize: '11px',
-            fontWeight: 800,
-            color: '#D9A441',
-            letterSpacing: '0.25em',
-            marginBottom: 20,
-          }}>
-            [ ASSOCIATION RULE INTELLIGENCE PLATFORM ]
-          </div>
-          
-          <h1 style={{
-            fontSize: '72px',
-            fontWeight: 900,
-            lineHeight: 0.98,
-            letterSpacing: '-2.5px',
-            color: '#F5F5F5',
-            marginBottom: 24,
-            fontFamily: 'monospace',
-          }}>
-            STOP REACTING.<br />
-            <span style={{ color: '#D9A441' }}>START PREDICTING.</span>
-          </h1>
-
-          <p style={{
-            fontSize: '15px',
-            color: '#7E8A9A',
-            lineHeight: 1.6,
-            marginBottom: 36,
-            maxWidth: 480,
-            fontFamily: 'monospace',
-          }}>
-            An institutional risk detection framework. Mining multivariant correlation trees to map codebase anomalies and prevent production defects in runtime logs.
-          </p>
-
-          <div style={{ display: 'flex', gap: 14 }}>
-            <button
-              onClick={onLogin}
-              style={{
-                background: '#D9A441',
-                color: '#020308',
-                border: 'none',
-                padding: '12px 28px',
-                borderRadius: 0,
-                fontSize: 12,
-                fontWeight: 800,
-                cursor: 'pointer',
-                fontFamily: 'monospace',
-                letterSpacing: '0.05em',
-                transition: 'background 0.2s',
-              }}
-              onMouseEnter={(e) => (e.target.style.background = '#F6C453')}
-              onMouseLeave={(e) => (e.target.style.background = '#D9A441')}
-            >
-              INITIALIZE PLATFORM
-            </button>
-            <a
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                background: 'transparent',
-                border: '1px solid rgba(217, 164, 65, 0.3)',
-                color: '#D9A441',
-                padding: '12px 28px',
-                borderRadius: 0,
-                fontSize: 12,
-                fontWeight: 700,
-                textDecoration: 'none',
-                fontFamily: 'monospace',
-                letterSpacing: '0.05em',
-                transition: 'border 0.2s',
-              }}
-              onMouseEnter={(e) => (e.target.style.borderColor = '#D9A441')}
-              onMouseLeave={(e) => (e.target.style.borderColor = 'rgba(217, 164, 65, 0.3)')}
-            >
-              VIEW GITHUB
-            </a>
-          </div>
-        </div>
-
-        {/* Right Side: Graph Engine */}
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <HeroEngine />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Section 2: Defect Clarity (100vh Command-Center Composition) ──────── */
-function Clarity() {
-  return (
-    <section
-      id="clarity"
-      style={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        background: 'transparent',
-        position: 'relative',
-        zIndex: 2,
-      }}
-    >
-      <div style={{
-        width: '100%',
-        maxWidth: 1400,
-        margin: '0 auto',
-        padding: '0 24px',
-        display: 'grid',
-        gridTemplateColumns: '1.1fr 0.9fr',
-        gap: 64,
-        alignItems: 'center',
-      }}>
-        {/* Left side: Cinematic title & description */}
-        <div>
-          <CinematicTitle lines={['UNPRECEDENTED', 'DEFECT', 'CLARITY']} />
-          <p style={{
-            fontSize: '14px',
-            color: '#7E8A9A',
-            lineHeight: 1.6,
-            maxWidth: '460px',
-            fontFamily: 'monospace',
-          }}>
-            BugRisk targets structural codebase patterns instead of raw metrics. By processing log configurations and transactions as transactions, our system isolates critical anomaly paths instantly.
-          </p>
-          <div style={{ height: '80px' }} />
-          <TelemetryOverlay text="SYS_ANALYSIS_VER_2.4" />
-        </div>
-
-        {/* Right side: Command center HUD system display */}
-        <div style={{
-          border: '1px solid rgba(217, 164, 65, 0.2)',
-          background: 'rgba(2, 3, 8, 0.85)',
-          padding: '36px',
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 28,
-        }}>
-          <HudCorners />
-
-          {/* Module 1 */}
-          <div style={{ display: 'flex', gap: 20 }}>
-            <div style={{ fontFamily: 'monospace', fontSize: '12px', fontWeight: 900, color: '#D9A441' }}>
-              [01]
-            </div>
-            <div>
-              <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#F5F5F5', fontFamily: 'monospace', marginBottom: 6, textTransform: 'uppercase' }}>
-                Rule Mining Engine
-              </h3>
-              <p style={{ fontSize: '12px', color: '#7E8A9A', fontFamily: 'monospace', lineHeight: 1.5 }}>
-                Processes parallelized transactions in execution dumps to compute confidence levels under 8ms.
-              </p>
-            </div>
-          </div>
-
-          {/* Connective dots */}
-          <div style={{ borderLeft: '1px dashed rgba(217, 164, 65, 0.25)', height: 20, marginLeft: 14 }} />
-
-          {/* Module 2 */}
-          <div style={{ display: 'flex', gap: 20 }}>
-            <div style={{ fontFamily: 'monospace', fontSize: '12px', fontWeight: 900, color: '#D9A441' }}>
-              [02]
-            </div>
-            <div>
-              <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#F5F5F5', fontFamily: 'monospace', marginBottom: 6, textTransform: 'uppercase' }}>
-                ML Pattern Analysis
-              </h3>
-              <p style={{ fontSize: '12px', color: '#7E8A9A', fontFamily: 'monospace', lineHeight: 1.5 }}>
-                Clusters log contexts using Jaccard matrix coefficients to prevent defect propagation.
-              </p>
-            </div>
-          </div>
-
-          {/* Connective dots */}
-          <div style={{ borderLeft: '1px dashed rgba(217, 164, 65, 0.25)', height: 20, marginLeft: 14 }} />
-
-          {/* Module 3 */}
-          <div style={{ display: 'flex', gap: 20 }}>
-            <div style={{ fontFamily: 'monospace', fontSize: '12px', fontWeight: 900, color: '#D9A441' }}>
-              [03]
-            </div>
-            <div>
-              <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#F5F5F5', fontFamily: 'monospace', marginBottom: 6, textTransform: 'uppercase' }}>
-                Explainability Layer
-              </h3>
-              <p style={{ fontSize: '12px', color: '#7E8A9A', fontFamily: 'monospace', lineHeight: 1.5 }}>
-                Traces stack context and permission layers, ensuring transparent root-cause diagnostics.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Section 3: Global Codebase Topology (100vh Centralized Graph) ─────── */
-function Topology() {
-  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
-  const containerRef = useRef(null);
-
-  const handleMouseMove = (e) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setMouseOffset({ x: x * 20, y: y * 20 });
-  };
-
-  const handleMouseLeave = () => {
-    setMouseOffset({ x: 0, y: 0 });
-  };
-
-  const nodes = [
-    { id: 1, x: 340, y: 220, color: '#D9A441', r: 8 }, // Core
-    { id: 2, x: 200, y: 120, color: '#D9A441', r: 5 },
-    { id: 3, x: 480, y: 110, color: '#D9A441', r: 5 },
-    { id: 4, x: 450, y: 320, color: '#FF5A5A', r: 5 }, // Hotspot
-    { id: 5, x: 220, y: 310, color: '#D9A441', r: 5 },
-  ];
-
-  const connections = [
-    { from: 1, to: 2 },
-    { from: 1, to: 3 },
-    { from: 1, to: 4 },
-    { from: 1, to: 5 },
-    { from: 2, to: 3 },
-    { from: 3, to: 4 },
-    { from: 4, to: 5 },
-    { from: 5, to: 2 },
-  ];
-
-  return (
-    <section
-      id="topology"
-      style={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        background: 'transparent',
-        position: 'relative',
-        zIndex: 2,
-      }}
-    >
-      <div style={{
-        width: '100%',
-        maxWidth: 1400,
-        margin: '0 auto',
-        padding: '0 24px',
-        display: 'grid',
-        gridTemplateColumns: '0.8fr 1.2fr',
-        gap: 64,
-        alignItems: 'center',
-      }}>
-        {/* Left Side: Cinematic Title and Text */}
-        <div>
-          <CinematicTitle lines={['GLOBAL', 'CODEBASE', 'TOPOLOGY']} />
-          <p style={{
-            fontSize: '14px',
-            color: '#7E8A9A',
-            lineHeight: 1.6,
-            fontFamily: 'monospace',
-            marginBottom: 32,
-          }}>
-            Active directory scanner overlay mapping file clusters, dependency loops, and high-risk transactional paths across container limits.
-          </p>
-          <TelemetryOverlay text="SYS_RADAR_RESOLVER_10" />
-        </div>
-
-        {/* Right Side: Huge Centralized Network with Corner Statistics */}
-        <div
-          ref={containerRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          style={{
-            position: 'relative',
-            width: '100%',
-            height: '460px',
-            border: '1px solid rgba(217, 164, 65, 0.15)',
-            background: 'rgba(2, 3, 8, 0.65)',
-            overflow: 'hidden',
-          }}
+const HeroSection = ({ onLogin }) => (
+  <section className="relative w-full h-screen flex items-center bg-[#05070B] overflow-hidden border-b border-[#E3A62B]/10">
+    <GridBackground />
+    <Scanlines />
+    <Coordinates top left label="COORD_45.992" />
+    <Coordinates bottom right label="SYS_ONLINE_TRUE" />
+    
+    <div className="max-w-[1500px] w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
+      <div className="flex flex-col justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="font-mono text-[#E3A62B] text-xs tracking-[0.2em] mb-6 flex items-center gap-2"
         >
-          <HudCorners />
-
-          {/* Dotted Radar Lines */}
-          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-            <circle cx="340" cy="230" r="80" stroke="rgba(217, 164, 65, 0.08)" strokeDasharray="3 3" fill="none" />
-            <circle cx="340" cy="230" r="160" stroke="rgba(217, 164, 65, 0.05)" strokeDasharray="3 3" fill="none" />
-            <circle cx="340" cy="230" r="240" stroke="rgba(217, 164, 65, 0.03)" strokeDasharray="3 3" fill="none" />
-
-            {/* Orbiting particles */}
-            <circle r="3" fill="#D9A441">
-              <animateMotion dur="12s" repeatCount="indefinite" path="M 340,150 A 80,80 0 1,1 340,310 A 80,80 0 1,1 340,150" />
-            </circle>
-            <circle r="2" fill="#FF5A5A">
-              <animateMotion dur="20s" repeatCount="indefinite" path="M 340,70 A 160,160 0 1,1 340,390 A 160,160 0 1,1 340,70" />
-            </circle>
-
-            {/* Main Network Group with Parallax */}
-            <g style={{
-              transform: `translate3d(${mouseOffset.x}px, ${mouseOffset.y}px, 0)`,
-              transition: 'transform 0.25s ease-out',
-            }}>
-              {connections.map((c, i) => {
-                const f = nodes.find(n => n.id === c.from);
-                const t = nodes.find(n => n.id === c.to);
-                if (!f || !t) return null;
-                return (
-                  <g key={i}>
-                    <line
-                      x1={f.x} y1={f.y + 10} x2={t.x} y2={t.y + 10}
-                      stroke="rgba(217, 164, 65, 0.15)"
-                      strokeWidth={1.5}
-                    />
-                    <circle r="2" fill="#D9A441">
-                      <animateMotion
-                        dur="3.2s"
-                        repeatCount="indefinite"
-                        path={`M ${f.x},${f.y + 10} L ${t.x},${t.y + 10}`}
-                      />
-                    </circle>
-                  </g>
-                );
-              })}
-
-              {nodes.map(n => (
-                <g key={n.id}>
-                  <circle
-                    cx={n.x} cy={n.y + 10} r={n.r + 5}
-                    fill="transparent"
-                    stroke={n.color}
-                    strokeWidth={1}
-                    style={{ animation: 'pulseGlow 2.5s infinite' }}
-                  />
-                  <circle
-                    cx={n.x} cy={n.y + 10} r={n.r}
-                    fill={n.color}
-                  />
-                </g>
-              ))}
-            </g>
-          </svg>
-
-          {/* Symmetrical Corner Stats Overlay ( Bloomberg HUD style ) */}
-          {/* Top Left */}
-          <div style={{ position: 'absolute', top: 20, left: 20, fontFamily: 'monospace' }}>
-            <div style={{ fontSize: '16px', fontWeight: 900, color: '#D9A441' }}>2400+</div>
-            <div style={{ fontSize: '8px', color: '#7E8A9A' }}>RULES MINED</div>
-          </div>
-
-          {/* Top Right */}
-          <div style={{ position: 'absolute', top: 20, right: 20, fontFamily: 'monospace', textAlign: 'right' }}>
-            <div style={{ fontSize: '16px', fontWeight: 900, color: '#D9A441' }}>92%</div>
-            <div style={{ fontSize: '8px', color: '#7E8A9A' }}>CONFIDENCE</div>
-          </div>
-
-          {/* Bottom Left */}
-          <div style={{ position: 'absolute', bottom: 20, left: 20, fontFamily: 'monospace' }}>
-            <div style={{ fontSize: '16px', fontWeight: 900, color: '#D9A441' }}>5.54x</div>
-            <div style={{ fontSize: '8px', color: '#7E8A9A' }}>LIFT LIMIT</div>
-          </div>
-
-          {/* Bottom Right */}
-          <div style={{ position: 'absolute', bottom: 20, right: 20, fontFamily: 'monospace', textAlign: 'right' }}>
-            <div style={{ fontSize: '16px', fontWeight: 900, color: '#FF5A5A' }}>18</div>
-            <div style={{ fontSize: '8px', color: '#7E8A9A' }}>CRITICAL HOTSPOTS</div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Section 4: Vertical Architecture Pipeline (100vh) ─────────────────── */
-function Architecture() {
-  const pipelineSteps = [
-    { label: 'CSV', status: 'INGEST', detail: 'Parse execution logs' },
-    { label: 'Spring Boot', status: 'ROUTING', detail: 'Route gateway controller' },
-    { label: 'FastAPI', status: 'PIPELINE', detail: 'Process transaction patterns' },
-    { label: 'FP Growth', status: 'MINING', detail: 'Build trie execution tree' },
-    { label: 'Postgres', status: 'STORAGE', detail: 'Write patterns & relations' },
-    { label: 'Redis', status: 'CACHE', detail: 'Handle active cache blocks' },
-    { label: 'Dashboard', status: 'RENDER', detail: 'Expose explainable diagnostics' }
-  ];
-
-  return (
-    <section
-      id="architecture"
-      style={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        background: 'transparent',
-        position: 'relative',
-        zIndex: 2,
-      }}
-    >
-      <div style={{
-        width: '100%',
-        maxWidth: 1400,
-        margin: '0 auto',
-        padding: '0 24px',
-        display: 'grid',
-        gridTemplateColumns: '1.1fr 0.9fr',
-        gap: 64,
-        alignItems: 'center',
-      }}>
-        {/* Left Column: Title and Description */}
-        <div>
-          <CinematicTitle lines={['ARCHITECTURE', 'PIPELINE']} />
-          <p style={{
-            fontSize: '14px',
-            color: '#7E8A9A',
-            lineHeight: 1.6,
-            fontFamily: 'monospace',
-          }}>
-            Fully containerized data ingestion flow. Moving transaction traces from multi-tenant gateways down to tree mining processes and relational databases.
-          </p>
-          <div style={{ height: '80px' }} />
-          <TelemetryOverlay text="FLOW_SCHEMA_ACTIVE" />
-        </div>
-
-        {/* Right Column: Vertical Animated Pipeline (No Boxes) */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          position: 'relative',
-          padding: '20px 0',
-          width: '100%',
-          maxWidth: '440px',
-          margin: '0 auto',
-        }}>
-          {pipelineSteps.map((step, idx) => (
-            <React.Fragment key={idx}>
-              {/* Pipeline Node (Pure Text & status LED) */}
-              <div style={{
-                width: '100%',
-                display: 'grid',
-                gridTemplateColumns: '120px 1fr',
-                alignItems: 'center',
-                gap: 20,
-                position: 'relative',
-                zIndex: 2,
-              }}>
-                <div style={{
-                  fontFamily: 'monospace',
-                  fontSize: '10px',
-                  color: '#D9A441',
-                  textAlign: 'right',
-                  letterSpacing: '0.05em',
-                }}>
-                  [{step.status}]
-                </div>
-                
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  {/* Status Dot */}
-                  <div style={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: '50%',
-                    background: '#D9A441',
-                    boxShadow: '0 0 6px #F6C453',
-                  }} />
-                  <div>
-                    <span style={{ fontSize: '13px', fontWeight: 900, color: '#F5F5F5', fontFamily: 'monospace', textTransform: 'uppercase' }}>
-                      {step.label}
-                    </span>
-                    <span style={{ fontSize: '10px', color: '#7E8A9A', fontFamily: 'monospace', marginLeft: 12 }}>
-                      // {step.detail}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Vertical link connector with flowing beams */}
-              {idx < pipelineSteps.length - 1 && (
-                <div style={{
-                  position: 'relative',
-                  width: '100%',
-                  height: '36px',
-                  display: 'grid',
-                  gridTemplateColumns: '120px 1fr',
-                }}>
-                  <div />
-                  <div style={{
-                    position: 'relative',
-                    borderLeft: '2px dashed rgba(217, 164, 65, 0.25)',
-                    marginLeft: '2px', // align with the dot center
-                    height: '100%',
-                    overflow: 'hidden',
-                  }}>
-                    {/* Beam pulse */}
-                    <div style={{
-                      position: 'absolute',
-                      width: '2px',
-                      height: '12px',
-                      left: '-2px',
-                      background: '#D9A441',
-                      boxShadow: '0 0 8px #F6C453',
-                      animation: 'flowBeamVertical 1.6s infinite linear',
-                    }} />
-                  </div>
-                </div>
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Section 5: AI Command Terminal (100vh Fullscreen Command Console) ─── */
-function Terminal() {
-  const initialLogs = [
-    'SYS // SYSTEM INITIALIZATION START',
-    'SYS // ESTABLISHING DATABASE CONNECTIVITY (POSTGRESQL)... SUCCESS',
-    'SYS // CACHE COMPONENT MOUNTED (REDIS)... SUCCESS',
-    'ALGO // RECURSIVE FP-GROWTH INITIALIZED',
-    'ALGO // SCANNING TRANSACTIONS FOR ANTECEDENT PATTERNS',
-    'SCAN // COMPILING DEPENDENCY TREE...',
-    'SCAN // PARSING FILE: /auth/jwt/TokenValidator.java',
-    'SCAN // PARSING FILE: /database/ConnectionPool.java',
-    'SCAN // PARSING FILE: /gateway/ProxyController.java',
-    'SCAN // DETECTED ANTECEDENT: {module=auth, language=Java, tech_stack=JWT}',
-    'MINER // INFERRING RULE OUTCOME: {severity=critical}',
-    'MINER // RULE DECLARED: SUPPORT=0.082 CONFIDENCE=94.2% LIFT=5.84x',
-    'ALERT // RISK HOTSPOT IDENTIFIED: /auth/jwt/TokenValidator.java [DRI: 0.89]',
-  ];
-
-  const [logList, setLogList] = useState(initialLogs);
-
-  useEffect(() => {
-    const files = [
-      '/auth/session/SessionManager.java',
-      '/db/query/TransactionRunner.java',
-      '/api/v1/endpoints/UserController.java',
-      '/config/security/CorsConfig.java',
-      '/auth/oauth/ProviderValidator.java',
-      '/db/migrations/SchemaUpdate.java',
-    ];
-    const rules = [
-      '{module=db, lang=java} -> {severity=high}',
-      '{pkg=security, lang=java} -> {severity=critical}',
-      '{module=api, tech=cors} -> {severity=medium}',
-    ];
-
-    const interval = setInterval(() => {
-      const choice = Math.random();
-      let logStr = '';
-      if (choice < 0.4) {
-        const file = files[Math.floor(Math.random() * files.length)];
-        logStr = `SCAN // PARSING FILE: ${file}`;
-      } else if (choice < 0.7) {
-        const rule = rules[Math.floor(Math.random() * rules.length)];
-        logStr = `MINER // MULTIVARIATE RULE FOUND: ${rule} [CONFIDENCE=${(86 + Math.random() * 11).toFixed(1)}%]`;
-      } else {
-        logStr = `SYS // telemetry buffer flush; active_connections=${Math.floor(10 + Math.random() * 12)}`;
-      }
-      setLogList(prev => [...prev.slice(-15), logStr]);
-    }, 1800);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <section
-      id="terminal"
-      style={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        background: 'transparent',
-        position: 'relative',
-        zIndex: 2,
-      }}
-    >
-      <div style={{ width: '100%', maxWidth: 1400, margin: '0 auto', padding: '0 24px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '0.8fr 1.2fr', gap: 64, alignItems: 'center', marginBottom: 40 }}>
-          <div>
-            <CinematicTitle lines={['AI', 'COMMAND', 'TERMINAL']} />
-          </div>
-          <div>
-            <p style={{ fontSize: '13px', color: '#7E8A9A', fontFamily: 'monospace', lineHeight: 1.5 }}>
-              CLASSIFIED ENVIRONMENT SECURITY LEVEL 3 // ANOMALY RESOLVER INTERFACE
-            </p>
-          </div>
-        </div>
-
-        {/* Huge Multi-Pane HUD Console spanning full width */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1.2fr 0.8fr',
-          gap: 28,
-          alignItems: 'stretch',
-        }}>
-          {/* Left Console Monitor */}
-          <div style={{
-            border: '1px solid rgba(217, 164, 65, 0.2)',
-            background: 'rgba(2, 3, 8, 0.95)',
-            padding: '24px',
-            position: 'relative',
-            height: '380px',
-            overflow: 'hidden',
-          }}>
-            <HudCorners />
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              borderBottom: '1px solid rgba(217, 164, 65, 0.08)',
-              paddingBottom: 8,
-              marginBottom: 16,
-              fontSize: '10px',
-              fontFamily: 'monospace',
-              color: '#D9A441',
-              letterSpacing: '0.05em',
-            }}>
-              <span>CONSOLE MONITOR // STREAM_LOGS</span>
-              <span style={{ color: '#47E38C' }}>● LIVE_STREAMING</span>
-            </div>
-
-            <div style={{
-              fontFamily: 'monospace',
-              fontSize: '11px',
-              color: '#7E8A9A',
-              lineHeight: 1.7,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 4,
-            }}>
-              {logList.map((log, i) => {
-                const isAlert = log.includes('ALERT') || log.includes('critical');
-                const isSuccess = log.includes('SUCCESS');
-                return (
-                  <div key={i} style={{ color: isAlert ? '#FF5A5A' : isSuccess ? '#47E38C' : '#7E8A9A' }}>
-                    ➔ {log}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Right Console Monitor */}
-          <div style={{
-            border: '1px solid rgba(217, 164, 65, 0.2)',
-            background: 'rgba(2, 3, 8, 0.95)',
-            padding: '24px',
-            position: 'relative',
-            height: '380px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-          }}>
-            <HudCorners />
-            <div>
-              <div style={{
-                fontSize: '10px',
-                fontFamily: 'monospace',
-                color: '#D9A441',
-                borderBottom: '1px solid rgba(217, 164, 65, 0.08)',
-                paddingBottom: 8,
-                marginBottom: 16,
-                letterSpacing: '0.05em',
-              }}>
-                ANOMALY DETECTOR FEED
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontFamily: 'monospace', fontSize: '11px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(217,164,65,0.05)', paddingBottom: 6 }}>
-                  <span style={{ color: '#7E8A9A' }}>HOTSPOT FILE</span>
-                  <span style={{ color: '#F5F5F5' }}>/auth/jwt/TokenValidator.java</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(217,164,65,0.05)', paddingBottom: 6 }}>
-                  <span style={{ color: '#7E8A9A' }}>DRI INDEX</span>
-                  <span style={{ color: '#FF5A5A', fontWeight: 900 }}>0.89 [CRITICAL]</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(217,164,65,0.05)', paddingBottom: 6 }}>
-                  <span style={{ color: '#7E8A9A' }}>TRIGGERED SEVERITY</span>
-                  <span style={{ color: '#FF5A5A' }}>CRITICAL</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(217,164,65,0.05)', paddingBottom: 6 }}>
-                  <span style={{ color: '#7E8A9A' }}>ACTIVE CONNECTIONS</span>
-                  <span style={{ color: '#47E38C' }}>124 / SEC</span>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ fontSize: '10px', color: '#7E8A9A', fontFamily: 'monospace' }}>
-              SECURE PROTOCOL LEVEL 3 ACCESS ONLY
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Final CTA Section (100vh Fullscreen) ──────────────────────────────── */
-function FinalCTA({ onLogin }) {
-  return (
-    <section
-      id="cta"
-      style={{
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'transparent',
-        position: 'relative',
-        zIndex: 2,
-        overflow: 'hidden',
-      }}
-    >
-      {/* Perspective Grid Floor */}
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        left: '-50%',
-        right: '-50%',
-        height: '400px',
-        backgroundImage: `
-          linear-gradient(to right, rgba(217, 164, 65, 0.04) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(217, 164, 65, 0.04) 1px, transparent 1px)
-        `,
-        backgroundSize: '40px 40px',
-        transform: 'perspective(500px) rotateX(75deg)',
-        transformOrigin: 'bottom center',
-        maskImage: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
-        WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
-        pointerEvents: 'none',
-        zIndex: 1,
-      }} />
-
-      <div style={{
-        width: '100%',
-        maxWidth: 1400,
-        margin: '0 auto',
-        padding: '0 24px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-        zIndex: 2,
-        height: '100%',
-      }}>
-        {/* Soft Radial Gold Spotlight Behind Heading */}
-        <div style={{
-          position: 'absolute',
-          width: '600px',
-          height: '600px',
-          borderRadius: '50%',
-          top: '40%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          background: 'radial-gradient(circle, rgba(217, 164, 65, 0.07) 0%, transparent 70%)',
-          pointerEvents: 'none',
-          zIndex: -1,
-          filter: 'blur(30px)',
-        }} />
-
-        {/* Floating Particles */}
-        <div style={{
-          position: 'absolute',
-          top: '30px',
-          left: '15%',
-          width: '6px',
-          height: '6px',
-          borderRadius: '50%',
-          background: '#D9A441',
-          boxShadow: '0 0 10px #F6C453',
-          animation: 'pulseGlow 3s infinite',
-        }} />
-
-        <div style={{
-          position: 'absolute',
-          bottom: '100px',
-          right: '15%',
-          width: '6px',
-          height: '6px',
-          borderRadius: '50%',
-          background: '#FF5A5A',
-          boxShadow: '0 0 10px #FF5A5A',
-          animation: 'pulseGlow 4s infinite',
-        }} />
-
-        {/* Massive dividing layout */}
-        <div style={{
-          width: '100%',
-          borderTop: '1px solid rgba(217, 164, 65, 0.25)',
-          borderBottom: '1px solid rgba(217, 164, 65, 0.25)',
-          padding: '40px 0',
-          marginBottom: '48px',
-          textAlign: 'center',
-        }}>
-          <div style={{ fontSize: '48px', fontWeight: 900, lineHeight: 1.1, letterSpacing: '0.05em', color: '#F5F5F5', fontFamily: 'monospace' }}>
-            READY TO UNDERSTAND
-          </div>
-          <div style={{ fontSize: '48px', fontWeight: 900, lineHeight: 1.1, letterSpacing: '0.05em', color: '#D9A441', fontFamily: 'monospace' }}>
-            YOUR CODEBASE
-          </div>
-          <div style={{ fontSize: '48px', fontWeight: 900, lineHeight: 1.1, letterSpacing: '0.05em', color: '#F5F5F5', fontFamily: 'monospace' }}>
-            BEFORE IT BREAKS?
-          </div>
-        </div>
-
-        <div style={{ marginBottom: 96 }}>
-          <button
-            onClick={onLogin}
-            style={{
-              background: '#D9A441',
-              color: '#020308',
-              border: 'none',
-              padding: '14px 40px',
-              borderRadius: 0,
-              fontSize: 14,
-              fontWeight: 800,
-              cursor: 'pointer',
-              fontFamily: 'monospace',
-              letterSpacing: '0.05em',
-              boxShadow: '0 0 30px rgba(217, 164, 65, 0.2)',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={(e) => (e.target.style.background = '#F6C453')}
-            onMouseLeave={(e) => (e.target.style.background = '#D9A441')}
-          >
-            [ INITIALIZE PLATFORM ]
-          </button>
-        </div>
-
-        {/* Footer info directly below CTA (NO additional spacing) */}
-        <div style={{
-          width: '100%',
-          borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-          paddingTop: 32,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          fontSize: '10px',
-          color: '#7E8A9A',
-          fontFamily: 'monospace',
-          opacity: 0.5,
-        }}>
-          <span>BUGRISK // SECURE_CORE</span>
-          <span>2026 // ESTABLISHING SCANNER CONNECTIVITY</span>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Main Landing Page Redesign ─────────────────────────────────────────── */
-export default function LandingPage({ onLogin }) {
-  const particles = Array.from({ length: 18 }).map((_, i) => ({
-    id: i,
-    left: `${(i * 7 + 3) % 100}%`,
-    top: `${(i * 13 + 5) % 100}%`,
-    size: ((i * 3) % 3) + 1.5,
-    delay: `${(i * 0.4).toFixed(1)}s`,
-    duration: `${10 + (i * 2) % 10}s`
-  }));
-
-  return (
-    <div style={{
-      background: '#020308',
-      minHeight: '100vh',
-      fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-      color: '#F5F5F5',
-      position: 'relative',
-      overflowX: 'hidden',
-    }}>
-      {/* Subtle Dotted Grid Overlay */}
-      <div style={{
-        position: 'fixed',
-        inset: 0,
-        backgroundImage: 'radial-gradient(rgba(217, 164, 65, 0.08) 1px, transparent 1px)',
-        backgroundSize: '32px 32px',
-        pointerEvents: 'none',
-        zIndex: 1,
-      }} />
-
-      {/* Subtle Scanlines Overlay */}
-      <div style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%)',
-        backgroundSize: '100% 4px',
-        zIndex: 99,
-        pointerEvents: 'none',
-        opacity: 0.08,
-      }} />
-
-      {/* Floating Gold HUD Particles */}
-      {particles.map(p => (
-        <div
-          key={p.id}
-          style={{
-            position: 'fixed',
-            left: p.left,
-            top: p.top,
-            width: p.size,
-            height: p.size,
-            borderRadius: '50%',
-            background: '#D9A441',
-            boxShadow: '0 0 6px #F6C453',
-            pointerEvents: 'none',
-            opacity: 0.15,
-            zIndex: 1,
-            animation: `floatParticle ${p.duration} infinite ease-in-out`,
-            animationDelay: p.delay,
-          }}
-        />
-      ))}
-
-      <style>{`
-        html { scroll-behavior: smooth; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #020308; }
-        ::-webkit-scrollbar-thumb { background: rgba(217, 164, 65, 0.2); border-radius: 0px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(217, 164, 65, 0.4); }
+          <span className="w-2 h-2 bg-[#FF5D5D] animate-pulse"></span>
+          INTELLIGENCE ENGINE ACTIVE
+        </motion.div>
         
-        @keyframes floatParticle {
-          0%, 100% { transform: translateY(0) translateX(0); opacity: 0.1; }
-          50% { transform: translateY(-20px) translateX(10px); opacity: 0.4; }
-        }
-        @keyframes flowBeam {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(330%); }
-        }
-        @keyframes flowBeamVertical {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(330%); }
-        }
-        @keyframes pulseGlow {
-          0%, 100% { opacity: 0.2; transform: scale(1); }
-          50% { opacity: 0.6; transform: scale(1.15); }
-        }
-      `}</style>
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-6xl md:text-8xl font-bold text-white leading-none tracking-tight mb-8"
+        >
+          STOP REACTING.<br/>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E3A62B] to-[#FF5D5D]">START PREDICTING.</span>
+        </motion.h1>
+        
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-lg text-gray-400 font-mono max-w-xl mb-12 leading-relaxed"
+        >
+          BugRisk mines association rules across telemetry to expose defect hotspots before production failures happen.
+        </motion.p>
+        
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="flex flex-wrap gap-4 font-mono text-sm"
+        >
+          <button onClick={onLogin} className="bg-[#E3A62B] text-[#05070B] px-8 py-4 font-bold hover:bg-white transition-colors flex items-center gap-2">
+            <Terminal className="w-4 h-4" />
+            INITIALIZE PLATFORM
+          </button>
+          <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="border border-gray-600 text-white px-8 py-4 hover:border-[#E3A62B] hover:text-[#E3A62B] transition-colors flex items-center gap-2">
+            <GitBranch className="w-4 h-4" />
+            VIEW GITHUB
+          </a>
+        </motion.div>
+      </div>
 
+      {/* Right Side: Animated Graph */}
+      <div className="relative hidden lg:flex items-center justify-center font-mono">
+        <div className="absolute inset-0 bg-[#0A0D12] border border-[#E3A62B]/20 rounded-none shadow-[0_0_50px_rgba(227,166,43,0.05)] flex items-center justify-center overflow-hidden">
+           
+           <svg className="absolute inset-0 w-full h-full" stroke="#E3A62B" strokeOpacity="0.3" strokeWidth="1">
+             <path d="M 100 150 Q 200 150 250 250 T 400 350" fill="none" className="animate-[dash_3s_linear_infinite]" strokeDasharray="5,5" />
+             <path d="M 100 350 Q 200 350 250 250 T 400 150" fill="none" className="animate-[dash_4s_linear_infinite]" strokeDasharray="5,5" />
+             <path d="M 250 250 L 500 250" fill="none" stroke="#FF5D5D" strokeOpacity="0.5" strokeWidth="2" />
+           </svg>
+
+           {/* Nodes */}
+           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-[130px] left-[80px] bg-[#05070B] border border-[#E3A62B] text-[#E3A62B] px-3 py-1 text-xs">module=auth</motion.div>
+           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2 }} className="absolute top-[330px] left-[80px] bg-[#05070B] border border-[#E3A62B] text-[#E3A62B] px-3 py-1 text-xs">language=java</motion.div>
+           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4 }} className="absolute top-[230px] left-[200px] bg-[#05070B] border border-[#E3A62B] text-[#E3A62B] px-3 py-1 text-xs">tech_stack=jwt</motion.div>
+           
+           <motion.div 
+             initial={{ scale: 0 }} 
+             animate={{ scale: 1 }} 
+             transition={{ delay: 0.6 }} 
+             className="absolute top-[230px] right-[80px] bg-[#FF5D5D]/10 border border-[#FF5D5D] text-[#FF5D5D] px-4 py-2 text-sm font-bold shadow-[0_0_20px_rgba(255,93,93,0.3)]"
+           >
+             → severity=critical
+           </motion.div>
+
+           {/* Live Metrics */}
+           <div className="absolute bottom-6 left-6 text-[10px] text-gray-400 leading-relaxed">
+             <div><span className="text-[#E3A62B]">confidence</span> 94.3%</div>
+             <div><span className="text-[#E3A62B]">lift</span> 5.79x</div>
+             <div><span className="text-[#E3A62B]">support</span> 0.09</div>
+           </div>
+           
+           {/* Radar Sweep */}
+           <div className="absolute inset-0 origin-center animate-[spin_4s_linear_infinite] pointer-events-none" style={{ background: 'conic-gradient(from 0deg, transparent 70%, rgba(227, 166, 43, 0.1) 100%)' }}></div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const ClaritySection = () => (
+  <section className="relative w-full min-h-screen flex items-center bg-[#0A0D12] overflow-hidden border-b border-[#E3A62B]/10 py-20">
+    <GridBackground />
+    <Coordinates top right label="MOD_ANALYSIS" />
+    <Coordinates bottom left label="SEQ_002" />
+    
+    <div className="max-w-[1500px] mx-auto px-6 relative z-10 w-full">
+      <h2 className="text-5xl md:text-7xl font-bold text-white mb-16 leading-tight tracking-tighter">
+        UNPRECEDENTED <br/>
+        <span className="text-[#E3A62B]">DEFECT CLARITY</span>
+      </h2>
+      
+      <div className="relative border-l-2 border-[#E3A62B]/20 pl-8 ml-4 space-y-24 font-mono">
+        {/* Module 1 */}
+        <div className="relative">
+          <div className="absolute w-4 h-4 bg-[#E3A62B] -left-[41px] top-2 rotate-45 shadow-[0_0_15px_#E3A62B]"></div>
+          <div className="text-[#E3A62B] text-sm tracking-widest mb-2 border-b border-[#E3A62B]/20 pb-2 inline-block">INTEGRATED MODULE 01</div>
+          <h3 className="text-3xl text-white font-bold mb-4">RULE MINING ENGINE</h3>
+          <p className="text-gray-400 max-w-2xl leading-relaxed text-sm">
+            Leveraging FP-Growth & Apriori association rule mining to extract hidden correlation patterns across millions of telemetry events in real-time.
+          </p>
+        </div>
+
+        {/* Module 2 */}
+        <div className="relative">
+          <div className="absolute w-4 h-4 bg-[#E3A62B] -left-[41px] top-2 rotate-45"></div>
+          <div className="text-[#E3A62B] text-sm tracking-widest mb-2 border-b border-[#E3A62B]/20 pb-2 inline-block">INTEGRATED MODULE 02</div>
+          <h3 className="text-3xl text-white font-bold mb-4">ML PATTERN ANALYSIS</h3>
+          <p className="text-gray-400 max-w-2xl leading-relaxed text-sm">
+            FastAPI microservice computing continuous Jaccard deduplication and Defect Risk Index (DRI) scoring for proactive triage.
+          </p>
+        </div>
+
+        {/* Module 3 */}
+        <div className="relative">
+          <div className="absolute w-4 h-4 bg-[#FF5D5D] -left-[41px] top-2 rotate-45 shadow-[0_0_15px_#FF5D5D]"></div>
+          <div className="text-[#FF5D5D] text-sm tracking-widest mb-2 border-b border-[#FF5D5D]/20 pb-2 inline-block">INTEGRATED MODULE 03</div>
+          <h3 className="text-3xl text-white font-bold mb-4">EXPLAINABILITY LAYER</h3>
+          <p className="text-gray-400 max-w-2xl leading-relaxed text-sm">
+            Translating complex statistical probabilities into human-readable critical hotspots with 8-stage SSE pipeline streaming.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const TopologySection = () => (
+  <section className="relative w-full h-screen flex flex-col justify-center bg-[#05070B] overflow-hidden border-b border-[#E3A62B]/10">
+    <GridBackground />
+    <Coordinates top left label="NET_TOPOLOGY" />
+    
+    <div className="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
+      <div className="w-[800px] h-[800px] border border-[#E3A62B]/30 rounded-full animate-[spin_20s_linear_infinite]"></div>
+      <div className="absolute w-[600px] h-[600px] border border-[#E3A62B]/20 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+      <div className="absolute w-[400px] h-[400px] border border-[#E3A62B]/40 rounded-full animate-pulse"></div>
+    </div>
+
+    <div className="max-w-[1500px] w-full mx-auto px-6 relative z-10 flex flex-col items-center text-center">
+      <h2 className="text-4xl md:text-6xl font-bold text-white mb-16 tracking-tighter">
+        GLOBAL CODEBASE <br/><span className="text-[#E3A62B]">TOPOLOGY</span>
+      </h2>
+      
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 w-full font-mono">
+        <div className="border border-[#E3A62B]/20 bg-[#0A0D12]/80 p-8">
+          <div className="text-[#E3A62B] text-5xl font-bold mb-2">2400+</div>
+          <div className="text-gray-500 text-xs tracking-widest">RULES MINED</div>
+        </div>
+        <div className="border border-[#E3A62B]/20 bg-[#0A0D12]/80 p-8">
+          <div className="text-[#E3A62B] text-5xl font-bold mb-2">92%</div>
+          <div className="text-gray-500 text-xs tracking-widest">CONFIDENCE</div>
+        </div>
+        <div className="border border-[#E3A62B]/20 bg-[#0A0D12]/80 p-8">
+          <div className="text-[#E3A62B] text-5xl font-bold mb-2">5.54X</div>
+          <div className="text-gray-500 text-xs tracking-widest">LIFT</div>
+        </div>
+        <div className="border border-[#FF5D5D]/30 bg-[#FF5D5D]/5 p-8 shadow-[inset_0_0_20px_rgba(255,93,93,0.1)]">
+          <div className="text-[#FF5D5D] text-5xl font-bold mb-2">18</div>
+          <div className="text-[#FF5D5D] text-xs tracking-widest">CRITICAL HOTSPOTS</div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const PipelineSection = () => (
+  <section className="relative w-full min-h-screen flex items-center bg-[#0A0D12] overflow-hidden border-b border-[#E3A62B]/10 py-20">
+    <GridBackground />
+    <Coordinates top left label="DATA_PIPELINE" />
+    
+    <div className="max-w-[1500px] w-full mx-auto px-6 relative z-10 grid grid-cols-1 md:grid-cols-2 gap-20">
+      <div>
+        <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tighter">
+          ARCHITECTURE <br/><span className="text-[#E3A62B]">PIPELINE</span>
+        </h2>
+        <div className="font-mono text-xs text-gray-500 space-y-2 mb-12">
+          <p>[SYS_ON] INITIATING TELEMETRY INGEST</p>
+          <p>[SYS_ACTIVE] CACHE LAYER SYNCED</p>
+          <p>[SYS_RECUR] ALGORITHM LOOP ENGAGED</p>
+          <p>[SYS_WRITE] POSTGRES COMMITTING</p>
+          <p>[SYS_HIT] DASHBOARD SSE ESTABLISHED</p>
+        </div>
+      </div>
+      
+      <div className="flex flex-col items-center justify-center font-mono text-sm relative">
+        <div className="absolute inset-y-0 left-1/2 w-[1px] bg-[#E3A62B]/20 -translate-x-1/2"></div>
+        <div className="absolute inset-y-0 left-1/2 w-[1px] bg-[#E3A62B] -translate-x-1/2 overflow-hidden">
+          <div className="w-full h-20 bg-gradient-to-b from-transparent via-[#FF5D5D] to-transparent animate-[flow_2s_linear_infinite]"></div>
+        </div>
+        
+        {['CSV', 'SPRING BOOT', 'FASTAPI', 'FP-GROWTH', 'POSTGRES', 'REDIS', 'DASHBOARD'].map((node, i) => (
+          <div key={node} className="relative z-10 my-6 bg-[#05070B] border border-[#E3A62B] px-8 py-4 text-[#E3A62B] min-w-[200px] text-center uppercase tracking-widest shadow-[0_0_15px_rgba(227,166,43,0.1)]">
+            {node}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+const TerminalSection = () => {
+  const [logs, setLogs] = useState([]);
+  
+  useEffect(() => {
+    const sequence = [
+      "MINER FOUND",
+      "{pkg=security,lang=java}",
+      "→ severity=critical",
+      "confidence=94%",
+      "telemetry flush",
+      "cache eviction",
+      "db commit completed",
+      "waiting for next block..."
+    ];
+    let i = 0;
+    const interval = setInterval(() => {
+      setLogs(prev => {
+        const next = [...prev, sequence[i % sequence.length]];
+        if (next.length > 15) return next.slice(next.length - 15);
+        return next;
+      });
+      i++;
+    }, 800);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section className="relative w-full h-screen flex flex-col bg-[#05070B] border-b border-[#E3A62B]/10">
+      <div className="border-b border-[#E3A62B]/20 bg-[#0A0D12] px-6 py-3 font-mono text-xs text-[#E3A62B] tracking-widest flex justify-between">
+        <span>AI COMMAND TERMINAL</span>
+        <span className="text-[#FF5D5D] animate-pulse">● LIVE</span>
+      </div>
+      
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-3">
+        {/* Console */}
+        <div className="col-span-2 border-r border-[#E3A62B]/20 p-6 font-mono text-xs overflow-hidden relative">
+          <Scanlines />
+          <div className="space-y-2 text-gray-400">
+            {logs.map((log, index) => (
+              <div key={index} className={`${log.includes('critical') ? 'text-[#FF5D5D]' : ''} ${log.includes('MINER') ? 'text-[#E3A62B]' : ''}`}>
+                <span className="opacity-50 mr-4">[{new Date().toISOString().split('T')[1].slice(0,-1)}]</span>
+                {log}
+              </div>
+            ))}
+            <div className="flex items-center">
+              <span className="opacity-50 mr-4">[{new Date().toISOString().split('T')[1].slice(0,-1)}]</span>
+              <span className="w-2 h-4 bg-[#E3A62B] animate-pulse"></span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Right Panel */}
+        <div className="p-6 font-mono bg-[#0A0D12] relative">
+          <GridBackground />
+          <div className="relative z-10 space-y-12">
+            <div>
+              <div className="text-gray-500 text-[10px] tracking-widest mb-2 border-b border-gray-800 pb-2">HOTSPOT FILE</div>
+              <div className="text-[#E3A62B] text-sm truncate">auth/jwt/TokenValidator.java</div>
+            </div>
+            
+            <div>
+              <div className="text-gray-500 text-[10px] tracking-widest mb-2 border-b border-gray-800 pb-2">DRI (DEFECT RISK INDEX)</div>
+              <div className="text-white text-5xl font-bold">0.89</div>
+            </div>
+            
+            <div>
+              <div className="text-gray-500 text-[10px] tracking-widest mb-2 border-b border-gray-800 pb-2">SEVERITY</div>
+              <div className="text-[#FF5D5D] text-2xl font-bold tracking-widest animate-pulse">CRITICAL</div>
+            </div>
+            
+            <div>
+              <div className="text-gray-500 text-[10px] tracking-widest mb-2 border-b border-gray-800 pb-2">ACTIVE CONNECTIONS</div>
+              <div className="text-white text-xl">124<span className="text-gray-500 text-sm">/sec</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const CTASection = ({ onLogin }) => (
+  <section className="relative w-full h-screen flex items-center justify-center bg-[#05070B] overflow-hidden text-center">
+    <GridBackground />
+    <Scanlines />
+    <Coordinates top right label="SYS_HALT" />
+    <Coordinates bottom left label="AUTH_REQ" />
+    
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(227,166,43,0.05)_0%,transparent_60%)] pointer-events-none"></div>
+
+    <div className="relative z-10 px-6 max-w-4xl mx-auto flex flex-col items-center">
+      <ShieldAlert className="w-16 h-16 text-[#FF5D5D] mb-8" />
+      <h2 className="text-5xl md:text-7xl font-bold text-white mb-12 leading-tight tracking-tighter">
+        READY TO UNDERSTAND <br/> YOUR CODEBASE <br/>
+        <span className="text-[#FF5D5D]">BEFORE IT BREAKS?</span>
+      </h2>
+      
+      <button 
+        onClick={onLogin}
+        className="bg-[#E3A62B] text-[#05070B] px-12 py-5 font-bold font-mono text-lg hover:bg-white transition-all mb-16 shadow-[0_0_30px_rgba(227,166,43,0.3)]"
+      >
+        INITIALIZE PLATFORM
+      </button>
+
+      <div className="font-mono text-gray-600 text-xs tracking-[0.3em] flex items-center gap-4">
+        <span>BUGRISK // SECURE_CORE</span>
+        <span className="w-1 h-1 bg-gray-600 rounded-full"></span>
+        <span>2026</span>
+      </div>
+    </div>
+  </section>
+);
+
+const LandingPage = ({ onLogin }) => {
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes flow {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(800%); }
+      }
+      @keyframes dash {
+        to { stroke-dashoffset: -20; }
+      }
+    `;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#05070B] text-white selection:bg-[#E3A62B] selection:text-[#05070B]">
       <Navbar onLogin={onLogin} />
-      <Hero onLogin={onLogin} />
-      <Clarity />
-      <Topology />
-      <Architecture />
-      <Terminal />
-      <FinalCTA onLogin={onLogin} />
+      <main>
+        <HeroSection onLogin={onLogin} />
+        <ClaritySection />
+        <TopologySection />
+        <PipelineSection />
+        <TerminalSection />
+        <CTASection onLogin={onLogin} />
+      </main>
     </div>
   );
-}
+};
+
+export default LandingPage;
