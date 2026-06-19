@@ -259,9 +259,9 @@ const BentoFeatures = () => {
                 </div>
                 <div className="flex-1 w-full bg-black/50 border border-white/10 rounded-xl p-6 font-mono text-sm text-gray-400 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
                   <div className="text-fuchsia-400 mb-2">SSE STREAM // ACTIVE</div>
-                  <div>> receiving block 4509...</div>
-                  <div>> parsing telemetry...</div>
-                  <div className="text-white">> 18 hotspots identified</div>
+                  <div>&gt; receiving block 4509...</div>
+                  <div>&gt; parsing telemetry...</div>
+                  <div className="text-white">&gt; 18 hotspots identified</div>
                 </div>
              </div>
           </div>
