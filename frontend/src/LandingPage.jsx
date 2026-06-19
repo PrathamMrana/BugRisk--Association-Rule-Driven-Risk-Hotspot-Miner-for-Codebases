@@ -1,340 +1,269 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Terminal, Activity, Database, GitBranch, Cpu, Network, ShieldAlert } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Activity, Code2, Database, ShieldAlert, GitBranch, Terminal, Zap, CheckCircle2, ChevronRight, Layers, ArrowRight, Sparkles } from 'lucide-react';
 
 const GITHUB_URL = 'https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases';
 
-const Scanlines = () => (
-  <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden opacity-5">
-    <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,1)_50%)] bg-[length:100%_4px]"></div>
+// Advanced Ambient Background
+const AmbientBackground = () => (
+  <div className="fixed inset-0 z-0 bg-[#000000] overflow-hidden pointer-events-none">
+    {/* Grid */}
+    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+    
+    {/* Glowing Orbs */}
+    <div className="absolute top-[-20%] left-[10%] w-[50%] h-[50%] rounded-full bg-violet-600/20 blur-[120px] mix-blend-screen animate-[pulse_10s_ease-in-out_infinite]"></div>
+    <div className="absolute top-[20%] right-[-10%] w-[40%] h-[60%] rounded-full bg-cyan-500/10 blur-[120px] mix-blend-screen animate-[pulse_12s_ease-in-out_infinite_reverse]"></div>
+    <div className="absolute bottom-[-10%] left-[20%] w-[60%] h-[40%] rounded-full bg-fuchsia-600/10 blur-[120px] mix-blend-screen"></div>
   </div>
 );
 
-const GridBackground = () => (
-  <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-    <div className="absolute inset-0 bg-[linear-gradient(to_right,#E3A62B_1px,transparent_1px),linear-gradient(to_bottom,#E3A62B_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_20%,transparent_100%)]"></div>
-  </div>
-);
-
-const Coordinates = ({ top, left, right, bottom, label }) => (
-  <div className={`absolute text-[10px] text-[#E3A62B] opacity-50 font-mono tracking-widest ${top ? 'top-4' : ''} ${bottom ? 'bottom-4' : ''} ${left ? 'left-4' : ''} ${right ? 'right-4' : ''}`}>
-    {label || `[SYS.${Math.floor(Math.random() * 1000)}.${Math.floor(Math.random() * 1000)}]`}
-  </div>
-);
-
-const Navbar = ({ onLogin }) => (
-  <nav className="fixed top-0 left-0 right-0 z-40 border-b border-[#E3A62B]/20 bg-[#05070B]/90 backdrop-blur-sm">
-    <div className="max-w-[1500px] mx-auto px-6 h-16 flex items-center justify-between font-mono text-xs tracking-widest text-[#E3A62B]">
-      <div className="flex items-center gap-8">
-        <div className="font-bold text-lg flex items-center gap-2">
-          <Activity className="w-5 h-5 text-[#FF5D5D]" />
-          BUGRISK
-        </div>
-        <div className="hidden md:flex gap-6 opacity-70">
-          <a href="#product" className="hover:opacity-100 hover:text-white transition-colors">PRODUCT</a>
-          <a href="#technology" className="hover:opacity-100 hover:text-white transition-colors">TECHNOLOGY</a>
-          <a href="#docs" className="hover:opacity-100 hover:text-white transition-colors">DOCS</a>
-          <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="hover:opacity-100 hover:text-white transition-colors">GITHUB</a>
-        </div>
-      </div>
-      <button 
-        onClick={onLogin}
-        className="border border-[#E3A62B] text-[#E3A62B] px-4 py-2 hover:bg-[#E3A62B] hover:text-[#05070B] transition-all uppercase"
-      >
-        Launch App
-      </button>
-    </div>
-  </nav>
-);
-
-const HeroSection = ({ onLogin }) => (
-  <section className="relative w-full h-screen flex items-center bg-[#05070B] overflow-hidden border-b border-[#E3A62B]/10">
-    <GridBackground />
-    <Scanlines />
-    <Coordinates top left label="COORD_45.992" />
-    <Coordinates bottom right label="SYS_ONLINE_TRUE" />
-    
-    <div className="max-w-[1500px] w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
-      <div className="flex flex-col justify-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="font-mono text-[#E3A62B] text-xs tracking-[0.2em] mb-6 flex items-center gap-2"
-        >
-          <span className="w-2 h-2 bg-[#FF5D5D] animate-pulse"></span>
-          INTELLIGENCE ENGINE ACTIVE
-        </motion.div>
-        
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-6xl md:text-8xl font-bold text-white leading-none tracking-tight mb-8"
-        >
-          STOP REACTING.<br/>
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E3A62B] to-[#FF5D5D]">START PREDICTING.</span>
-        </motion.h1>
-        
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-lg text-gray-400 font-mono max-w-xl mb-12 leading-relaxed"
-        >
-          BugRisk mines association rules across telemetry to expose defect hotspots before production failures happen.
-        </motion.p>
-        
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-wrap gap-4 font-mono text-sm"
-        >
-          <button onClick={onLogin} className="bg-[#E3A62B] text-[#05070B] px-8 py-4 font-bold hover:bg-white transition-colors flex items-center gap-2">
-            <Terminal className="w-4 h-4" />
-            INITIALIZE PLATFORM
-          </button>
-          <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="border border-gray-600 text-white px-8 py-4 hover:border-[#E3A62B] hover:text-[#E3A62B] transition-colors flex items-center gap-2">
-            <GitBranch className="w-4 h-4" />
-            VIEW GITHUB
-          </a>
-        </motion.div>
-      </div>
-
-      {/* Right Side: Animated Graph */}
-      <div className="relative hidden lg:flex items-center justify-center font-mono">
-        <div className="absolute inset-0 bg-[#0A0D12] border border-[#E3A62B]/20 rounded-none shadow-[0_0_50px_rgba(227,166,43,0.05)] flex items-center justify-center overflow-hidden">
-           
-           <svg className="absolute inset-0 w-full h-full" stroke="#E3A62B" strokeOpacity="0.3" strokeWidth="1">
-             <path d="M 100 150 Q 200 150 250 250 T 400 350" fill="none" className="animate-[dash_3s_linear_infinite]" strokeDasharray="5,5" />
-             <path d="M 100 350 Q 200 350 250 250 T 400 150" fill="none" className="animate-[dash_4s_linear_infinite]" strokeDasharray="5,5" />
-             <path d="M 250 250 L 500 250" fill="none" stroke="#FF5D5D" strokeOpacity="0.5" strokeWidth="2" />
-           </svg>
-
-           {/* Nodes */}
-           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-[130px] left-[80px] bg-[#05070B] border border-[#E3A62B] text-[#E3A62B] px-3 py-1 text-xs">module=auth</motion.div>
-           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2 }} className="absolute top-[330px] left-[80px] bg-[#05070B] border border-[#E3A62B] text-[#E3A62B] px-3 py-1 text-xs">language=java</motion.div>
-           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4 }} className="absolute top-[230px] left-[200px] bg-[#05070B] border border-[#E3A62B] text-[#E3A62B] px-3 py-1 text-xs">tech_stack=jwt</motion.div>
-           
-           <motion.div 
-             initial={{ scale: 0 }} 
-             animate={{ scale: 1 }} 
-             transition={{ delay: 0.6 }} 
-             className="absolute top-[230px] right-[80px] bg-[#FF5D5D]/10 border border-[#FF5D5D] text-[#FF5D5D] px-4 py-2 text-sm font-bold shadow-[0_0_20px_rgba(255,93,93,0.3)]"
-           >
-             → severity=critical
-           </motion.div>
-
-           {/* Live Metrics */}
-           <div className="absolute bottom-6 left-6 text-[10px] text-gray-400 leading-relaxed">
-             <div><span className="text-[#E3A62B]">confidence</span> 94.3%</div>
-             <div><span className="text-[#E3A62B]">lift</span> 5.79x</div>
-             <div><span className="text-[#E3A62B]">support</span> 0.09</div>
-           </div>
-           
-           {/* Radar Sweep */}
-           <div className="absolute inset-0 origin-center animate-[spin_4s_linear_infinite] pointer-events-none" style={{ background: 'conic-gradient(from 0deg, transparent 70%, rgba(227, 166, 43, 0.1) 100%)' }}></div>
-        </div>
-      </div>
-    </div>
-  </section>
-);
-
-const ClaritySection = () => (
-  <section className="relative w-full min-h-screen flex items-center bg-[#0A0D12] overflow-hidden border-b border-[#E3A62B]/10 py-20">
-    <GridBackground />
-    <Coordinates top right label="MOD_ANALYSIS" />
-    <Coordinates bottom left label="SEQ_002" />
-    
-    <div className="max-w-[1500px] mx-auto px-6 relative z-10 w-full">
-      <h2 className="text-5xl md:text-7xl font-bold text-white mb-16 leading-tight tracking-tighter">
-        UNPRECEDENTED <br/>
-        <span className="text-[#E3A62B]">DEFECT CLARITY</span>
-      </h2>
-      
-      <div className="relative border-l-2 border-[#E3A62B]/20 pl-8 ml-4 space-y-24 font-mono">
-        {/* Module 1 */}
-        <div className="relative">
-          <div className="absolute w-4 h-4 bg-[#E3A62B] -left-[41px] top-2 rotate-45 shadow-[0_0_15px_#E3A62B]"></div>
-          <div className="text-[#E3A62B] text-sm tracking-widest mb-2 border-b border-[#E3A62B]/20 pb-2 inline-block">INTEGRATED MODULE 01</div>
-          <h3 className="text-3xl text-white font-bold mb-4">RULE MINING ENGINE</h3>
-          <p className="text-gray-400 max-w-2xl leading-relaxed text-sm">
-            Leveraging FP-Growth & Apriori association rule mining to extract hidden correlation patterns across millions of telemetry events in real-time.
-          </p>
-        </div>
-
-        {/* Module 2 */}
-        <div className="relative">
-          <div className="absolute w-4 h-4 bg-[#E3A62B] -left-[41px] top-2 rotate-45"></div>
-          <div className="text-[#E3A62B] text-sm tracking-widest mb-2 border-b border-[#E3A62B]/20 pb-2 inline-block">INTEGRATED MODULE 02</div>
-          <h3 className="text-3xl text-white font-bold mb-4">ML PATTERN ANALYSIS</h3>
-          <p className="text-gray-400 max-w-2xl leading-relaxed text-sm">
-            FastAPI microservice computing continuous Jaccard deduplication and Defect Risk Index (DRI) scoring for proactive triage.
-          </p>
-        </div>
-
-        {/* Module 3 */}
-        <div className="relative">
-          <div className="absolute w-4 h-4 bg-[#FF5D5D] -left-[41px] top-2 rotate-45 shadow-[0_0_15px_#FF5D5D]"></div>
-          <div className="text-[#FF5D5D] text-sm tracking-widest mb-2 border-b border-[#FF5D5D]/20 pb-2 inline-block">INTEGRATED MODULE 03</div>
-          <h3 className="text-3xl text-white font-bold mb-4">EXPLAINABILITY LAYER</h3>
-          <p className="text-gray-400 max-w-2xl leading-relaxed text-sm">
-            Translating complex statistical probabilities into human-readable critical hotspots with 8-stage SSE pipeline streaming.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-);
-
-const TopologySection = () => (
-  <section className="relative w-full h-screen flex flex-col justify-center bg-[#05070B] overflow-hidden border-b border-[#E3A62B]/10">
-    <GridBackground />
-    <Coordinates top left label="NET_TOPOLOGY" />
-    
-    <div className="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
-      <div className="w-[800px] h-[800px] border border-[#E3A62B]/30 rounded-full animate-[spin_20s_linear_infinite]"></div>
-      <div className="absolute w-[600px] h-[600px] border border-[#E3A62B]/20 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
-      <div className="absolute w-[400px] h-[400px] border border-[#E3A62B]/40 rounded-full animate-pulse"></div>
-    </div>
-
-    <div className="max-w-[1500px] w-full mx-auto px-6 relative z-10 flex flex-col items-center text-center">
-      <h2 className="text-4xl md:text-6xl font-bold text-white mb-16 tracking-tighter">
-        GLOBAL CODEBASE <br/><span className="text-[#E3A62B]">TOPOLOGY</span>
-      </h2>
-      
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 w-full font-mono">
-        <div className="border border-[#E3A62B]/20 bg-[#0A0D12]/80 p-8">
-          <div className="text-[#E3A62B] text-5xl font-bold mb-2">2400+</div>
-          <div className="text-gray-500 text-xs tracking-widest">RULES MINED</div>
-        </div>
-        <div className="border border-[#E3A62B]/20 bg-[#0A0D12]/80 p-8">
-          <div className="text-[#E3A62B] text-5xl font-bold mb-2">92%</div>
-          <div className="text-gray-500 text-xs tracking-widest">CONFIDENCE</div>
-        </div>
-        <div className="border border-[#E3A62B]/20 bg-[#0A0D12]/80 p-8">
-          <div className="text-[#E3A62B] text-5xl font-bold mb-2">5.54X</div>
-          <div className="text-gray-500 text-xs tracking-widest">LIFT</div>
-        </div>
-        <div className="border border-[#FF5D5D]/30 bg-[#FF5D5D]/5 p-8 shadow-[inset_0_0_20px_rgba(255,93,93,0.1)]">
-          <div className="text-[#FF5D5D] text-5xl font-bold mb-2">18</div>
-          <div className="text-[#FF5D5D] text-xs tracking-widest">CRITICAL HOTSPOTS</div>
-        </div>
-      </div>
-    </div>
-  </section>
-);
-
-const PipelineSection = () => (
-  <section className="relative w-full min-h-screen flex items-center bg-[#0A0D12] overflow-hidden border-b border-[#E3A62B]/10 py-20">
-    <GridBackground />
-    <Coordinates top left label="DATA_PIPELINE" />
-    
-    <div className="max-w-[1500px] w-full mx-auto px-6 relative z-10 grid grid-cols-1 md:grid-cols-2 gap-20">
-      <div>
-        <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tighter">
-          ARCHITECTURE <br/><span className="text-[#E3A62B]">PIPELINE</span>
-        </h2>
-        <div className="font-mono text-xs text-gray-500 space-y-2 mb-12">
-          <p>[SYS_ON] INITIATING TELEMETRY INGEST</p>
-          <p>[SYS_ACTIVE] CACHE LAYER SYNCED</p>
-          <p>[SYS_RECUR] ALGORITHM LOOP ENGAGED</p>
-          <p>[SYS_WRITE] POSTGRES COMMITTING</p>
-          <p>[SYS_HIT] DASHBOARD SSE ESTABLISHED</p>
-        </div>
-      </div>
-      
-      <div className="flex flex-col items-center justify-center font-mono text-sm relative">
-        <div className="absolute inset-y-0 left-1/2 w-[1px] bg-[#E3A62B]/20 -translate-x-1/2"></div>
-        <div className="absolute inset-y-0 left-1/2 w-[1px] bg-[#E3A62B] -translate-x-1/2 overflow-hidden">
-          <div className="w-full h-20 bg-gradient-to-b from-transparent via-[#FF5D5D] to-transparent animate-[flow_2s_linear_infinite]"></div>
-        </div>
-        
-        {['CSV', 'SPRING BOOT', 'FASTAPI', 'FP-GROWTH', 'POSTGRES', 'REDIS', 'DASHBOARD'].map((node, i) => (
-          <div key={node} className="relative z-10 my-6 bg-[#05070B] border border-[#E3A62B] px-8 py-4 text-[#E3A62B] min-w-[200px] text-center uppercase tracking-widest shadow-[0_0_15px_rgba(227,166,43,0.1)]">
-            {node}
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-);
-
-const TerminalSection = () => {
-  const [logs, setLogs] = useState([]);
-  
+// Glassmorphic Nav
+const Navbar = ({ onLogin }) => {
+  const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const sequence = [
-      "MINER FOUND",
-      "{pkg=security,lang=java}",
-      "→ severity=critical",
-      "confidence=94%",
-      "telemetry flush",
-      "cache eviction",
-      "db commit completed",
-      "waiting for next block..."
-    ];
-    let i = 0;
-    const interval = setInterval(() => {
-      setLogs(prev => {
-        const next = [...prev, sequence[i % sequence.length]];
-        if (next.length > 15) return next.slice(next.length - 15);
-        return next;
-      });
-      i++;
-    }, 800);
-    return () => clearInterval(interval);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <section className="relative w-full h-screen flex flex-col bg-[#05070B] border-b border-[#E3A62B]/10">
-      <div className="border-b border-[#E3A62B]/20 bg-[#0A0D12] px-6 py-3 font-mono text-xs text-[#E3A62B] tracking-widest flex justify-between">
-        <span>AI COMMAND TERMINAL</span>
-        <span className="text-[#FF5D5D] animate-pulse">● LIVE</span>
-      </div>
-      
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-3">
-        {/* Console */}
-        <div className="col-span-2 border-r border-[#E3A62B]/20 p-6 font-mono text-xs overflow-hidden relative">
-          <Scanlines />
-          <div className="space-y-2 text-gray-400">
-            {logs.map((log, index) => (
-              <div key={index} className={`${log.includes('critical') ? 'text-[#FF5D5D]' : ''} ${log.includes('MINER') ? 'text-[#E3A62B]' : ''}`}>
-                <span className="opacity-50 mr-4">[{new Date().toISOString().split('T')[1].slice(0,-1)}]</span>
-                {log}
-              </div>
-            ))}
-            <div className="flex items-center">
-              <span className="opacity-50 mr-4">[{new Date().toISOString().split('T')[1].slice(0,-1)}]</span>
-              <span className="w-2 h-4 bg-[#E3A62B] animate-pulse"></span>
+    <motion.nav 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-black/50 backdrop-blur-2xl border-b border-white/10 py-4' : 'bg-transparent py-6'}`}
+    >
+      <div className="max-w-[1400px] mx-auto px-6 flex items-center justify-between">
+        <div className="flex items-center gap-12">
+          <div className="flex items-center gap-3">
+            <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-600 to-cyan-400 shadow-[0_0_20px_rgba(124,58,237,0.5)]">
+              <Activity className="h-4 w-4 text-white" />
             </div>
+            <span className="text-xl font-bold text-white tracking-tight">BugRisk</span>
+          </div>
+          
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#product" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Platform</a>
+            <a href="#solutions" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Solutions</a>
+            <a href="#customers" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Customers</a>
           </div>
         </div>
+
+        <div className="flex items-center gap-6">
+          <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="hidden md:flex text-sm font-medium text-gray-400 hover:text-white transition-colors">
+            GitHub
+          </a>
+          <button 
+            onClick={onLogin}
+            className="group relative px-6 py-2.5 rounded-full bg-white text-black font-semibold text-sm hover:scale-105 transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
+          >
+            Start Predicting
+          </button>
+        </div>
+      </div>
+    </motion.nav>
+  );
+};
+
+// Next-Gen Hero
+const HeroSection = ({ onLogin }) => {
+  return (
+    <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-20 z-10 overflow-hidden">
+      <div className="max-w-[1200px] mx-auto px-6 text-center flex flex-col items-center">
         
-        {/* Right Panel */}
-        <div className="p-6 font-mono bg-[#0A0D12] relative">
-          <GridBackground />
-          <div className="relative z-10 space-y-12">
-            <div>
-              <div className="text-gray-500 text-[10px] tracking-widest mb-2 border-b border-gray-800 pb-2">HOTSPOT FILE</div>
-              <div className="text-[#E3A62B] text-sm truncate">auth/jwt/TokenValidator.java</div>
-            </div>
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl"
+        >
+          <Sparkles className="w-4 h-4 text-amber-400" />
+          <span className="text-sm font-medium text-gray-300">BugRisk Intelligence Engine 2.0 is live</span>
+          <ChevronRight className="w-4 h-4 text-gray-500" />
+        </motion.div>
+
+        <motion.h1 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          className="text-7xl md:text-9xl font-extrabold text-white tracking-tighter leading-[0.9] mb-8"
+        >
+          Stop Reacting.<br/>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-violet-500 to-fuchsia-500">
+            Start Predicting.
+          </span>
+        </motion.h1>
+
+        <motion.p 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          className="text-xl md:text-2xl text-gray-400 max-w-3xl font-light leading-relaxed mb-12"
+        >
+          The only telemetry platform that mines association rules to expose defect hotspots <span className="text-white font-medium">before production failures happen.</span>
+        </motion.p>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+          className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center"
+        >
+          <button 
+            onClick={onLogin}
+            className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold text-lg hover:shadow-[0_0_40px_rgba(124,58,237,0.5)] hover:scale-105 transition-all flex items-center justify-center gap-2"
+          >
+            Initialize Platform
+            <ArrowRight className="w-5 h-5" />
+          </button>
+          <button className="w-full sm:w-auto px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2 backdrop-blur-xl">
+            <Terminal className="w-5 h-5" />
+            Book Demo
+          </button>
+        </motion.div>
+      </div>
+
+      {/* Floating Dashboard Preview */}
+      <motion.div 
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.2, delay: 0.8, ease: "easeOut" }}
+        className="mt-20 w-full max-w-[1200px] px-6 relative"
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 top-1/2"></div>
+        <div className="relative rounded-t-3xl border border-white/20 bg-[#0A0A0A]/80 backdrop-blur-3xl overflow-hidden shadow-[0_0_100px_rgba(124,58,237,0.2)]">
+          <div className="flex items-center gap-2 px-6 py-4 border-b border-white/10 bg-white/5">
+            <div className="w-3 h-3 rounded-full bg-red-500"></div>
+            <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            <div className="ml-4 text-xs font-mono text-gray-400 flex-1 text-center pr-12">bugrisk-intelligence-dashboard</div>
+          </div>
+          <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            <div>
-              <div className="text-gray-500 text-[10px] tracking-widest mb-2 border-b border-gray-800 pb-2">DRI (DEFECT RISK INDEX)</div>
-              <div className="text-white text-5xl font-bold">0.89</div>
+            {/* Mock Dashboard Element 1 */}
+            <div className="col-span-2 rounded-2xl border border-white/10 bg-black/50 p-6">
+              <div className="flex items-center justify-between mb-8">
+                <div className="text-sm font-semibold text-white">Live Prediction Matrix</div>
+                <div className="text-xs font-mono text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded">STREAMING</div>
+              </div>
+              <div className="space-y-4 font-mono text-sm">
+                <div className="flex items-center justify-between text-gray-400 border-b border-white/5 pb-2">
+                  <span>module=auth</span>
+                  <ArrowRight className="w-4 h-4 text-gray-600" />
+                  <span className="text-red-400 font-bold bg-red-500/10 px-2 py-1 rounded">critical</span>
+                </div>
+                <div className="flex items-center justify-between text-gray-400 border-b border-white/5 pb-2">
+                  <span>tech_stack=jwt</span>
+                  <ArrowRight className="w-4 h-4 text-gray-600" />
+                  <span className="text-red-400 font-bold bg-red-500/10 px-2 py-1 rounded">critical</span>
+                </div>
+                <div className="flex items-center justify-between text-gray-400">
+                  <span>language=java</span>
+                  <ArrowRight className="w-4 h-4 text-gray-600" />
+                  <span className="text-amber-400 font-bold bg-amber-500/10 px-2 py-1 rounded">warning</span>
+                </div>
+              </div>
             </div>
-            
-            <div>
-              <div className="text-gray-500 text-[10px] tracking-widest mb-2 border-b border-gray-800 pb-2">SEVERITY</div>
-              <div className="text-[#FF5D5D] text-2xl font-bold tracking-widest animate-pulse">CRITICAL</div>
+
+            {/* Mock Dashboard Element 2 */}
+            <div className="rounded-2xl border border-white/10 bg-gradient-to-b from-violet-900/20 to-black/50 p-6 flex flex-col justify-center items-center text-center">
+               <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500 mb-2">94%</div>
+               <div className="text-sm font-medium text-gray-400 uppercase tracking-widest">Model Confidence</div>
+               <div className="mt-4 w-full bg-white/10 rounded-full h-1">
+                 <div className="bg-violet-500 h-1 rounded-full w-[94%] shadow-[0_0_10px_rgba(139,92,246,0.8)]"></div>
+               </div>
             </div>
-            
-            <div>
-              <div className="text-gray-500 text-[10px] tracking-widest mb-2 border-b border-gray-800 pb-2">ACTIVE CONNECTIONS</div>
-              <div className="text-white text-xl">124<span className="text-gray-500 text-sm">/sec</span></div>
+
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+};
+
+// Social Proof
+const SocialProof = () => (
+  <div className="w-full py-10 border-y border-white/5 bg-white/[0.02] z-10 relative">
+    <div className="max-w-[1400px] mx-auto px-6 flex flex-col items-center">
+      <p className="text-sm font-medium text-gray-500 mb-8 uppercase tracking-widest">Trusted by elite engineering teams</p>
+      <div className="flex flex-wrap justify-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
+        <div className="text-xl font-black tracking-tighter">Acme Corp</div>
+        <div className="text-xl font-bold font-serif italic">GlobalTech</div>
+        <div className="text-xl font-black uppercase">Nexus</div>
+        <div className="text-xl font-bold tracking-widest">AETHER</div>
+        <div className="text-xl font-medium tracking-tight">Quantum</div>
+      </div>
+    </div>
+  </div>
+);
+
+// Bento Grid Features
+const BentoFeatures = () => {
+  return (
+    <section className="relative w-full py-32 z-10 bg-black">
+      <div className="max-w-[1200px] mx-auto px-6">
+        <div className="text-center mb-20">
+          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 tracking-tight">Unprecedented Clarity</h2>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light">
+            We don't just find bugs. We map the entire DNA of your codebase to predict where the next fracture will occur.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 auto-rows-[300px] gap-6">
+          {/* Card 1: Large */}
+          <div className="md:col-span-2 rounded-3xl border border-white/10 bg-white/[0.02] p-10 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-violet-600/20 rounded-full blur-[100px] group-hover:bg-violet-600/40 transition-colors duration-700"></div>
+            <div className="relative z-10 h-full flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-6 border border-white/10">
+                  <Database className="w-6 h-6 text-violet-400" />
+                </div>
+                <h3 className="text-3xl font-bold text-white mb-4">Rule Mining Engine</h3>
+                <p className="text-gray-400 text-lg leading-relaxed max-w-md">
+                  Leveraging FP-Growth & Apriori association rule mining to extract hidden correlation patterns across millions of telemetry events in real-time.
+                </p>
+              </div>
             </div>
+          </div>
+
+          {/* Card 2: Tall */}
+          <div className="md:col-span-1 md:row-span-2 rounded-3xl border border-white/10 bg-gradient-to-b from-cyan-900/20 to-transparent p-10 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-600/20 rounded-full blur-[80px] group-hover:bg-cyan-600/40 transition-colors duration-700"></div>
+            <div className="relative z-10 h-full flex flex-col">
+              <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-6 border border-white/10">
+                <Zap className="w-6 h-6 text-cyan-400" />
+              </div>
+              <h3 className="text-3xl font-bold text-white mb-4">ML Pattern Analysis</h3>
+              <p className="text-gray-400 text-lg leading-relaxed mb-8">
+                FastAPI microservice computing continuous Jaccard deduplication and Defect Risk Index (DRI) scoring for proactive triage.
+              </p>
+              <div className="mt-auto flex-1 rounded-xl bg-black/50 border border-white/5 p-4 flex flex-col justify-end">
+                <div className="w-full h-2 bg-white/10 rounded-full mb-3"><div className="w-[80%] h-full bg-cyan-500 rounded-full"></div></div>
+                <div className="w-full h-2 bg-white/10 rounded-full mb-3"><div className="w-[60%] h-full bg-cyan-500/50 rounded-full"></div></div>
+                <div className="w-full h-2 bg-white/10 rounded-full"><div className="w-[40%] h-full bg-cyan-500/30 rounded-full"></div></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3: Wide */}
+          <div className="md:col-span-2 rounded-3xl border border-white/10 bg-gradient-to-r from-fuchsia-900/20 to-transparent p-10 relative overflow-hidden group">
+             <div className="absolute bottom-0 left-0 w-96 h-96 bg-fuchsia-600/20 rounded-full blur-[100px] group-hover:bg-fuchsia-600/40 transition-colors duration-700"></div>
+             <div className="relative z-10 h-full flex flex-col md:flex-row items-center gap-8">
+                <div className="flex-1">
+                  <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-6 border border-white/10">
+                    <Layers className="w-6 h-6 text-fuchsia-400" />
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-4">Explainability Layer</h3>
+                  <p className="text-gray-400 text-lg leading-relaxed">
+                    Translating complex statistical probabilities into human-readable critical hotspots with 8-stage SSE pipeline streaming.
+                  </p>
+                </div>
+                <div className="flex-1 w-full bg-black/50 border border-white/10 rounded-xl p-6 font-mono text-sm text-gray-400 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+                  <div className="text-fuchsia-400 mb-2">SSE STREAM // ACTIVE</div>
+                  <div>> receiving block 4509...</div>
+                  <div>> parsing telemetry...</div>
+                  <div className="text-white">> 18 hotspots identified</div>
+                </div>
+             </div>
           </div>
         </div>
       </div>
@@ -342,65 +271,84 @@ const TerminalSection = () => {
   );
 };
 
-const CTASection = ({ onLogin }) => (
-  <section className="relative w-full h-screen flex items-center justify-center bg-[#05070B] overflow-hidden text-center">
-    <GridBackground />
-    <Scanlines />
-    <Coordinates top right label="SYS_HALT" />
-    <Coordinates bottom left label="AUTH_REQ" />
-    
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(227,166,43,0.05)_0%,transparent_60%)] pointer-events-none"></div>
-
-    <div className="relative z-10 px-6 max-w-4xl mx-auto flex flex-col items-center">
-      <ShieldAlert className="w-16 h-16 text-[#FF5D5D] mb-8" />
-      <h2 className="text-5xl md:text-7xl font-bold text-white mb-12 leading-tight tracking-tighter">
-        READY TO UNDERSTAND <br/> YOUR CODEBASE <br/>
-        <span className="text-[#FF5D5D]">BEFORE IT BREAKS?</span>
-      </h2>
-      
-      <button 
-        onClick={onLogin}
-        className="bg-[#E3A62B] text-[#05070B] px-12 py-5 font-bold font-mono text-lg hover:bg-white transition-all mb-16 shadow-[0_0_30px_rgba(227,166,43,0.3)]"
-      >
-        INITIALIZE PLATFORM
-      </button>
-
-      <div className="font-mono text-gray-600 text-xs tracking-[0.3em] flex items-center gap-4">
-        <span>BUGRISK // SECURE_CORE</span>
-        <span className="w-1 h-1 bg-gray-600 rounded-full"></span>
-        <span>2026</span>
+// Huge Stats
+const StatsSection = () => (
+  <section className="relative w-full py-32 z-10 bg-[#030305] overflow-hidden">
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.05)_0%,transparent_70%)]"></div>
+    <div className="max-w-[1200px] mx-auto px-6 relative z-10">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-6">
+        {[
+          { value: "2400+", label: "Rules Mined", color: "from-white to-gray-500" },
+          { value: "92%", label: "Confidence", color: "from-cyan-400 to-blue-600" },
+          { value: "5.54x", label: "Lift Ratio", color: "from-violet-400 to-fuchsia-600" },
+          { value: "18", label: "Critical Hotspots", color: "from-amber-400 to-red-600" },
+        ].map((stat, i) => (
+          <div key={i} className="text-center">
+            <div className={`text-6xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b ${stat.color} mb-4`}>
+              {stat.value}
+            </div>
+            <div className="text-sm font-bold text-gray-400 uppercase tracking-[0.2em]">{stat.label}</div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 );
 
-const LandingPage = ({ onLogin }) => {
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes flow {
-        0% { transform: translateY(-100%); }
-        100% { transform: translateY(800%); }
-      }
-      @keyframes dash {
-        to { stroke-dashoffset: -20; }
-      }
-    `;
-    document.head.appendChild(style);
-    return () => document.head.removeChild(style);
-  }, []);
+// Massive CTA
+const CTASection = ({ onLogin }) => (
+  <section className="relative w-full py-40 z-10 bg-black overflow-hidden flex items-center justify-center border-t border-white/10">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-violet-600/30 to-cyan-500/30 rounded-full blur-[150px] pointer-events-none mix-blend-screen"></div>
+    
+    <div className="relative z-10 text-center max-w-4xl px-6">
+      <h2 className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-tight">
+        Ship with <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400">Certainty.</span>
+      </h2>
+      <p className="text-2xl text-gray-400 font-light mb-12">
+        Join the best engineering teams using BugRisk to secure their pipelines.
+      </p>
+      
+      <button 
+        onClick={onLogin}
+        className="px-12 py-6 rounded-full bg-white text-black font-extrabold text-xl hover:scale-105 transition-all shadow-[0_0_50px_rgba(255,255,255,0.3)] hover:shadow-[0_0_80px_rgba(255,255,255,0.5)] flex items-center gap-3 mx-auto"
+      >
+        Start your free trial
+        <ArrowRight className="w-6 h-6" />
+      </button>
+    </div>
+  </section>
+);
 
+const Footer = () => (
+  <footer className="w-full py-12 border-t border-white/10 bg-black z-10 relative">
+    <div className="max-w-[1400px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div className="flex items-center gap-3 text-white font-bold text-xl">
+        <Activity className="w-6 h-6 text-violet-500" />
+        BugRisk
+      </div>
+      <div className="flex gap-8 text-sm font-medium text-gray-500">
+        <a href="#" className="hover:text-white transition-colors">Privacy</a>
+        <a href="#" className="hover:text-white transition-colors">Terms</a>
+        <a href="#" className="hover:text-white transition-colors">Twitter</a>
+        <a href={GITHUB_URL} className="hover:text-white transition-colors">GitHub</a>
+      </div>
+    </div>
+  </footer>
+);
+
+const LandingPage = ({ onLogin }) => {
   return (
-    <div className="min-h-screen bg-[#05070B] text-white selection:bg-[#E3A62B] selection:text-[#05070B]">
+    <div className="min-h-screen bg-black text-white selection:bg-violet-500/40 selection:text-white font-sans overflow-x-hidden">
+      <AmbientBackground />
       <Navbar onLogin={onLogin} />
       <main>
         <HeroSection onLogin={onLogin} />
-        <ClaritySection />
-        <TopologySection />
-        <PipelineSection />
-        <TerminalSection />
+        <SocialProof />
+        <BentoFeatures />
+        <StatsSection />
         <CTASection onLogin={onLogin} />
       </main>
+      <Footer />
     </div>
   );
 };
