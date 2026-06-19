@@ -1077,22 +1077,25 @@ function App() {
       return <LandingPage onLogin={() => setShowLogin(true)} />;
     }
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0b0f19] px-4">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-[#0b0f19] to-[#0b0f19] pointer-events-none"></div>
-        <div className="w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-slate-800 p-8 rounded-2xl shadow-2xl relative">
-          <div className="text-center mb-8">
-            <div className="inline-flex p-3 bg-purple-500/10 border border-purple-500/20 rounded-xl mb-3 text-purple-400">
-              <ShieldAlert size={40} className="animate-pulse" />
+      <div className="min-h-screen flex items-center justify-center bg-[#020617] px-4 overflow-hidden relative font-sans">
+        {/* Ambient Background matching Landing Page */}
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-600/10 blur-[120px] mix-blend-screen animate-[pulse_8s_ease-in-out_infinite]"></div>
+        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-600/10 blur-[120px] mix-blend-screen animate-[pulse_10s_ease-in-out_infinite_reverse]"></div>
+
+        <div className="w-full max-w-md bg-slate-900/40 backdrop-blur-3xl border border-emerald-500/20 p-10 rounded-3xl shadow-[0_0_50px_rgba(16,185,129,0.1)] relative z-10">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-500 to-cyan-500 shadow-[0_0_30px_rgba(16,185,129,0.4)] mb-6">
+              <Activity className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-3xl font-extrabold tracking-tight text-white mt-1">BugRisk Miner</h1>
-            <p className="text-slate-400 text-sm mt-1">AI-Powered Defect Association Risk Hotspot Miner</p>
+            <h1 className="text-4xl font-black text-white tracking-tight mb-2">Deploy Engine</h1>
+            <p className="text-slate-400 font-light">Authenticate to access enterprise intelligence.</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Username</label>
+              <label className="block text-sm font-bold text-slate-300 mb-2">IAM Identity</label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-emerald-500/50">
                   <User size={18} />
                 </span>
                 <input
@@ -1101,15 +1104,15 @@ function App() {
                   placeholder="admin or engineer"
                   value={loginUsername}
                   onChange={(e) => setLoginUsername(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2.5 bg-slate-950 border border-slate-800 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 text-white placeholder-slate-600 transition"
+                  className="block w-full pl-12 pr-4 py-3.5 bg-slate-950/50 border border-slate-800 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-white placeholder-slate-600 transition-all font-mono"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Password</label>
+              <label className="block text-sm font-bold text-slate-300 mb-2">Access Token</label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-emerald-500/50">
                   <Key size={18} />
                 </span>
                 <input
@@ -1118,33 +1121,33 @@ function App() {
                   placeholder="••••••••"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2.5 bg-slate-950 border border-slate-800 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 text-white placeholder-slate-600 transition"
+                  className="block w-full pl-12 pr-4 py-3.5 bg-slate-950/50 border border-slate-800 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-white placeholder-slate-600 transition-all font-mono"
                 />
               </div>
             </div>
 
-            <div className="bg-slate-950/65 border border-slate-850 p-3 rounded-lg text-xs text-slate-400 space-y-1">
-              <p className="font-semibold text-slate-300">Default Accounts:</p>
-              <p>• Admin: <code className="text-purple-400 font-mono">admin / admin123</code></p>
-              <p>• Engineer: <code className="text-purple-400 font-mono">engineer / engineer123</code></p>
+            <div className="bg-emerald-500/5 border border-emerald-500/10 p-4 rounded-xl text-xs text-slate-400 space-y-2 font-mono">
+              <p className="font-bold text-emerald-400 mb-2 border-b border-emerald-500/10 pb-2">PRE-CONFIGURED ENVIRONMENT:</p>
+              <p>› ROOT: <code className="text-white">admin / admin123</code></p>
+              <p>› READ: <code className="text-white">engineer / engineer123</code></p>
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-purple-500/20 active:scale-[0.98] transition flex items-center justify-center gap-2"
+              className="w-full py-4 px-4 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_35px_rgba(16,185,129,0.5)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
             >
-              <Activity size={18} />
-              <span>Launch Dashboard</span>
+              <span>Initialize Pipeline</span>
+              <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </button>
 
-            <div className="text-center mt-4 border-t border-slate-800/60 pt-4">
+            <div className="text-center mt-6">
               <button
                 type="button"
                 onClick={() => setShowLogin(false)}
-                className="text-sm text-purple-400 hover:text-purple-300 transition inline-flex items-center gap-1 font-medium bg-transparent border-none cursor-pointer"
+                className="text-sm text-slate-400 hover:text-emerald-400 transition-colors inline-flex items-center gap-1 font-bold bg-transparent border-none cursor-pointer"
               >
                 <ChevronLeft size={16} />
-                <span>Back to Landing Page</span>
+                <span>Return to Platform Engine</span>
               </button>
             </div>
           </form>
