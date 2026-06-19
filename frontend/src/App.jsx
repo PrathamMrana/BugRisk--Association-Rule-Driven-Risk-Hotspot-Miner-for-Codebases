@@ -204,6 +204,7 @@ function App() {
       const parsedRole = role.replace('ROLE_', '');
       const session = { username, role: parsedRole, token };
       localStorage.setItem('bugrisk_session', JSON.stringify(session));
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setUser(session);
       triggerNotification('Welcome to BugRisk Platform.');
     } catch (err) {
