@@ -41,10 +41,10 @@ const Navbar = ({ onLogin }) => {
             <span className="text-2xl font-black text-white tracking-tight">BugRisk</span>
           </div>
           
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#product" className="text-sm font-semibold text-slate-400 hover:text-emerald-400 transition-colors">Platform Engine</a>
-            <a href="#features" className="text-sm font-semibold text-slate-400 hover:text-emerald-400 transition-colors">Advanced Capabilities</a>
-            <a href="#docs" className="text-sm font-semibold text-slate-400 hover:text-emerald-400 transition-colors">API Docs</a>
+          <div className="hidden md:flex items-center gap-6">
+            <a href="#engine" className="px-4 py-2 rounded-full text-sm font-bold text-slate-300 hover:text-white hover:bg-emerald-500/10 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] border border-transparent hover:border-emerald-500/30 transition-all duration-300">Platform Engine</a>
+            <a href="#features" className="px-4 py-2 rounded-full text-sm font-bold text-slate-300 hover:text-white hover:bg-cyan-500/10 hover:shadow-[0_0_20px_rgba(6,182,212,0.2)] border border-transparent hover:border-cyan-500/30 transition-all duration-300">Advanced Capabilities</a>
+            <a href="https://bugrisk-ml.onrender.com/docs" target="_blank" rel="noreferrer" className="px-4 py-2 rounded-full text-sm font-bold text-slate-300 hover:text-white hover:bg-indigo-500/10 hover:shadow-[0_0_20px_rgba(99,102,241,0.2)] border border-transparent hover:border-indigo-500/30 transition-all duration-300">API Docs</a>
           </div>
         </div>
 
@@ -66,7 +66,7 @@ const Navbar = ({ onLogin }) => {
 
 const HeroSection = ({ onLogin }) => {
   return (
-    <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-20 z-10 overflow-hidden">
+    <section id="engine" className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-20 z-10 overflow-hidden">
       <div className="max-w-[1200px] mx-auto px-6 text-center flex flex-col items-center">
         
         <motion.div 
@@ -208,7 +208,7 @@ const HeroSection = ({ onLogin }) => {
 // Huge Advanced App Features
 const AdvancedFeatures = () => {
   return (
-    <section className="relative w-full py-32 z-10 bg-[#020617] border-y border-emerald-500/10">
+    <section id="features" className="relative w-full py-32 z-10 bg-[#020617] border-y border-emerald-500/10">
       <div className="max-w-[1300px] mx-auto px-6">
         <div className="text-center mb-24">
           <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">Enterprise Intelligence</h2>
