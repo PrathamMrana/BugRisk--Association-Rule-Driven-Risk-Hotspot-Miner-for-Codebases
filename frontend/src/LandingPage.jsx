@@ -231,15 +231,15 @@ const AdvancedFeatures = () => {
             </p>
           </div>
 
-          {/* Feature 2 */}
+          {/* Feature 2: Dataset Intelligence */}
           <div className="rounded-3xl border border-cyan-500/10 bg-slate-900/40 p-8 hover:bg-slate-800/40 transition-colors group relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-[60px] group-hover:bg-cyan-500/20 transition-all duration-500"></div>
             <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center mb-8 border border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.2)]">
-              <Cpu className="w-7 h-7 text-cyan-400" />
+              <Database className="w-7 h-7 text-cyan-400" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-4">LSTM Trend Prediction</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">Dataset Intelligence Engine</h3>
             <p className="text-slate-400 leading-relaxed font-light">
-              Time-series forecasting models utilizing Long Short-Term Memory networks to predict codebase deterioration before it impacts production.
+              Automated ingestion profiling that computes schema validation, completeness scoring, and a dynamic 0-100 Quality Score Index instantly.
             </p>
           </div>
 
@@ -282,15 +282,15 @@ const AdvancedFeatures = () => {
             </div>
           </div>
 
-          {/* Feature 5 */}
+          {/* Feature 5: DRI */}
           <div className="rounded-3xl border border-rose-500/10 bg-slate-900/40 p-8 hover:bg-slate-800/40 transition-colors group relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/10 rounded-full blur-[60px] group-hover:bg-rose-500/20 transition-all duration-500"></div>
             <div className="w-14 h-14 rounded-2xl bg-rose-500/10 flex items-center justify-center mb-8 border border-rose-500/20 shadow-[0_0_20px_rgba(244,63,94,0.2)]">
-              <GitBranch className="w-7 h-7 text-rose-400" />
+              <Activity className="w-7 h-7 text-rose-400" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-4">CI/CD Risk Gates</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">Defect Risk Index (DRI)</h3>
             <p className="text-slate-400 leading-relaxed font-light">
-              Native GitHub Webhooks that automatically block pull requests if the Defect Risk Index (DRI) exceeds acceptable institutional thresholds.
+              Calculates a standardized risk index per module utilizing rule frequencies, category contributions, and severity modifiers.
             </p>
           </div>
 
