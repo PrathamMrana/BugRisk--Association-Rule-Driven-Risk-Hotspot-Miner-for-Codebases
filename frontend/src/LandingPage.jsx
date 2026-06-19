@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Activity, ShieldAlert, GitBranch, Terminal, Zap, Layers, ArrowRight, Sparkles, Database, Code2, Network, Cpu, Lock, Workflow, ChevronRight } from 'lucide-react';
+import { Activity, ShieldAlert, GitBranch, Terminal, Zap, Layers, ArrowRight, Sparkles, Database, Code2, Network, Cpu, Lock, Workflow, ChevronRight, X } from 'lucide-react';
 
 const GITHUB_URL = 'https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases';
 
@@ -18,7 +18,7 @@ const AmbientBackground = () => (
 );
 
 // Glassmorphic Nav
-const Navbar = ({ onLogin }) => {
+const Navbar = ({ onLogin, setPreview }) => {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -42,15 +42,15 @@ const Navbar = ({ onLogin }) => {
           </div>
           
           <div className="hidden lg:flex items-center gap-4">
-            <button onClick={onLogin} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-emerald-500/10 hover:shadow-[0_0_30px_rgba(16,185,129,0.2)] border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 group">
+            <button onClick={() => setPreview('/screenshots/03_graph_explorer.png')} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-emerald-500/10 hover:shadow-[0_0_30px_rgba(16,185,129,0.2)] border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 group">
               <Network className="w-4 h-4 text-emerald-500 group-hover:text-emerald-400" />
               System Graph
             </button>
-            <button onClick={onLogin} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-cyan-500/10 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
+            <button onClick={() => setPreview('/screenshots/02_rules_explorer.png')} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-cyan-500/10 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
               <Database className="w-4 h-4 text-cyan-500 group-hover:text-cyan-400" />
               Rules Engine
             </button>
-            <button onClick={onLogin} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-indigo-500/10 hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] border border-slate-800 hover:border-indigo-500/50 transition-all duration-300 group">
+            <button onClick={() => setPreview('/screenshots/05_ml_analytics.png')} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-indigo-500/10 hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] border border-slate-800 hover:border-indigo-500/50 transition-all duration-300 group">
               <Activity className="w-4 h-4 text-indigo-500 group-hover:text-indigo-400" />
               ML Analytics
             </button>
@@ -409,11 +409,27 @@ const Footer = () => (
   </footer>
 );
 
+const PreviewModal = ({ src, onClose }) => {
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#020617]/90 backdrop-blur-md p-6 animate-in fade-in duration-300">
+      <button 
+        onClick={onClose} 
+        className="absolute top-8 right-8 p-3 rounded-full bg-slate-900/50 text-slate-400 hover:text-white hover:bg-rose-500/20 border border-slate-800 hover:border-rose-500/50 transition-all shadow-xl"
+      >
+        <X className="w-6 h-6" />
+      </button>
+      <img src={src} alt="Feature Preview" className="max-w-full max-h-full rounded-2xl border border-cyan-500/20 shadow-[0_0_100px_rgba(6,182,212,0.15)] object-contain" />
+    </div>
+  );
+};
+
 const LandingPage = ({ onLogin }) => {
+  const [preview, setPreview] = useState(null);
+
   return (
     <div className="min-h-screen bg-[#020617] text-white selection:bg-emerald-500/30 selection:text-white font-sans overflow-x-hidden">
       <AmbientBackground />
-      <Navbar onLogin={onLogin} />
+      <Navbar onLogin={onLogin} setPreview={setPreview} />
       <main>
         <HeroSection onLogin={onLogin} />
         <AdvancedFeatures />
@@ -421,6 +437,7 @@ const LandingPage = ({ onLogin }) => {
         <CTASection onLogin={onLogin} />
       </main>
       <Footer />
+      {preview && <PreviewModal src={preview} onClose={() => setPreview(null)} />}
     </div>
   );
 };
