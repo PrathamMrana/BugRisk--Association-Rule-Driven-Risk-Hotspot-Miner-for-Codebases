@@ -42,15 +42,15 @@ const Navbar = ({ onLogin }) => {
           </div>
           
           <div className="hidden lg:flex items-center gap-4">
-            <button className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-emerald-500/10 hover:shadow-[0_0_30px_rgba(16,185,129,0.2)] border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 group">
+            <button onClick={onLogin} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-emerald-500/10 hover:shadow-[0_0_30px_rgba(16,185,129,0.2)] border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 group">
               <Network className="w-4 h-4 text-emerald-500 group-hover:text-emerald-400" />
               System Graph
             </button>
-            <button className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-cyan-500/10 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
+            <button onClick={onLogin} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-cyan-500/10 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
               <Database className="w-4 h-4 text-cyan-500 group-hover:text-cyan-400" />
               Rules Engine
             </button>
-            <button className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-indigo-500/10 hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] border border-slate-800 hover:border-indigo-500/50 transition-all duration-300 group">
+            <button onClick={onLogin} className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-slate-300 hover:text-white bg-slate-900/50 hover:bg-indigo-500/10 hover:shadow-[0_0_30px_rgba(99,102,241,0.2)] border border-slate-800 hover:border-indigo-500/50 transition-all duration-300 group">
               <Activity className="w-4 h-4 text-indigo-500 group-hover:text-indigo-400" />
               ML Analytics
             </button>
