@@ -300,6 +300,40 @@ const AdvancedFeatures = () => {
   );
 };
 
+const AnimatedCounter = ({ value, suffix = '', decimals = 0 }) => {
+  const ref = React.useRef(null);
+  const isInView = motion.useInView ? motion.useInView(ref, { once: true, margin: "-100px" }) : true;
+  const [count, setCount] = React.useState(0);
+
+  React.useEffect(() => {
+    if (isInView) {
+      let startTime;
+      let animationFrame;
+      const target = parseFloat(value);
+      const duration = 2500;
+
+      const updateCount = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        const easeOutExpo = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        setCount(target * easeOutExpo);
+        
+        if (progress < 1) {
+          animationFrame = requestAnimationFrame(updateCount);
+        }
+      };
+      animationFrame = requestAnimationFrame(updateCount);
+      return () => cancelAnimationFrame(animationFrame);
+    }
+  }, [isInView, value]);
+
+  return (
+    <span ref={ref}>
+      {count.toFixed(decimals)}{suffix}
+    </span>
+  );
+};
+
 // Massive Stats
 const StatsSection = () => (
   <section className="relative w-full py-32 z-10 bg-[#020617] overflow-hidden">
@@ -307,14 +341,14 @@ const StatsSection = () => (
     <div className="max-w-[1200px] mx-auto px-6 relative z-10">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-12 border border-emerald-500/10 rounded-3xl p-12 bg-slate-900/30 backdrop-blur-md shadow-[0_0_50px_rgba(16,185,129,0.05)]">
         {[
-          { value: "2400+", label: "Rules Mined", color: "from-emerald-400 to-cyan-400" },
-          { value: "100", label: "Quality Index", color: "from-cyan-400 to-blue-500" },
-          { value: "5.54x", label: "Lift Ratio", color: "from-indigo-400 to-purple-500" },
-          { value: "18", label: "Critical Hotspots", color: "from-rose-400 to-orange-500" },
+          { value: 2400, suffix: "+", decimals: 0, label: "Rules Mined", color: "from-emerald-400 to-cyan-400" },
+          { value: 100, suffix: "", decimals: 0, label: "Quality Index", color: "from-cyan-400 to-blue-500" },
+          { value: 5.54, suffix: "x", decimals: 2, label: "Lift Ratio", color: "from-indigo-400 to-purple-500" },
+          { value: 18, suffix: "", decimals: 0, label: "Critical Hotspots", color: "from-rose-400 to-orange-500" },
         ].map((stat, i) => (
           <div key={i} className="text-center">
             <div className={`text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b ${stat.color} mb-4 drop-shadow-lg`}>
-              {stat.value}
+              <AnimatedCounter value={stat.value} suffix={stat.suffix} decimals={stat.decimals} />
             </div>
             <div className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">{stat.label}</div>
           </div>
