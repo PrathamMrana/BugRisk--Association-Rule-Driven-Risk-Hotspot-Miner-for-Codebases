@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { Activity, ShieldAlert, GitBranch, Terminal, Zap, Layers, ArrowRight, Sparkles, Database, Code2, Network, Cpu, Lock, Workflow, ChevronRight } from 'lucide-react';
 
 const GITHUB_URL = 'https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases';
@@ -302,7 +302,7 @@ const AdvancedFeatures = () => {
 
 const AnimatedCounter = ({ value, suffix = '', decimals = 0 }) => {
   const ref = React.useRef(null);
-  const isInView = motion.useInView ? motion.useInView(ref, { once: true, margin: "-100px" }) : true;
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [count, setCount] = React.useState(0);
 
   React.useEffect(() => {
