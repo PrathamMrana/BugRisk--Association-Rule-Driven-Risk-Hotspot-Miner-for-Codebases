@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Activity, ShieldAlert, GitBranch, Terminal, Zap, Layers, ArrowRight, Sparkles, Database, Code2, Network, Cpu, Lock, Workflow } from 'lucide-react';
+import { Activity, ShieldAlert, GitBranch, Terminal, Zap, Layers, ArrowRight, Sparkles, Database, Code2, Network, Cpu, Lock, Workflow, ChevronRight } from 'lucide-react';
 
 const GITHUB_URL = 'https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases';
 
