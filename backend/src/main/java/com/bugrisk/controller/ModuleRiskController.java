@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/v1/risk")
-@CrossOrigin(origins = "*")
+@CrossOrigin(originPatterns = "*")
 @Slf4j
 public class ModuleRiskController {
 

@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/v1/analytics")
-@CrossOrigin(origins = "*")
+@CrossOrigin(originPatterns = "*")
 @Slf4j
 public class AnalyticsController {
 
