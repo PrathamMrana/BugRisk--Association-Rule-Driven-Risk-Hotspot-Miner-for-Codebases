@@ -207,10 +207,10 @@ function App() {
         axios.defaults.headers.common['Authorization'] = `Bearer ${parsed.token}`;
         return parsed;
       } catch (e) {
-        return { username: 'demo', token: 'demo-token', role: 'ROLE_ADMIN' };
+        return null;
       }
     }
-    return { username: 'demo', token: 'demo-token', role: 'ROLE_ADMIN' };
+    return null;
   });
 
   const [activeTab, setActiveTab] = useState(() => {
@@ -363,6 +363,7 @@ function App() {
     localStorage.removeItem('bugrisk_session');
     setUser(null);
     setShowLogin(false);
+    setShowLanding(true);
     setActiveTab('dashboard');
     triggerNotification('Logged out successfully.');
   };
@@ -1219,17 +1220,16 @@ function App() {
     }
   }, [sseLogs]);
 
-  const [showLanding, setShowLanding] = useState(true);
+  const [showLanding, setShowLanding] = useState(() => !localStorage.getItem('bugrisk_session'));
   
   if (showLanding) {
     return <LandingPage 
-      onLogin={() => {
-        if (user) {
-          setShowLanding(false);
-        } else {
-          setShowLanding(false);
-          setShowLogin(true);
+      onLogin={(userData) => {
+        if (userData) {
+          setUser(userData);
+          axios.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
         }
+        setShowLanding(false);
       }} 
       onNavigate={(tab) => {
         setActiveTab(tab);
@@ -2563,7 +2563,7 @@ function App() {
                         </div>
                       </div>
 
-                      {user.role === 'ADMIN' ? (
+                      {user.role === 'ADMIN' || user.role === 'ROLE_ADMIN' ? (
                         <button
                           type="submit"
                           disabled={scanning}
@@ -2953,7 +2953,7 @@ function App() {
                       />
                     </div>
 
-                    {user.role === 'ADMIN' ? (
+                    {user.role === 'ADMIN' || user.role === 'ROLE_ADMIN' ? (
                       <button
                         type="submit"
                         disabled={comparing}
