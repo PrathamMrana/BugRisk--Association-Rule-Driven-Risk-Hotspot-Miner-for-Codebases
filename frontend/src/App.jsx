@@ -499,7 +499,7 @@ function App() {
   // SSE Stream Scan Runner
   const handleRunStreamScan = (e) => {
     e.preventDefault();
-    if (user?.role !== 'ADMIN') {
+    if (user?.role !== 'ADMIN' && user?.role !== 'ROLE_ADMIN') {
       triggerNotification('Restricted access. Only ADMINs can run new scans.', 'error');
       return;
     }
