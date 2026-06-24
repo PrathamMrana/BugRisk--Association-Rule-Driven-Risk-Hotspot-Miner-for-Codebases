@@ -1203,13 +1203,19 @@ function App() {
       {/* Header bar */}
       <header className="sticky top-0 z-40 bg-[#0A0A0A]/80 backdrop-blur-md border-b border-slate-900 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-amber-600/20 border border-purple-500/30 rounded-lg text-amber-400">
-            <ShieldAlert size={24} />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight text-white m-0">BugRisk</h1>
-            <p className="text-xs text-amber-400 -mt-0.5 font-semibold">DEFECT PLATFORM v2</p>
-          </div>
+          <button
+            onClick={() => setShowLanding(true)}
+            className="flex items-center gap-3 group"
+            title="Back to Home"
+          >
+            <div className="p-2 bg-amber-600/20 border border-amber-500/30 rounded-lg text-amber-400 group-hover:bg-amber-500/20 group-hover:border-amber-400/50 transition-all">
+              <ShieldAlert size={24} />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold tracking-tight text-white m-0 group-hover:text-amber-400 transition-colors">BugRisk</h1>
+              <p className="text-xs text-amber-400 -mt-0.5 font-semibold">← Back to Home</p>
+            </div>
+          </button>
         </div>
 
         <div className="flex items-center gap-6">
