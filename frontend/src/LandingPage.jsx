@@ -51,7 +51,7 @@ const SystemStatus = () => {
 };
 
 // Strict Monochrome Nav - Made Advanced and Clickable
-const Navbar = ({ onLogin }) => {
+const Navbar = ({ onLogin, isLoggedIn }) => {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -95,7 +95,7 @@ const Navbar = ({ onLogin }) => {
             onClick={onLogin}
             className="px-6 py-2.5 bg-amber-500 text-[#050505] font-bold text-xs hover:bg-amber-400 transition-all uppercase tracking-widest shadow-[0_0_15px_rgba(245,158,11,0.4)] hover:shadow-[0_0_25px_rgba(245,158,11,0.6)] flex items-center gap-2 rounded-sm"
           >
-            Deploy Engine <ArrowRight className="w-4 h-4"/>
+            {isLoggedIn ? 'Enter Platform' : 'Deploy Engine'} <ArrowRight className="w-4 h-4"/>
           </button>
         </div>
       </div>
@@ -103,7 +103,7 @@ const Navbar = ({ onLogin }) => {
   );
 };
 
-const HeroSection = ({ onLogin }) => {
+const HeroSection = ({ onLogin, isLoggedIn }) => {
   return (
     <section id="engine" className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-20 z-10 overflow-hidden">
       <SystemStatus />
@@ -151,7 +151,7 @@ const HeroSection = ({ onLogin }) => {
             onClick={onLogin}
             className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-[#050505] font-bold text-sm hover:from-amber-400 hover:to-amber-500 transition-all flex items-center justify-center gap-3 uppercase tracking-widest shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_35px_rgba(245,158,11,0.5)] hover:-translate-y-0.5 rounded-sm"
           >
-            Initialize Platform
+            {isLoggedIn ? 'Enter Platform' : 'Initialize Platform'}
             <ArrowRight className="w-4 h-4" />
           </button>
           <button onClick={onLogin} className="w-full sm:w-auto px-10 py-4 border border-slate-700 bg-white/5 backdrop-blur-sm text-slate-300 font-bold text-sm hover:bg-white/10 hover:border-slate-500 transition-all flex items-center justify-center gap-3 uppercase tracking-widest rounded-sm">
@@ -302,12 +302,12 @@ const AdvancedFeatures = () => {
   );
 };
 
-export default function LandingPage({ onLogin }) {
+export default function LandingPage({ onLogin, isLoggedIn }) {
   return (
     <div className="min-h-screen bg-[#050505] text-slate-200 selection:bg-amber-500/30 selection:text-amber-200 font-sans">
       <AmbientBackground />
-      <Navbar onLogin={onLogin} />
-      <HeroSection onLogin={onLogin} />
+      <Navbar onLogin={onLogin} isLoggedIn={isLoggedIn} />
+      <HeroSection onLogin={onLogin} isLoggedIn={isLoggedIn} />
       <AdvancedFeatures />
     </div>
   );

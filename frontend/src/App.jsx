@@ -1073,10 +1073,20 @@ function App() {
     }
   }, [sseLogs]);
 
+  const [showLanding, setShowLanding] = useState(true);
+  
+  if (showLanding) {
+    return <LandingPage onLogin={() => {
+      if (user) {
+        setShowLanding(false);
+      } else {
+        setShowLanding(false);
+        setShowLogin(true);
+      }
+    }} isLoggedIn={!!user} />;
+  }
+
   if (!user) {
-    if (!showLogin) {
-      return <LandingPage onLogin={() => setShowLogin(true)} />;
-    }
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#050505] px-4 overflow-hidden relative font-sans">
       {/* Strict Monochrome Grid Background */}
