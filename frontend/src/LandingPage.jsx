@@ -434,11 +434,11 @@ const AdvancedFeatures = () => {
   );
 };
 
-export default function LandingPage({ onLogin, isLoggedIn }) {
+export default function LandingPage({ onLogin, isLoggedIn, onNavigate }) {
   return (
     <div className="min-h-screen bg-[#030303] text-slate-200 selection:bg-amber-500/40 selection:text-white font-sans overflow-x-hidden">
       <IntelligenceBackground />
-      <Navbar onLogin={onLogin} isLoggedIn={isLoggedIn} />
+      <Navbar onLogin={onLogin} isLoggedIn={isLoggedIn} onNavigate={onNavigate} />
       <HeroSection onLogin={onLogin} isLoggedIn={isLoggedIn} />
       <AdvancedFeatures />
     </div>
