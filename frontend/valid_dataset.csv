@@ -1,0 +1,6 @@
+transaction_id,module,subsystem,language,tech_stack,bug_type,severity
+T001,auth,login,Java,SpringBoot,security,high
+T002,database,query,Java,PostgreSQL,performance,medium
+T003,payment,checkout,TypeScript,NodeJS,logic,critical
+T004,auth,login,Java,SpringBoot,security,high
+T005,database,query,Java,PostgreSQL,performance,medium
