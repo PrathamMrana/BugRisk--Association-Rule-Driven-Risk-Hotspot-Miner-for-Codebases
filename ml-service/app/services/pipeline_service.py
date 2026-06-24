@@ -109,7 +109,17 @@ def run_analytics_pipeline(
             "top_rules": [format_rule(r) for r in mr["top_rules"]]
         })
 
-    return {
+    import math
+    def sanitize_nans(obj):
+        if isinstance(obj, float) and math.isnan(obj):
+            return None
+        elif isinstance(obj, dict):
+            return {k: sanitize_nans(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [sanitize_nans(i) for i in obj]
+        return obj
+
+    final_result = {
         "status": "success",
         "rules_count": len(rules_formatted),
         "modules_count": len(risk_formatted),
@@ -120,6 +130,8 @@ def run_analytics_pipeline(
         "rules": rules_formatted,
         "module_risk": risk_formatted
     }
+    
+    return sanitize_nans(final_result)
 
 
 def run_analytics_pipeline_stream(
@@ -230,7 +242,17 @@ def run_analytics_pipeline_stream(
     if runtime_ms <= 0 and raw_runtime_ms > 0.0:
         runtime_ms = 1
 
-    yield {
+    import math
+    def sanitize_nans(obj):
+        if isinstance(obj, float) and math.isnan(obj):
+            return None
+        elif isinstance(obj, dict):
+            return {k: sanitize_nans(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [sanitize_nans(i) for i in obj]
+        return obj
+
+    final_result = {
         "stage": "COMPLETED",
         "progress": 100,
         "detail": f"{algorithm.upper()} ML calculations completed successfully.",
@@ -246,3 +268,5 @@ def run_analytics_pipeline_stream(
             "module_risk": risk_formatted
         }
     }
+
+    yield sanitize_nans(final_result)

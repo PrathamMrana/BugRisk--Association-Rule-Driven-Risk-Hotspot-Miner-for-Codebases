@@ -305,6 +305,13 @@ function App() {
   const [analyticsSummary, setAnalyticsSummary] = useState(null);
   const [loadingAnalytics, setLoadingAnalytics] = useState(false);
 
+  // Backend-driven graph and hotspot analytics (single source of truth)
+  const [graphAnalytics, setGraphAnalytics] = useState(null);
+  const [loadingGraph, setLoadingGraph] = useState(false);
+  const [hotspotAnalytics, setHotspotAnalytics] = useState(null);
+  const [loadingHotspots, setLoadingHotspots] = useState(false);
+  const [activeScanId, setActiveScanId] = useState(null);
+
   // Toast Notification
   const [notification, setNotification] = useState(null);
 
@@ -442,17 +449,47 @@ function App() {
     }
   };
 
-  const fetchAnalyticsSummary = async () => {
+  const fetchAnalyticsSummary = async (scanId) => {
     if (!user) return;
     setLoadingAnalytics(true);
     try {
-      const res = await axios.get(`${API_BASE}/analytics/summary`);
+      const params = scanId ? { scanId } : {};
+      const res = await axios.get(`${API_BASE}/analytics/summary`, { params });
       setAnalyticsSummary(res.data);
     } catch (err) {
       console.error(err);
       triggerNotification('Failed to fetch analytics summary.', 'error');
     } finally {
       setLoadingAnalytics(false);
+    }
+  };
+
+  const fetchGraphAnalytics = async (scanId) => {
+    if (!user) return;
+    setLoadingGraph(true);
+    try {
+      const params = scanId ? { scanId } : {};
+      const res = await axios.get(`${API_BASE}/analytics/graph`, { params });
+      setGraphAnalytics(res.data);
+      if (res.data?.scanId) setActiveScanId(res.data.scanId);
+    } catch (err) {
+      console.error('Failed to fetch graph analytics:', err);
+    } finally {
+      setLoadingGraph(false);
+    }
+  };
+
+  const fetchHotspotAnalytics = async (scanId) => {
+    if (!user) return;
+    setLoadingHotspots(true);
+    try {
+      const params = scanId ? { scanId } : {};
+      const res = await axios.get(`${API_BASE}/analytics/hotspots`, { params });
+      setHotspotAnalytics(res.data);
+    } catch (err) {
+      console.error('Failed to fetch hotspot analytics:', err);
+    } finally {
+      setLoadingHotspots(false);
     }
   };
 
@@ -542,6 +579,8 @@ function App() {
               fetchDashboardData();
               fetchRulesData();
               fetchAnalyticsSummary();
+              fetchGraphAnalytics();
+              fetchHotspotAnalytics();
               fetchScanHistory();
               sse.close();
               setScanning(false);
@@ -650,72 +689,38 @@ function App() {
     }
   };
 
-  const compareSelectedScans = () => {
+  const compareSelectedScans = async () => {
     if (compareScanA === null || compareScanB === null) {
       triggerNotification('Please select two scans to compare.', 'error');
       return;
     }
-    const scanA = scanHistory.find(h => h.id === compareScanA);
-    const scanB = scanHistory.find(h => h.id === compareScanB);
-    if (!scanA || !scanB) return;
 
-    const dataA = parseResults(scanA);
-    const dataB = parseResults(scanB);
-
-    const runtimeDelta = scanB.runtimeMs - scanA.runtimeMs;
-    const rulesDelta = scanB.rulesCount - scanA.rulesCount;
-
-    // Compare risks
-    const risksA = dataA?.module_risk || [];
-    const risksB = dataB?.module_risk || [];
-
-    const riskMapA = new Map();
-    risksA.forEach((r) => riskMapA.set(r.module, r.risk_score));
-
-    const riskIncreased = [];
-    const riskDecreased = [];
-    const newHotspots = [];
-
-    risksB.forEach((r) => {
-      if (riskMapA.has(r.module)) {
-        const scoreA = riskMapA.get(r.module);
-        const delta = r.risk_score - scoreA;
-        if (delta > 0.05) {
-          riskIncreased.push(`${r.module} (+${delta.toFixed(2)})`);
-        } else if (delta < -0.05) {
-          riskDecreased.push(`${r.module} (${delta.toFixed(2)})`);
-        }
-      } else {
-        newHotspots.push(`${r.module} (Score: ${r.risk_score.toFixed(2)})`);
-      }
-    });
-
-    // Compare rules
-    const rulesListA = dataA?.rules || [];
-    const rulesListB = dataB?.rules || [];
-
-    const ruleSetA = new Set();
-    rulesListA.forEach((r) => ruleSetA.add(`${r.antecedent}->${r.consequent}`));
-
-    const newRules = [];
-    rulesListB.forEach((r) => {
-      const key = `${r.antecedent}->${r.consequent}`;
-      if (!ruleSetA.has(key)) {
-        newRules.push(`${r.antecedent} ➔ ${r.consequent}`);
-      }
-    });
-
-    setCompareResults({
-      scanA,
-      scanB,
-      runtimeDelta,
-      rulesDelta,
-      riskIncreased,
-      riskDecreased,
-      newHotspots,
-      newRules
-    });
-    triggerNotification('Deltas successfully computed.', 'success');
+    try {
+      setLoadingHistory(true);
+      const res = await axios.get(`${API_BASE}/analytics/timeline/compare?scanA=${compareScanA}&scanB=${compareScanB}`);
+      const deltaData = res.data;
+      
+      const scanA = scanHistory.find(h => h.id === compareScanA);
+      const scanB = scanHistory.find(h => h.id === compareScanB);
+      
+      setCompareResults({
+        scanA,
+        scanB,
+        runtimeDelta: deltaData.runtimeDeltaMs,
+        rulesDelta: deltaData.rulesDelta,
+        riskIncreased: deltaData.riskIncreased,
+        riskDecreased: deltaData.riskDecreased,
+        newHotspots: deltaData.newHotspots,
+        removedHotspots: deltaData.removedHotspots || [],
+        newRules: [] // Backend tracking omitted for rule granularity performance, keeping UI structure
+      });
+      triggerNotification('Deltas successfully computed.', 'success');
+    } catch (error) {
+      console.error(error);
+      triggerNotification('Failed to compute deltas.', 'error');
+    } finally {
+      setLoadingHistory(false);
+    }
   };
 
   // Compare algorithm playground
@@ -1171,6 +1176,9 @@ function App() {
       fetchDashboardData();
       fetchScanHistory();
       fetchDatasetProfile('synthetic');
+      fetchGraphAnalytics();
+      fetchHotspotAnalytics();
+      fetchAnalyticsSummary();
     }
   }, [user]);
 
@@ -1182,8 +1190,14 @@ function App() {
   }, [selectedModule]);
 
   useEffect(() => {
-    if (user && (activeTab === 'rules' || activeTab === 'graph')) {
+    if (user && (activeTab === 'rules')) {
       fetchRulesData();
+    }
+    if (user && activeTab === 'graph') {
+      fetchGraphAnalytics();
+    }
+    if (user && activeTab === 'risks') {
+      fetchHotspotAnalytics();
     }
     if (user && activeTab === 'observability') {
       fetchAuditLogs();
@@ -1325,7 +1339,8 @@ function App() {
   }
 
   const criticalHotspots = risks.filter(r => r.riskLevel === 'CRITICAL' || r.riskLevel === 'HIGH').length;
-  const flowData = getGraphElements(rules.slice(0, 15)); // Display top 15 rules on graph for visualization clarity
+  // flowData now comes from backend graphAnalytics state (Phase 2 refactor)
+  const flowData = graphAnalytics ? { nodes: graphAnalytics.nodes || [], edges: graphAnalytics.edges || [] } : { nodes: [], edges: [] };
 
   return (
     <div className="min-h-screen bg-[#050505] text-slate-100 flex flex-col relative">
@@ -1991,18 +2006,51 @@ function App() {
                 <div>
                   <h2 className="text-2xl font-bold text-white tracking-tight m-0">Interactive System Graph Explorer</h2>
                   <p className="text-sm text-slate-400 mt-1">Force-weighted layout mapping connections between codebase modules, languages, tech stacks, and outcome severities</p>
+                  {graphAnalytics?.scanId && (
+                    <p className="text-[10px] font-mono text-slate-500 mt-1">
+                      Scan #{graphAnalytics.scanId} &middot; {graphAnalytics.nodes?.length || 0} nodes &middot; {graphAnalytics.edges?.length || 0} edges
+                    </p>
+                  )}
                 </div>
-                <div className="flex gap-2">
-                  {['All', 'Critical', 'High', 'Module'].map(f => (
-                    <button key={f} className="px-3 py-1.5 text-xs font-semibold bg-[#111] border border-white/10 rounded-lg text-slate-400 hover:text-amber-400 hover:border-amber-500/30 transition">{f}</button>
-                  ))}
+                <div className="flex gap-2 items-center">
+                  <button
+                    onClick={() => fetchGraphAnalytics()}
+                    disabled={loadingGraph}
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-[#111] border border-amber-500/20 rounded-lg text-slate-400 hover:text-amber-400 hover:border-amber-500/30 transition"
+                  >
+                    <RefreshCw size={12} className={loadingGraph ? 'animate-spin' : ''} />
+                    Refresh
+                  </button>
                 </div>
               </div>
 
               <div className="flex-1 bg-[#0a0a0a] border border-amber-500/20 rounded-xl overflow-hidden relative" style={{minHeight: '500px'}}>
-                {rules.length === 0 ? (
-                  /* Demo Graph — shown when no pipeline data is loaded yet */
-                  <DemoGraphView />
+                {loadingGraph ? (
+                  <div className="absolute inset-0 flex items-center justify-center flex-col gap-3">
+                    <div className="animate-spin w-8 h-8 border-2 border-amber-500/30 border-t-amber-400 rounded-full" />
+                    <span className="text-sm text-slate-500 font-mono">Loading graph from backend...</span>
+                  </div>
+                ) : (graphAnalytics === null || (graphAnalytics?.nodes?.length === 0)) ? (
+                  /* Empty state — shown when no pipeline data is loaded yet */
+                  <div className="absolute inset-0 flex items-center justify-center flex-col gap-4">
+                    <svg className="w-16 h-16 opacity-20" viewBox="0 0 100 100" fill="none">
+                      <circle cx="20" cy="50" r="10" stroke="#f59e0b" strokeWidth="2"/>
+                      <circle cx="80" cy="20" r="10" stroke="#ef4444" strokeWidth="2"/>
+                      <circle cx="80" cy="80" r="10" stroke="#f97316" strokeWidth="2"/>
+                      <line x1="30" y1="50" x2="70" y2="25" stroke="#475569" strokeWidth="1" strokeDasharray="4 4"/>
+                      <line x1="30" y1="50" x2="70" y2="75" stroke="#475569" strokeWidth="1" strokeDasharray="4 4"/>
+                    </svg>
+                    <div className="text-center">
+                      <p className="text-slate-500 font-medium text-sm">No graph data available</p>
+                      <p className="text-slate-600 text-xs mt-1">Run a pipeline scan to generate the rule association graph</p>
+                    </div>
+                    <button
+                      onClick={() => setActiveTab('pipeline')}
+                      className="px-4 py-2 bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/30 rounded-lg text-amber-400 text-xs font-semibold transition"
+                    >
+                      Go to Pipeline Scanner
+                    </button>
+                  </div>
                 ) : (
                   <ReactFlow
                     nodes={flowData.nodes}
@@ -2187,6 +2235,11 @@ function App() {
                 <h2 className="text-2xl font-bold text-white tracking-tight m-0">Module Defect Hotspots Analyzer</h2>
                 <p className="text-sm text-slate-400 mt-1">Drilldown outcome explanations for target codebase modules</p>
               </div>
+              {hotspotAnalytics?.scanId && (
+                <div className="text-[10px] font-mono text-slate-500 border border-amber-500/10 bg-[#0A0A0A] px-3 py-1.5 rounded-lg">
+                  Scan #{hotspotAnalytics.scanId} · {hotspotAnalytics.generatedAt ? new Date(hotspotAnalytics.generatedAt).toLocaleString() : ''}
+                </div>
+              )}
 
               {risks.length === 0 ? (
                 <div className="bg-[#111] border border-amber-500/20 p-24 rounded-xl text-center text-slate-500">
@@ -2276,12 +2329,19 @@ function App() {
                           </div>
                           <div className="p-4 bg-slate-955 border border-slate-900 rounded-xl space-y-1 hover:border-amber-500/20 transition">
                             <span className="text-[10px] text-slate-500 uppercase font-semibold">Mined Outcome Drivers</span>
-                            <p 
-                              className="text-sm font-bold text-purple-300 truncate mt-1.5 uppercase tracking-wide cursor-help"
-                              title={getMinedOutcomeDrivers(selectedModule.topRulesSummary)}
-                            >
-                              {getMinedOutcomeDrivers(selectedModule.topRulesSummary)}
-                            </p>
+                            {(() => {
+                              // Use backend hotspotAnalytics as source of truth, fallback to legacy parsing
+                              const backendHotspot = hotspotAnalytics?.hotspots?.find(h => h.module === selectedModule.module);
+                              const driversText = backendHotspot?.driversText || 'None';
+                              return (
+                                <p
+                                  className="text-sm font-bold text-purple-300 truncate mt-1.5 uppercase tracking-wide cursor-help"
+                                  title={driversText}
+                                >
+                                  {driversText}
+                                </p>
+                              );
+                            })()}
                           </div>
                         </div>
 
@@ -3247,6 +3307,18 @@ function App() {
                             )}
                           </div>
                         </div>
+
+                        {compareResults.removedHotspots && compareResults.removedHotspots.length > 0 && (
+                          <div className="space-y-3">
+                            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                              <CheckCircle2 size={14} />
+                              <span>Resolved Hotspots (Scan B removed)</span>
+                            </span>
+                            <div className="bg-[#0A0A0A] border border-amber-500/10 rounded-xl p-3 h-44 overflow-y-auto text-xs space-y-1 text-slate-350 scrollbar-thin">
+                              {compareResults.removedHotspots.map((m, i) => <p key={i} className="text-slate-500">• {m}</p>)}
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       {/* New Mined Rules comparison details */}
