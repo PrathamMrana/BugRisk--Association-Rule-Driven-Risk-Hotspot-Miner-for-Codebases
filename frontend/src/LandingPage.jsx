@@ -618,7 +618,7 @@ export default function LandingPage({ onLogin, isLoggedIn, onNavigate }) {
 
   const handleLoginSuccess = (data) => {
     setShowLoginModal(false);
-    onLogin();
+    onLogin(data);
   };
 
   return (
