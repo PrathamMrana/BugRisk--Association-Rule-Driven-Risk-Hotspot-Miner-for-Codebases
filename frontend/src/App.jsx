@@ -53,6 +53,151 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL
   ? `${import.meta.env.VITE_API_BASE_URL}/api/v1`
   : '/api/v1';
 
+/* ─── Demo Graph: animated SVG risk network shown when no pipeline data ─── */
+const DEMO_NODES = [
+  { id: 'auth',       x: 50,  y: 50,  label: 'auth',       risk: 'CRITICAL', r: 32, color: '#ef4444' },
+  { id: 'database',   x: 75,  y: 30,  label: 'database',   risk: 'CRITICAL', r: 36, color: '#ef4444' },
+  { id: 'payment',    x: 30,  y: 70,  label: 'payment',    risk: 'HIGH',     r: 28, color: '#f97316' },
+  { id: 'gateway',    x: 65,  y: 72,  label: 'gateway',    risk: 'HIGH',     r: 26, color: '#f97316' },
+  { id: 'analytics',  x: 20,  y: 40,  label: 'analytics',  risk: 'MEDIUM',   r: 22, color: '#f59e0b' },
+  { id: 'cache',      x: 82,  y: 55,  label: 'cache',      risk: 'MEDIUM',   r: 20, color: '#f59e0b' },
+  { id: 'notification',x: 45, y: 20,  label: 'notif.',     risk: 'LOW',      r: 18, color: '#22c55e' },
+  { id: 'search',     x: 15,  y: 65,  label: 'search',     risk: 'LOW',      r: 18, color: '#22c55e' },
+];
+const DEMO_EDGES = [
+  ['auth','database'],['auth','payment'],['database','cache'],['payment','gateway'],
+  ['gateway','analytics'],['analytics','search'],['auth','notification'],['cache','gateway'],
+  ['database','payment'],['notification','analytics'],
+];
+
+function DemoGraphView() {
+  const [tick, setTick] = React.useState(0);
+  const [hovered, setHovered] = React.useState(null);
+  React.useEffect(() => {
+    const id = setInterval(() => setTick(t => t + 1), 60);
+    return () => clearInterval(id);
+  }, []);
+
+  // Subtle floating offsets per node
+  const offsets = React.useMemo(() =>
+    DEMO_NODES.map((_, i) => ({ dx: Math.sin(i * 1.3), dy: Math.cos(i * 0.9), speed: 0.4 + i * 0.07 })),
+  []);
+
+  const getPos = (node, i) => ({
+    x: node.x + offsets[i].dx * Math.sin(tick * 0.012 * offsets[i].speed) * 3,
+    y: node.y + offsets[i].dy * Math.cos(tick * 0.014 * offsets[i].speed) * 3,
+  });
+
+  const posMap = Object.fromEntries(DEMO_NODES.map((n, i) => [n.id, getPos(n, i)]));
+
+  return (
+    <div className="absolute inset-0 flex flex-col">
+      {/* Top info bar */}
+      <div className="flex items-center justify-between px-5 py-3 border-b border-white/5 bg-black/40 backdrop-blur-sm flex-shrink-0">
+        <div className="flex items-center gap-4 text-xs font-mono">
+          <span className="text-slate-500">LIVE DEMO GRAPH</span>
+          <span className="flex items-center gap-1.5 text-green-400"><span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block"></span>8 nodes · 10 edges</span>
+        </div>
+        <div className="flex items-center gap-3 text-[10px] font-bold">
+          {[['CRITICAL','#ef4444'],['HIGH','#f97316'],['MEDIUM','#f59e0b'],['LOW','#22c55e']].map(([l,c]) => (
+            <span key={l} className="flex items-center gap-1" style={{color:c}}>
+              <span className="w-2 h-2 rounded-full inline-block" style={{background:c}}></span>{l}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* SVG Canvas */}
+      <div className="flex-1 relative overflow-hidden">
+        <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" style={{display:'block'}}>
+          <defs>
+            {DEMO_NODES.map(n => (
+              <radialGradient key={n.id} id={`grd-${n.id}`} cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor={n.color} stopOpacity="0.25"/>
+                <stop offset="100%" stopColor={n.color} stopOpacity="0"/>
+              </radialGradient>
+            ))}
+          </defs>
+
+          {/* Edges */}
+          {DEMO_EDGES.map(([a, b], i) => {
+            const pa = posMap[a], pb = posMap[b];
+            if (!pa || !pb) return null;
+            const active = hovered === a || hovered === b;
+            return (
+              <line key={i}
+                x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y}
+                stroke={active ? '#f59e0b' : 'rgba(255,255,255,0.08)'}
+                strokeWidth={active ? 0.4 : 0.2}
+                strokeDasharray={active ? '0' : '0.8 1.2'}
+                style={{transition:'stroke 0.3s, stroke-width 0.3s'}}
+              />
+            );
+          })}
+
+          {/* Glow auras */}
+          {DEMO_NODES.map((n, i) => {
+            const p = posMap[n.id];
+            const isHov = hovered === n.id;
+            return (
+              <circle key={`aura-${n.id}`}
+                cx={p.x} cy={p.y} r={n.r * 0.28 * (isHov ? 1.8 : 1)}
+                fill={`url(#grd-${n.id})`}
+                style={{transition:'r 0.4s'}}
+              />
+            );
+          })}
+
+          {/* Nodes */}
+          {DEMO_NODES.map((n, i) => {
+            const p = posMap[n.id];
+            const isHov = hovered === n.id;
+            const pulse = 1 + 0.04 * Math.sin(tick * 0.05 + i);
+            const r = (n.r / 14) * pulse * (isHov ? 1.25 : 1);
+            return (
+              <g key={n.id} style={{cursor:'pointer'}}
+                onMouseEnter={() => setHovered(n.id)}
+                onMouseLeave={() => setHovered(null)}>
+                {/* Ring */}
+                <circle cx={p.x} cy={p.y} r={r + 0.8}
+                  fill="none" stroke={n.color} strokeWidth={0.3}
+                  strokeOpacity={isHov ? 0.9 : 0.4}
+                  style={{transition:'all 0.3s'}}/>
+                {/* Body */}
+                <circle cx={p.x} cy={p.y} r={r}
+                  fill={n.color} fillOpacity={isHov ? 0.9 : 0.65}
+                  style={{transition:'all 0.3s'}}/>
+                {/* Label */}
+                <text x={p.x} y={p.y + r + 1.4}
+                  textAnchor="middle" fontSize="1.5" fontWeight="700"
+                  fill={isHov ? '#fff' : '#94a3b8'}
+                  style={{fontFamily:'monospace', transition:'fill 0.2s'}}>
+                  {n.label}
+                </text>
+                {/* Risk badge on hover */}
+                {isHov && (
+                  <text x={p.x} y={p.y + 0.6}
+                    textAnchor="middle" fontSize="1.3" fontWeight="900"
+                    fill="#fff" style={{fontFamily:'monospace'}}>
+                    {n.risk}
+                  </text>
+                )}
+              </g>
+            );
+          })}
+        </svg>
+
+        {/* Overlay hint */}
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center pointer-events-none">
+          <span className="text-[10px] text-slate-600 font-mono bg-black/60 px-3 py-1.5 rounded-full border border-white/5">
+            Demo preview · Run a pipeline scan to see your real codebase graph
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('bugrisk_session');
@@ -1184,7 +1329,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-slate-100 flex flex-col relative">
-      {/* Strict Monochrome Grid Background */}
+      {/* Grid Background */}
       <div className="fixed inset-0 z-0 bg-[#050505] overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
       </div>
@@ -1240,9 +1385,9 @@ function App() {
       </header>
 
       {/* Layout Content */}
-      <div className="flex-1 flex flex-col md:flex-row">
+      <div className="flex-1 flex flex-row relative z-10" style={{minHeight: 'calc(100vh - 72px)'}}>
         {/* Navigation Sidebar */}
-        <aside className="w-full md:w-64 bg-[#0A0A0A]/40 border-r border-slate-950 p-4 space-y-2 flex flex-col justify-between">
+        <aside className="w-56 shrink-0 bg-[#080808] border-r border-white/5 p-4 space-y-2 flex flex-col justify-between">
           <div className="space-y-2">
             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider px-3 block mb-1">Navigation</span>
             <nav className="space-y-1">
@@ -1366,7 +1511,7 @@ function App() {
         </aside>
 
         {/* Main Work Area */}
-        <main className="flex-1 p-6 md:p-8 bg-[#090d16] overflow-y-auto max-w-full">
+        <main className="flex-1 p-6 bg-[#050505] overflow-y-auto relative z-10" style={{minWidth: 0}}>
 
           {/* Tab 1: AI Command Center (Dashboard) */}
           {activeTab === 'dashboard' && (
@@ -1378,7 +1523,7 @@ function App() {
                   <p className="text-sm text-slate-400 mt-1">Real-time analytical view of code defect hotspots and association patterns</p>
                 </div>
                 <div className="lg:col-span-1 flex justify-end gap-3">
-                  {user.role === 'ADMIN' ? (
+                  {(user.role || '').includes('ADMIN') ? (
                     <button
                       onClick={() => setActiveTab('pipeline')}
                       className="px-4 py-2 bg-amber-600 text-white font-semibold rounded-lg text-xs hover:bg-purple-700 transition shadow-lg shadow-purple-500/10 flex items-center gap-1.5"
@@ -1841,17 +1986,23 @@ function App() {
 
           {/* Tab 3: System Graph Explorer */}
           {activeTab === 'graph' && (
-            <div className="space-y-8 h-[calc(100vh-180px)] flex flex-col">
-              <div className="flex-shrink-0">
-                <h2 className="text-2xl font-bold text-white tracking-tight m-0">Interactive System Graph Explorer</h2>
-                <p className="text-sm text-slate-400 mt-1">Force-weighted layout mapping connections between codebase modules, languages, tech stacks, and outcome severities</p>
+            <div className="space-y-6 flex flex-col" style={{height: 'calc(100vh - 160px)'}}>
+              <div className="flex-shrink-0 flex items-start justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold text-white tracking-tight m-0">Interactive System Graph Explorer</h2>
+                  <p className="text-sm text-slate-400 mt-1">Force-weighted layout mapping connections between codebase modules, languages, tech stacks, and outcome severities</p>
+                </div>
+                <div className="flex gap-2">
+                  {['All', 'Critical', 'High', 'Module'].map(f => (
+                    <button key={f} className="px-3 py-1.5 text-xs font-semibold bg-[#111] border border-white/10 rounded-lg text-slate-400 hover:text-amber-400 hover:border-amber-500/30 transition">{f}</button>
+                  ))}
+                </div>
               </div>
 
-              <div className="flex-1 bg-[#111] border border-amber-500/20 rounded-xl overflow-hidden relative min-h-[400px]">
+              <div className="flex-1 bg-[#0a0a0a] border border-amber-500/20 rounded-xl overflow-hidden relative" style={{minHeight: '500px'}}>
                 {rules.length === 0 ? (
-                  <div className="absolute inset-0 flex items-center justify-center text-slate-500">
-                    Run pipeline analysis to populate graph nodes.
-                  </div>
+                  /* Demo Graph — shown when no pipeline data is loaded yet */
+                  <DemoGraphView />
                 ) : (
                   <ReactFlow
                     nodes={flowData.nodes}
