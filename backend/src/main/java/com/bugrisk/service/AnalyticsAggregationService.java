@@ -34,6 +34,13 @@ public class AnalyticsAggregationService {
         List<ScanHistory> history = scanHistoryRepository.findAll(
                 org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "timestamp")
         );
+        
+        // Find the most recent scan that was a full pipeline run (contains actual rules data)
+        for (ScanHistory scan : history) {
+            if (scan.getResultsJson() != null && scan.getResultsJson().contains("\"rules\"")) {
+                return scan;
+            }
+        }
         return history.isEmpty() ? null : history.get(0);
     }
 
