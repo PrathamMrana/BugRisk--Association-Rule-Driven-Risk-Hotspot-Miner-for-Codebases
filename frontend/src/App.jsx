@@ -1078,7 +1078,7 @@ function App() {
       return <LandingPage onLogin={() => setShowLogin(true)} />;
     }
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#020617] px-4 overflow-hidden relative font-sans">
+      <div className="min-h-screen flex items-center justify-center bg-[#05050A] px-4 overflow-hidden relative font-sans">
         {/* Ambient Background matching Landing Page */}
         <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-600/10 blur-[120px] mix-blend-screen animate-[pulse_8s_ease-in-out_infinite] pointer-events-none"></div>
         <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-600/10 blur-[120px] mix-blend-screen animate-[pulse_10s_ease-in-out_infinite_reverse] pointer-events-none"></div>
@@ -1161,7 +1161,7 @@ function App() {
   const flowData = getGraphElements(rules.slice(0, 15)); // Display top 15 rules on graph for visualization clarity
 
   return (
-    <div className="min-h-screen bg-[#070b13] text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-[#05050A] text-slate-100 flex flex-col">
       {/* Toast Notification */}
       {notification && (
         <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg border shadow-xl transition-all duration-300 animate-slide-in ${
