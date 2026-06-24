@@ -803,8 +803,8 @@ function App() {
       const hasSpikeExplanation = datasetChanged || rowsChanged || supportChanged || confidenceChanged || liftChanged || algoChanged;
       
       return (
-        <div className="bg-[#0A0A0A]/95 border border-white/10 p-4 rounded-xl shadow-2xl backdrop-blur-md text-xs font-sans text-slate-350 space-y-1.5 min-w-[245px]">
-          <p className="font-extrabold text-white border-b border-white/10 pb-1 mb-1 font-mono uppercase tracking-wider text-[10px] text-violet-400">
+        <div className="bg-[#0A0A0A]/95 border border-amber-500/20 p-4 rounded-xl shadow-2xl backdrop-blur-md text-xs font-sans text-slate-350 space-y-1.5 min-w-[245px]">
+          <p className="font-extrabold text-white border-b border-amber-500/20 pb-1 mb-1 font-mono uppercase tracking-wider text-[10px] text-amber-400">
             Scan {data.scanId}
           </p>
           <div className="space-y-1 text-[9px] font-mono">
@@ -850,7 +850,7 @@ function App() {
             </p>
             <p className="flex justify-between gap-4">
               <span className="text-slate-500 font-sans uppercase font-semibold">Rules Mined:</span>
-              <span className="text-violet-400 font-bold">
+              <span className="text-amber-400 font-bold">
                 {data.prevRulesCount !== null && data.rulesCount !== data.prevRulesCount 
                   ? `${data.prevRulesCount} → ${data.rulesCount}` 
                   : data.rulesCount}
@@ -865,7 +865,7 @@ function App() {
             
             {hasSpikeExplanation && (
               <div className="border-t border-purple-950/50 pt-1.5 mt-1.5 text-[8px] text-purple-300 bg-purple-950/20 p-1.5 rounded border border-purple-900/30">
-                <p className="font-sans font-bold uppercase text-[8px] text-violet-400 mb-0.5">💡 Explanation of Trend Change</p>
+                <p className="font-sans font-bold uppercase text-[8px] text-amber-400 mb-0.5">💡 Explanation of Trend Change</p>
                 {datasetChanged && <p>• Dataset version changed (hash changed)</p>}
                 {rowsChanged && <p>• Dataset size: {data.prevRows} → {data.rows} rows</p>}
                 {algoChanged && <p>• Mining algorithm: {data.prevAlgorithm} → {data.algorithm}</p>}
@@ -1110,7 +1110,7 @@ function App() {
         
         
 
-        <div className="w-full max-w-md bg-[#111] backdrop-blur-3xl border border-white/10 p-10 rounded-xl shadow-2xl shadow-black relative z-10">
+        <div className="w-full max-w-md bg-[#111] backdrop-blur-3xl border border-amber-500/20 p-10 rounded-xl shadow-[0_0_30px_rgba(245,158,11,0.15)] relative z-10">
           <div className="text-center mb-10">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-500 shadow-[0_0_30px_rgba(16,185,129,0.4)] mb-6">
               <Activity className="h-8 w-8 text-white" />
@@ -1132,7 +1132,7 @@ function App() {
                   placeholder="admin or engineer"
                   value={loginUsername}
                   onChange={(e) => setLoginUsername(e.target.value)}
-                  className="block w-full pl-12 pr-4 py-3.5 bg-[#0A0A0A]/50 border border-white/10 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white placeholder-slate-600 transition-all font-mono"
+                  className="block w-full pl-12 pr-4 py-3.5 bg-[#0A0A0A]/50 border border-amber-500/20 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white placeholder-slate-600 transition-all font-mono"
                 />
               </div>
             </div>
@@ -1149,7 +1149,7 @@ function App() {
                   placeholder="••••••••"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="block w-full pl-12 pr-4 py-3.5 bg-[#0A0A0A]/50 border border-white/10 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white placeholder-slate-600 transition-all font-mono"
+                  className="block w-full pl-12 pr-4 py-3.5 bg-[#0A0A0A]/50 border border-amber-500/20 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white placeholder-slate-600 transition-all font-mono"
                 />
               </div>
             </div>
@@ -1208,18 +1208,18 @@ function App() {
       {/* Header bar */}
       <header className="sticky top-0 z-40 bg-[#0A0A0A]/80 backdrop-blur-md border-b border-slate-900 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-violet-600/20 border border-purple-500/30 rounded-lg text-violet-400">
+          <div className="p-2 bg-amber-600/20 border border-purple-500/30 rounded-lg text-amber-400">
             <ShieldAlert size={24} />
           </div>
           <div>
             <h1 className="text-xl font-bold tracking-tight text-white m-0">BugRisk</h1>
-            <p className="text-xs text-violet-400 -mt-0.5 font-semibold">DEFECT PLATFORM v2</p>
+            <p className="text-xs text-amber-400 -mt-0.5 font-semibold">DEFECT PLATFORM v2</p>
           </div>
         </div>
 
         <div className="flex items-center gap-6">
-          <div className="hidden sm:flex items-center gap-3 border-r border-white/10 pr-6">
-            <div className="w-8 h-8 rounded-full bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 font-bold uppercase text-sm">
+          <div className="hidden sm:flex items-center gap-3 border-r border-amber-500/20 pr-6">
+            <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 font-bold uppercase text-sm">
               {user.username.slice(0, 2)}
             </div>
             <div>
@@ -1230,7 +1230,7 @@ function App() {
 
           <button
             onClick={handleLogout}
-            className="p-2 bg-[#111] hover:bg-white/5 border border-white/10 hover:border-white/20 text-slate-400 hover:text-white rounded-lg transition"
+            className="p-2 bg-[#111] hover:bg-white/5 border border-amber-500/20 hover:border-amber-500/30 text-slate-400 hover:text-white rounded-lg transition"
             title="Log Out"
           >
             <LogOut size={18} />
@@ -1249,7 +1249,7 @@ function App() {
                 onClick={() => setActiveTab('dashboard')}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition ${
                   activeTab === 'dashboard'
-                    ? 'bg-violet-600 text-white shadow-lg shadow-purple-500/15'
+                    ? 'bg-amber-600 text-white shadow-lg shadow-purple-500/15'
                     : 'text-slate-400 hover:bg-[#111] hover:text-slate-200'
                 }`}
               >
@@ -1261,7 +1261,7 @@ function App() {
                 onClick={() => setActiveTab('rules')}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition ${
                   activeTab === 'rules'
-                    ? 'bg-violet-600 text-white shadow-lg shadow-purple-500/15'
+                    ? 'bg-amber-600 text-white shadow-lg shadow-purple-500/15'
                     : 'text-slate-400 hover:bg-[#111] hover:text-slate-200'
                 }`}
               >
@@ -1273,7 +1273,7 @@ function App() {
                 onClick={() => setActiveTab('graph')}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition ${
                   activeTab === 'graph'
-                    ? 'bg-violet-600 text-white shadow-lg shadow-purple-500/15'
+                    ? 'bg-amber-600 text-white shadow-lg shadow-purple-500/15'
                     : 'text-slate-400 hover:bg-[#111] hover:text-slate-200'
                 }`}
               >
@@ -1285,7 +1285,7 @@ function App() {
                 onClick={() => setActiveTab('risks')}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition ${
                   activeTab === 'risks'
-                    ? 'bg-violet-600 text-white shadow-lg shadow-purple-500/15'
+                    ? 'bg-amber-600 text-white shadow-lg shadow-purple-500/15'
                     : 'text-slate-400 hover:bg-[#111] hover:text-slate-200'
                 }`}
               >
@@ -1297,7 +1297,7 @@ function App() {
                 onClick={() => setActiveTab('pipeline')}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition ${
                   activeTab === 'pipeline'
-                    ? 'bg-violet-600 text-white shadow-lg shadow-purple-500/15'
+                    ? 'bg-amber-600 text-white shadow-lg shadow-purple-500/15'
                     : 'text-slate-400 hover:bg-[#111] hover:text-slate-200'
                 }`}
               >
@@ -1309,7 +1309,7 @@ function App() {
                 onClick={() => setActiveTab('playground')}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition ${
                   activeTab === 'playground'
-                    ? 'bg-violet-600 text-white shadow-lg shadow-purple-500/15'
+                    ? 'bg-amber-600 text-white shadow-lg shadow-purple-500/15'
                     : 'text-slate-400 hover:bg-[#111] hover:text-slate-200'
                 }`}
               >
@@ -1321,7 +1321,7 @@ function App() {
                 onClick={() => setActiveTab('timemachine')}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition ${
                   activeTab === 'timemachine'
-                    ? 'bg-violet-600 text-white shadow-lg shadow-purple-500/15'
+                    ? 'bg-amber-600 text-white shadow-lg shadow-purple-500/15'
                     : 'text-slate-400 hover:bg-[#111] hover:text-slate-200'
                 }`}
               >
@@ -1333,7 +1333,7 @@ function App() {
                 onClick={() => setActiveTab('observability')}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition ${
                   activeTab === 'observability'
-                    ? 'bg-violet-600 text-white shadow-lg shadow-purple-500/15'
+                    ? 'bg-amber-600 text-white shadow-lg shadow-purple-500/15'
                     : 'text-slate-400 hover:bg-[#111] hover:text-slate-200'
                 }`}
               >
@@ -1345,7 +1345,7 @@ function App() {
                 onClick={() => setActiveTab('analytics')}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition ${
                   activeTab === 'analytics'
-                    ? 'bg-violet-600 text-white shadow-lg shadow-purple-500/15'
+                    ? 'bg-amber-600 text-white shadow-lg shadow-purple-500/15'
                     : 'text-slate-400 hover:bg-[#111] hover:text-slate-200'
                 }`}
               >
@@ -1359,7 +1359,7 @@ function App() {
             <span className="text-[9px] font-bold text-slate-600 uppercase tracking-wider block">Security Context</span>
             <div className="flex items-center justify-between mt-1 text-[10px] font-mono">
               <span className="text-slate-550">ROLE:</span>
-              <span className="text-violet-400 font-bold">{user.role}</span>
+              <span className="text-amber-400 font-bold">{user.role}</span>
             </div>
           </div>
         </aside>
@@ -1380,13 +1380,13 @@ function App() {
                   {user.role === 'ADMIN' ? (
                     <button
                       onClick={() => setActiveTab('pipeline')}
-                      className="px-4 py-2 bg-violet-600 text-white font-semibold rounded-lg text-xs hover:bg-purple-700 transition shadow-lg shadow-purple-500/10 flex items-center gap-1.5"
+                      className="px-4 py-2 bg-amber-600 text-white font-semibold rounded-lg text-xs hover:bg-purple-700 transition shadow-lg shadow-purple-500/10 flex items-center gap-1.5"
                     >
                       <Zap size={14} />
                       <span>Trigger Custom Scan</span>
                     </button>
                   ) : (
-                    <div className="px-3 py-1.5 bg-[#0A0A0A] border border-white/5 rounded-lg text-[10px] font-semibold text-slate-400 flex items-center gap-2">
+                    <div className="px-3 py-1.5 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-[10px] font-semibold text-slate-400 flex items-center gap-2">
                       <Info size={14} className="text-amber-500" />
                       <span>Engineer Access (Read-Only Mode)</span>
                     </div>
@@ -1396,7 +1396,7 @@ function App() {
 
               {/* KPI Cards Grid */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="bg-[#111] border border-white/10 p-5 rounded-xl flex flex-col justify-between h-32 relative group overflow-hidden">
+                <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col justify-between h-32 relative group overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none transition group-hover:scale-105"></div>
                   <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">Mined Defect Rules</span>
                   <div className="flex justify-between items-baseline mt-2">
@@ -1409,7 +1409,7 @@ function App() {
                   <p className="text-[10px] text-slate-500 mt-1 leading-normal">Mined association pattern combinations from latest run</p>
                 </div>
 
-                <div className="bg-[#111] border border-white/10 p-5 rounded-xl flex flex-col justify-between h-32 relative group overflow-hidden">
+                <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col justify-between h-32 relative group overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none transition group-hover:scale-105"></div>
                   <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">Identified Modules</span>
                   <div className="flex justify-between items-baseline mt-2">
@@ -1419,7 +1419,7 @@ function App() {
                   <p className="text-[10px] text-slate-500 mt-1 leading-normal">Code packages mapped into telemetry index</p>
                 </div>
 
-                <div className="bg-[#111] border border-white/10 p-5 rounded-xl flex flex-col justify-between h-32 relative group overflow-hidden">
+                <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col justify-between h-32 relative group overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent pointer-events-none transition group-hover:scale-105"></div>
                   <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">Critical/High Hotspots</span>
                   <div className="flex justify-between items-baseline mt-2">
@@ -1431,7 +1431,7 @@ function App() {
                   <p className="text-[10px] text-slate-500 mt-1 leading-normal">Modules scoring above risk index levels</p>
                 </div>
 
-                <div className="bg-[#111] border border-white/10 p-5 rounded-xl flex flex-col justify-between h-32 relative group overflow-hidden">
+                <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col justify-between h-32 relative group overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none transition group-hover:scale-105"></div>
                   <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">Execution Pipeline</span>
                   <div className="flex justify-between items-baseline mt-2">
@@ -1449,10 +1449,10 @@ function App() {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* AI Explainer Panel */}
-                <div className="lg:col-span-2 bg-[#111] border border-white/10 p-6 rounded-xl flex flex-col justify-between min-h-[350px]">
+                <div className="lg:col-span-2 bg-[#111] border border-amber-500/20 p-6 rounded-xl flex flex-col justify-between min-h-[350px]">
                   <div>
                     <div className="flex items-center gap-2 mb-3">
-                      <span className="inline-block p-1 bg-purple-500/15 border border-purple-500/30 text-violet-400 rounded-md">
+                      <span className="inline-block p-1 bg-purple-500/15 border border-purple-500/30 text-amber-400 rounded-md">
                         <Activity size={16} />
                       </span>
                       <h3 className="text-base font-bold text-white m-0">AI explained Defect Root Cause</h3>
@@ -1465,18 +1465,18 @@ function App() {
                         </p>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="p-4 bg-[#0A0A0A] border border-white/5 rounded-xl space-y-1">
+                          <div className="p-4 bg-[#0A0A0A] border border-amber-500/10 rounded-xl space-y-1">
                             <span className="text-[10px] text-slate-500 font-bold uppercase">Primary Defect Drivers:</span>
                             <p className="text-xs font-mono font-bold text-purple-300 truncate">{getAiRiskBrief().drivers}</p>
                           </div>
-                          <div className="p-4 bg-[#0A0A0A] border border-white/5 rounded-xl space-y-1">
+                          <div className="p-4 bg-[#0A0A0A] border border-amber-500/10 rounded-xl space-y-1">
                             <span className="text-[10px] text-slate-500 font-bold uppercase">Associated Rules Mapped:</span>
                             <p className="text-xs font-mono font-bold text-slate-300">{getAiRiskBrief().rulesCount} rules trigger module defects</p>
                           </div>
                         </div>
 
                         <div className="p-3 bg-purple-950/20 border border-purple-900/30 rounded-xl text-xs text-purple-300 flex items-center gap-2">
-                          <Info size={16} className="text-violet-400 flex-shrink-0" />
+                          <Info size={16} className="text-amber-400 flex-shrink-0" />
                           <span>{getAiRiskBrief().deltaText}</span>
                         </div>
                       </div>
@@ -1487,11 +1487,11 @@ function App() {
                     )}
                   </div>
 
-                  <div className="pt-4 border-t border-white/5 flex justify-between items-center text-xs text-slate-500">
+                  <div className="pt-4 border-t border-amber-500/10 flex justify-between items-center text-xs text-slate-500">
                     <span>Generated from FP-Growth Association Mining</span>
                     <button
                       onClick={() => setActiveTab('risks')}
-                      className="text-violet-400 hover:text-purple-300 font-bold flex items-center gap-1 transition"
+                      className="text-amber-400 hover:text-purple-300 font-bold flex items-center gap-1 transition"
                     >
                       <span>Drilldown Explainer</span>
                       <ArrowRight size={12} />
@@ -1500,7 +1500,7 @@ function App() {
                 </div>
 
                 {/* Risk Distribution Chart Widget */}
-                <div className="lg:col-span-1 bg-[#111] border border-white/10 p-6 rounded-xl h-[350px] flex flex-col">
+                <div className="lg:col-span-1 bg-[#111] border border-amber-500/20 p-6 rounded-xl h-[350px] flex flex-col">
                   <h3 className="text-base font-bold text-white mb-4">Risk Severity Index</h3>
                   <div className="flex-1 w-full text-xs">
                     {risks.length === 0 ? (
@@ -1547,15 +1547,15 @@ function App() {
               </div>
 
               {/* Bottom Section: Top 5 Highest Risk Hotspots Table */}
-              <div className="bg-[#111] border border-white/10 rounded-xl overflow-hidden">
-                <div className="p-6 border-b border-white/10 flex justify-between items-center">
+              <div className="bg-[#111] border border-amber-500/20 rounded-xl overflow-hidden">
+                <div className="p-6 border-b border-amber-500/20 flex justify-between items-center">
                   <div>
                     <h3 className="text-base font-bold text-white m-0">Telemetry Risk Rankings</h3>
                     <p className="text-xs text-slate-500 mt-1">Overview of highest scoring defect hotspots</p>
                   </div>
                   <button
                     onClick={() => setActiveTab('risks')}
-                    className="px-3 py-1.5 bg-[#0A0A0A] border border-white/5 hover:bg-[#111] rounded-lg text-xs font-bold text-slate-300 transition"
+                    className="px-3 py-1.5 bg-[#0A0A0A] border border-amber-500/10 hover:bg-[#111] rounded-lg text-xs font-bold text-slate-300 transition"
                   >
                     View All Rankings
                   </button>
@@ -1574,7 +1574,7 @@ function App() {
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse text-xs">
                       <thead>
-                        <tr className="bg-[#0A0A0A]/60 border-b border-white/5 text-slate-400 font-bold uppercase tracking-wider">
+                        <tr className="bg-[#0A0A0A]/60 border-b border-amber-500/10 text-slate-400 font-bold uppercase tracking-wider">
                           <th className="py-4 px-6">Rank</th>
                           <th className="py-4 px-6">Module Path</th>
                           <th className="py-4 px-6">Severity Grade</th>
@@ -1585,8 +1585,8 @@ function App() {
                       <tbody className="divide-y divide-slate-850/30 text-slate-300 font-mono">
                         {risks.slice(0, 5).map((r, i) => (
                           <tr key={r.id || i} className="hover:bg-[#111]/20 transition">
-                            <td className="py-4 px-6 font-bold text-violet-400">#{i + 1}</td>
-                            <td className="py-4 px-6 font-semibold text-slate-200 hover:text-violet-400 cursor-pointer" onClick={() => fetchExplainability(r.module)}>{r.module}</td>
+                            <td className="py-4 px-6 font-bold text-amber-400">#{i + 1}</td>
+                            <td className="py-4 px-6 font-semibold text-slate-200 hover:text-amber-400 cursor-pointer" onClick={() => fetchExplainability(r.module)}>{r.module}</td>
                             <td className="py-4 px-6">
                               <span className={`px-2 py-0.5 rounded font-extrabold text-[9px] border ${
                                 r.riskLevel === 'CRITICAL'
@@ -1594,8 +1594,8 @@ function App() {
                                   : r.riskLevel === 'HIGH'
                                   ? 'bg-orange-500/10 text-orange-450 border-orange-500/20'
                                   : r.riskLevel === 'MEDIUM'
-                                  ? 'bg-amber-500/10 text-amber-450 border-white/10'
-                                  : 'bg-indigo-500/10 text-blue-450 border-indigo-500/20'
+                                  ? 'bg-amber-500/10 text-amber-450 border-amber-500/20'
+                                  : 'bg-amber-500/10 text-blue-450 border-amber-500/20'
                               }`}>
                                 {r.riskLevel}
                               </span>
@@ -1625,7 +1625,7 @@ function App() {
                 {rules.length > 0 && (
                   <button
                     onClick={handleDownloadRules}
-                    className="px-4 py-2 bg-[#111] border border-white/10 text-slate-350 hover:text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition"
+                    className="px-4 py-2 bg-[#111] border border-amber-500/20 text-slate-350 hover:text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition"
                   >
                     <Download size={14} />
                     <span>Download Rules CSV</span>
@@ -1634,7 +1634,7 @@ function App() {
               </div>
 
               {/* Query filter configurations */}
-              <div className="bg-[#111] border border-white/10 p-6 rounded-xl">
+              <div className="bg-[#111] border border-amber-500/20 p-6 rounded-xl">
                 <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-3">Filter Search Parameters</span>
                 <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
                   <div className="md:col-span-2 relative">
@@ -1646,7 +1646,7 @@ function App() {
                       placeholder="Module Name (e.g. auth)"
                       value={rulesSearch}
                       onChange={(e) => { setRulesSearch(e.target.value); setRulesPage(0); }}
-                      className="block w-full pl-9 pr-3 py-2 bg-[#0A0A0A] border border-white/5 rounded-lg text-xs text-white placeholder-slate-650 focus:outline-none"
+                      className="block w-full pl-9 pr-3 py-2 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-xs text-white placeholder-slate-650 focus:outline-none"
                     />
                   </div>
 
@@ -1654,7 +1654,7 @@ function App() {
                     <select
                       value={rulesSeverity}
                       onChange={(e) => { setRulesSeverity(e.target.value); setRulesPage(0); }}
-                      className="block w-full px-3 py-2 bg-[#0A0A0A] border border-white/5 rounded-lg text-xs text-white focus:outline-none"
+                      className="block w-full px-3 py-2 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-xs text-white focus:outline-none"
                     >
                       <option value="">Outcome Severity</option>
                       <option value="critical">Critical</option>
@@ -1671,7 +1671,7 @@ function App() {
                       placeholder="Min Support"
                       value={rulesMinSupport}
                       onChange={(e) => { setRulesMinSupport(e.target.value); setRulesPage(0); }}
-                      className="block w-full px-3 py-2 bg-[#0A0A0A] border border-white/5 rounded-lg text-xs text-white placeholder-slate-650 focus:outline-none"
+                      className="block w-full px-3 py-2 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-xs text-white placeholder-slate-650 focus:outline-none"
                     />
                   </div>
 
@@ -1682,7 +1682,7 @@ function App() {
                       placeholder="Min Confidence"
                       value={rulesMinConfidence}
                       onChange={(e) => { setRulesMinConfidence(e.target.value); setRulesPage(0); }}
-                      className="block w-full px-3 py-2 bg-[#0A0A0A] border border-white/5 rounded-lg text-xs text-white placeholder-slate-650 focus:outline-none"
+                      className="block w-full px-3 py-2 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-xs text-white placeholder-slate-650 focus:outline-none"
                     />
                   </div>
 
@@ -1693,21 +1693,21 @@ function App() {
                       placeholder="Min Lift"
                       value={rulesMinLift}
                       onChange={(e) => { setRulesMinLift(e.target.value); setRulesPage(0); }}
-                      className="block w-full px-3 py-2 bg-[#0A0A0A] border border-white/5 rounded-lg text-xs text-white placeholder-slate-650 focus:outline-none"
+                      className="block w-full px-3 py-2 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-xs text-white placeholder-slate-650 focus:outline-none"
                     />
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center mt-4 pt-4 border-t border-white/5/40 text-[10px] text-slate-500 font-mono">
+                <div className="flex justify-between items-center mt-4 pt-4 border-t border-amber-500/10/40 text-[10px] text-slate-500 font-mono">
                   <div className="flex gap-4">
                     <span>Sort metric: 
-                      <button onClick={() => setRulesSortBy('lift')} className={`ml-1 font-bold ${rulesSortBy === 'lift' ? 'text-violet-400 underline' : ''}`}>Lift</button> / 
-                      <button onClick={() => setRulesSortBy('confidence')} className={`ml-1 font-bold ${rulesSortBy === 'confidence' ? 'text-violet-400 underline' : ''}`}>Confidence</button> / 
-                      <button onClick={() => setRulesSortBy('support')} className={`ml-1 font-bold ${rulesSortBy === 'support' ? 'text-violet-400 underline' : ''}`}>Support</button>
+                      <button onClick={() => setRulesSortBy('lift')} className={`ml-1 font-bold ${rulesSortBy === 'lift' ? 'text-amber-400 underline' : ''}`}>Lift</button> / 
+                      <button onClick={() => setRulesSortBy('confidence')} className={`ml-1 font-bold ${rulesSortBy === 'confidence' ? 'text-amber-400 underline' : ''}`}>Confidence</button> / 
+                      <button onClick={() => setRulesSortBy('support')} className={`ml-1 font-bold ${rulesSortBy === 'support' ? 'text-amber-400 underline' : ''}`}>Support</button>
                     </span>
                     <span>Order: 
-                      <button onClick={() => setRulesSortDesc(true)} className={`ml-1 font-bold ${rulesSortDesc ? 'text-violet-400 underline' : ''}`}>Descending</button> / 
-                      <button onClick={() => setRulesSortDesc(false)} className={`ml-1 font-bold ${!rulesSortDesc ? 'text-violet-400 underline' : ''}`}>Ascending</button>
+                      <button onClick={() => setRulesSortDesc(true)} className={`ml-1 font-bold ${rulesSortDesc ? 'text-amber-400 underline' : ''}`}>Descending</button> / 
+                      <button onClick={() => setRulesSortDesc(false)} className={`ml-1 font-bold ${!rulesSortDesc ? 'text-amber-400 underline' : ''}`}>Ascending</button>
                     </span>
                   </div>
                   
@@ -1728,7 +1728,7 @@ function App() {
               </div>
 
               {/* Data Table */}
-              <div className="bg-[#111] border border-white/10 rounded-xl overflow-hidden">
+              <div className="bg-[#111] border border-amber-500/20 rounded-xl overflow-hidden">
                 {loadingRules ? (
                   <div className="py-24 flex items-center justify-center text-slate-500 gap-2">
                     <RefreshCw className="animate-spin" size={18} />
@@ -1743,7 +1743,7 @@ function App() {
                     <div className="overflow-x-auto">
                       <table className="w-full text-left border-collapse text-xs">
                         <thead>
-                          <tr className="bg-[#0A0A0A]/60 border-b border-white/5 text-slate-400 font-bold uppercase tracking-wider">
+                          <tr className="bg-[#0A0A0A]/60 border-b border-amber-500/10 text-slate-400 font-bold uppercase tracking-wider">
                             <th className="py-4 px-6">ID</th>
                             <th className="py-4 px-6">Antecedent (Conditions)</th>
                             <th className="py-4 px-6">Consequent (Outcome)</th>
@@ -1758,15 +1758,15 @@ function App() {
                             const isExpanded = !!expandedRules[cluster.id];
                             return (
                               <React.Fragment key={cluster.id}>
-                                <tr className="hover:bg-[#111]/20 transition border-b border-white/5/30">
-                                  <td className="py-4 px-6 text-violet-400 font-bold">#{rulesPage * 10 + clusterIdx + 1}</td>
+                                <tr className="hover:bg-[#111]/20 transition border-b border-amber-500/10/30">
+                                  <td className="py-4 px-6 text-amber-400 font-bold">#{rulesPage * 10 + clusterIdx + 1}</td>
                                   <td className="py-4 px-6 font-semibold text-slate-200">
                                     <div className="flex items-center gap-2">
                                       <span className="truncate max-w-md">{rep.antecedent}</span>
                                       {cluster.collapsed.length > 0 && (
                                         <button
                                           onClick={() => setExpandedRules(prev => ({ ...prev, [cluster.id]: !prev[cluster.id] }))}
-                                          className="px-2 py-0.5 rounded-full bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/20 hover:border-purple-500/40 text-[9px] font-sans font-bold text-purple-300 transition-all flex items-center gap-1 active:scale-95"
+                                          className="px-2 py-0.5 rounded-full bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 hover:border-purple-500/40 text-[9px] font-sans font-bold text-purple-300 transition-all flex items-center gap-1 active:scale-95"
                                         >
                                           <span>{cluster.collapsed.length} related collapsed</span>
                                           <span className="text-[7px]">{isExpanded ? '▲' : '▼'}</span>
@@ -1781,8 +1781,8 @@ function App() {
                                         : rep.consequent.includes('high')
                                         ? 'bg-orange-500/10 text-orange-450 border-orange-500/20'
                                         : rep.consequent.includes('medium')
-                                        ? 'bg-amber-500/10 text-amber-450 border-white/10'
-                                        : 'bg-indigo-500/10 text-blue-450 border-indigo-500/20'
+                                        ? 'bg-amber-500/10 text-amber-450 border-amber-500/20'
+                                        : 'bg-amber-500/10 text-blue-450 border-amber-500/20'
                                     }`}>
                                       {rep.consequent.split('=')[1]?.toUpperCase() || rep.consequent}
                                     </span>
@@ -1792,7 +1792,7 @@ function App() {
                                   <td className="py-4 px-6 text-purple-300 font-bold">{rep.lift.toFixed(2)}</td>
                                 </tr>
                                 {isExpanded && cluster.collapsed.map((child, childIdx) => (
-                                  <tr key={childIdx} className="bg-purple-950/5 border-b border-white/5/10 text-slate-400 font-mono transition-all">
+                                  <tr key={childIdx} className="bg-purple-950/5 border-b border-amber-500/10/10 text-slate-400 font-mono transition-all">
                                     <td className="py-2.5 px-6 text-[10px] text-slate-500 text-right pr-8">↳</td>
                                     <td className="py-2.5 px-6 text-slate-350 italic truncate max-w-md">{child.antecedent}</td>
                                     <td className="py-2.5 px-6">
@@ -1800,7 +1800,7 @@ function App() {
                                     </td>
                                     <td className="py-2.5 px-6 text-[10px]">{child.support.toFixed(4)}</td>
                                     <td className="py-2.5 px-6 text-[10px]">{(child.confidence * 100).toFixed(1)}%</td>
-                                    <td className="py-2.5 px-6 text-[10px] text-violet-400/80">{child.lift.toFixed(2)}</td>
+                                    <td className="py-2.5 px-6 text-[10px] text-amber-400/80">{child.lift.toFixed(2)}</td>
                                   </tr>
                                 ))}
                               </React.Fragment>
@@ -1812,20 +1812,20 @@ function App() {
 
                     {/* Pagination Controls */}
                     {rulesTotalPages > 1 && (
-                      <div className="p-4 bg-[#0A0A0A]/60 border-t border-white/5 flex items-center justify-between">
+                      <div className="p-4 bg-[#0A0A0A]/60 border-t border-amber-500/10 flex items-center justify-between">
                         <span className="text-[10px] text-slate-500 font-mono">Page {rulesPage + 1} of {rulesTotalPages}</span>
                         <div className="flex gap-2">
                           <button
                             onClick={() => setRulesPage(prev => Math.max(0, prev - 1))}
                             disabled={rulesPage === 0}
-                            className="p-1.5 bg-[#111] border border-white/10 disabled:opacity-40 text-slate-400 hover:text-white rounded-lg transition"
+                            className="p-1.5 bg-[#111] border border-amber-500/20 disabled:opacity-40 text-slate-400 hover:text-white rounded-lg transition"
                           >
                             <ChevronLeft size={16} />
                           </button>
                           <button
                             onClick={() => setRulesPage(prev => Math.min(rulesTotalPages - 1, prev + 1))}
                             disabled={rulesPage === rulesTotalPages - 1}
-                            className="p-1.5 bg-[#111] border border-white/10 disabled:opacity-40 text-slate-400 hover:text-white rounded-lg transition"
+                            className="p-1.5 bg-[#111] border border-amber-500/20 disabled:opacity-40 text-slate-400 hover:text-white rounded-lg transition"
                           >
                             <ChevronRight size={16} />
                           </button>
@@ -1846,7 +1846,7 @@ function App() {
                 <p className="text-sm text-slate-400 mt-1">Force-weighted layout mapping connections between codebase modules, languages, tech stacks, and outcome severities</p>
               </div>
 
-              <div className="flex-1 bg-[#111] border border-white/10 rounded-xl overflow-hidden relative min-h-[400px]">
+              <div className="flex-1 bg-[#111] border border-amber-500/20 rounded-xl overflow-hidden relative min-h-[400px]">
                 {rules.length === 0 ? (
                   <div className="absolute inset-0 flex items-center justify-center text-slate-500">
                     Run pipeline analysis to populate graph nodes.
@@ -1861,11 +1861,11 @@ function App() {
                     className="bg-[#0b0f19]/30"
                   >
                     <Background color="#334155" gap={16} size={1} />
-                    <Controls className="bg-[#111] border border-white/10 text-slate-200 fill-slate-200" />
+                    <Controls className="bg-[#111] border border-amber-500/20 text-slate-200 fill-slate-200" />
                     <MiniMap
                       nodeStrokeColor={(n) => '#475569'}
                       nodeColor={(n) => n.style?.background || '#1e293b'}
-                      className="bg-[#111] border border-white/5 rounded-xl"
+                      className="bg-[#111] border border-amber-500/10 rounded-xl"
                       maskColor="rgba(15, 23, 42, 0.6)"
                     />
                   </ReactFlow>
@@ -1900,22 +1900,22 @@ function App() {
                   });
 
                   return (
-                    <div className="absolute top-4 right-4 bottom-4 w-80 z-10 bg-[#0A0A0A]/95 border border-white/5 p-4 rounded-xl flex flex-col shadow-2xl backdrop-blur-md overflow-hidden animate-slide-in font-sans">
-                      <div className="flex justify-between items-start border-b border-white/10 pb-3 mb-3">
+                    <div className="absolute top-4 right-4 bottom-4 w-80 z-10 bg-[#0A0A0A]/95 border border-amber-500/10 p-4 rounded-xl flex flex-col shadow-2xl backdrop-blur-md overflow-hidden animate-slide-in font-sans">
+                      <div className="flex justify-between items-start border-b border-amber-500/20 pb-3 mb-3">
                         <div>
-                          <span className="text-[9px] font-bold text-violet-400 uppercase tracking-wider block">{typeLabel}</span>
+                          <span className="text-[9px] font-bold text-amber-400 uppercase tracking-wider block">{typeLabel}</span>
                           <h4 className="text-sm font-bold text-white font-mono mt-0.5">{label}</h4>
                         </div>
                         <button 
                           onClick={() => setSelectedGraphNode(null)}
-                          className="p-1 rounded bg-[#111] border border-white/5 hover:border-white/20 transition text-slate-400 hover:text-white"
+                          className="p-1 rounded bg-[#111] border border-amber-500/10 hover:border-amber-500/30 transition text-slate-400 hover:text-white"
                         >
                           <X size={14} />
                         </button>
                       </div>
 
                       <div className="flex-1 overflow-y-auto space-y-4 pr-1 scrollbar-thin text-[11px]">
-                        <div className="p-3 bg-[#111] border border-white/5 rounded-lg space-y-1.5">
+                        <div className="p-3 bg-[#111] border border-amber-500/10 rounded-lg space-y-1.5">
                           <div className="flex justify-between">
                             <span className="text-slate-400">Total Related Rules:</span>
                             <span className="font-bold text-white font-mono">{relatedRules.length}</span>
@@ -1933,8 +1933,8 @@ function App() {
                                       className={`px-1.5 py-0.5 rounded text-[9px] font-extrabold border ${
                                         outcome === 'CRITICAL' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' :
                                         outcome === 'HIGH' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
-                                        outcome === 'MEDIUM' ? 'bg-amber-500/10 text-amber-450 border-white/10' :
-                                        'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'
+                                        outcome === 'MEDIUM' ? 'bg-amber-500/10 text-amber-450 border-amber-500/20' :
+                                        'bg-amber-500/10 text-amber-400 border-amber-500/20'
                                       }`}
                                     >
                                       {outcome}: {count}
@@ -1960,17 +1960,17 @@ function App() {
                                 const outcomeClean = rule.consequent.split('=')[1]?.toUpperCase() || 'UNKNOWN';
 
                                 return (
-                                  <div key={idx} className="p-2.5 bg-[#111] border border-white/5 hover:border-white/10 rounded-lg transition space-y-2">
+                                  <div key={idx} className="p-2.5 bg-[#111] border border-amber-500/10 hover:border-amber-500/20 rounded-lg transition space-y-2">
                                     <div className="text-slate-300 font-mono leading-tight">
-                                      <span className="text-violet-400 font-bold">{antecedentsClean}</span>
+                                      <span className="text-amber-400 font-bold">{antecedentsClean}</span>
                                       <span className="text-slate-400 mx-1">→</span>
                                       <span className={
                                         outcomeClean === 'CRITICAL' ? 'text-rose-400 font-bold' :
                                         outcomeClean === 'HIGH' ? 'text-orange-400 font-bold' :
-                                        outcomeClean === 'MEDIUM' ? 'text-amber-400 font-bold' : 'text-indigo-400 font-bold'
+                                        outcomeClean === 'MEDIUM' ? 'text-amber-400 font-bold' : 'text-amber-400 font-bold'
                                       }>{outcomeClean}</span>
                                     </div>
-                                    <div className="flex gap-2.5 text-[9px] font-mono text-slate-450 border-t border-white/5/30 pt-1.5">
+                                    <div className="flex gap-2.5 text-[9px] font-mono text-slate-450 border-t border-amber-500/10/30 pt-1.5">
                                       <span>Sup: <strong className="text-slate-300 font-normal">{(rule.support * 100).toFixed(0)}%</strong></span>
                                       <span>Conf: <strong className="text-slate-300 font-normal">{(rule.confidence * 100).toFixed(0)}%</strong></span>
                                       <span>Lift: <strong className="text-slate-300 font-normal">{rule.lift.toFixed(2)}</strong></span>
@@ -1992,7 +1992,7 @@ function App() {
                 })()}
 
                 {/* Graph Legend Panel */}
-                <div className="absolute bottom-4 left-4 z-10 bg-[#0A0A0A]/90 border border-white/5 p-4 rounded-xl text-[10px] space-y-2 max-w-xs shadow-2xl backdrop-blur-md">
+                <div className="absolute bottom-4 left-4 z-10 bg-[#0A0A0A]/90 border border-amber-500/10 p-4 rounded-xl text-[10px] space-y-2 max-w-xs shadow-2xl backdrop-blur-md">
                   <span className="font-bold text-slate-400 uppercase tracking-wider block">Node Classifications</span>
                   <div className="grid grid-cols-2 gap-2 text-slate-350">
                     <div className="flex items-center gap-1.5">
@@ -2037,13 +2037,13 @@ function App() {
               </div>
 
               {risks.length === 0 ? (
-                <div className="bg-[#111] border border-white/10 p-24 rounded-xl text-center text-slate-500">
+                <div className="bg-[#111] border border-amber-500/20 p-24 rounded-xl text-center text-slate-500">
                   No telemetry risk analysis computed. Generate scan rules to review hotspots.
                 </div>
               ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   {/* Left: Module list selection */}
-                  <div className="lg:col-span-1 bg-[#111] border border-white/10 p-5 rounded-xl space-y-4">
+                  <div className="lg:col-span-1 bg-[#111] border border-amber-500/20 p-5 rounded-xl space-y-4">
                     <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Telemetry Module Indexes</span>
                     <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
                       {risks.map((r) => (
@@ -2053,7 +2053,7 @@ function App() {
                           className={`w-full text-left p-3.5 border rounded-xl flex items-center justify-between transition ${
                             selectedModule?.module === r.module
                               ? 'bg-purple-950/20 border-purple-550'
-                              : 'bg-[#0A0A0A]/60 border-white/5 hover:border-white/20'
+                              : 'bg-[#0A0A0A]/60 border-amber-500/10 hover:border-amber-500/30'
                           }`}
                         >
                           <div>
@@ -2067,8 +2067,8 @@ function App() {
                               : r.riskLevel === 'HIGH'
                               ? 'bg-orange-500/10 text-orange-450 border-orange-500/20'
                               : r.riskLevel === 'MEDIUM'
-                              ? 'bg-amber-500/10 text-amber-450 border-white/10'
-                              : 'bg-indigo-500/10 text-blue-450 border-indigo-500/20'
+                              ? 'bg-amber-500/10 text-amber-450 border-amber-500/20'
+                              : 'bg-amber-500/10 text-blue-450 border-amber-500/20'
                           }`}>
                             {r.riskLevel}
                           </span>
@@ -2080,8 +2080,8 @@ function App() {
                   {/* Right: Selected module details & explaining rules */}
                   <div className="lg:col-span-2 space-y-6">
                     {selectedModule ? (
-                      <div className="bg-[#111] border border-white/10 p-6 rounded-xl space-y-6">
-                        <div className="flex justify-between items-center border-b border-white/10 pb-4">
+                      <div className="bg-[#111] border border-amber-500/20 p-6 rounded-xl space-y-6">
+                        <div className="flex justify-between items-center border-b border-amber-500/20 pb-4">
                           <div>
                             <h3 className="text-lg font-bold text-white font-mono">{selectedModule.module}</h3>
                             <p className="text-xs text-slate-500 mt-0.5">Defect hotspot drilldown logs</p>
@@ -2092,8 +2092,8 @@ function App() {
                               : selectedModule.riskLevel === 'HIGH'
                               ? 'bg-orange-500/10 text-orange-450 border-orange-500/20'
                               : selectedModule.riskLevel === 'MEDIUM'
-                              ? 'bg-amber-500/10 text-amber-450 border-white/10'
-                              : 'bg-indigo-500/10 text-blue-450 border-indigo-500/20'
+                              ? 'bg-amber-500/10 text-amber-450 border-amber-500/20'
+                              : 'bg-amber-500/10 text-blue-450 border-amber-500/20'
                           }`}>
                             {selectedModule.riskLevel}
                           </span>
@@ -2101,12 +2101,12 @@ function App() {
 
                         {/* Summary panel */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                          <div className="p-4 bg-[#0A0A0A] border border-white/5 rounded-xl space-y-1 relative group">
+                          <div className="p-4 bg-[#0A0A0A] border border-amber-500/10 rounded-xl space-y-1 relative group">
                             <div className="flex items-center justify-center gap-1">
                               <span className="text-[10px] text-slate-500 uppercase font-semibold">Defect Risk Index</span>
                               <button 
                                 onClick={() => setShowFormulaInfo(true)}
-                                className="text-slate-500 hover:text-violet-400 transition active:scale-95 cursor-help"
+                                className="text-slate-500 hover:text-amber-400 transition active:scale-95 cursor-help"
                                 title="Show Methodology Formulas"
                               >
                                 <Info size={11} />
@@ -2114,7 +2114,7 @@ function App() {
                             </div>
                             <p className="text-2xl font-mono font-extrabold text-white">{(selectedModule.riskScore).toFixed(1)}%</p>
                           </div>
-                          <div className="p-4 bg-[#0A0A0A] border border-white/5 rounded-xl space-y-1">
+                          <div className="p-4 bg-[#0A0A0A] border border-amber-500/10 rounded-xl space-y-1">
                             <span className="text-[10px] text-slate-500 uppercase font-semibold">Risk Level</span>
                             <p className={`text-xl font-bold ${
                               selectedModule.riskLevel === 'CRITICAL' || selectedModule.riskLevel === 'HIGH'
@@ -2122,7 +2122,7 @@ function App() {
                                 : 'text-amber-500'
                             }`}>{selectedModule.riskLevel}</p>
                           </div>
-                          <div className="p-4 bg-slate-955 border border-slate-900 rounded-xl space-y-1 hover:border-white/10 transition">
+                          <div className="p-4 bg-slate-955 border border-slate-900 rounded-xl space-y-1 hover:border-amber-500/20 transition">
                             <span className="text-[10px] text-slate-500 uppercase font-semibold">Mined Outcome Drivers</span>
                             <p 
                               className="text-sm font-bold text-purple-300 truncate mt-1.5 uppercase tracking-wide cursor-help"
@@ -2151,7 +2151,7 @@ function App() {
                                   return (
                                     <div
                                       key={cluster.id}
-                                      className="p-4 bg-slate-955 border border-slate-900 rounded-xl space-y-2 hover:border-white/10 transition"
+                                      className="p-4 bg-slate-955 border border-slate-900 rounded-xl space-y-2 hover:border-amber-500/20 transition"
                                     >
                                       <div className="flex justify-between items-center text-xs">
                                         <div className="flex items-center gap-2">
@@ -2159,18 +2159,18 @@ function App() {
                                           {cluster.collapsed.length > 0 && (
                                             <button
                                               onClick={() => setExpandedRules(prev => ({ ...prev, [cluster.id]: !prev[cluster.id] }))}
-                                              className="px-2 py-0.5 rounded-full bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/20 hover:border-purple-500/40 text-[8px] font-sans font-bold text-purple-300 transition flex items-center gap-0.5 active:scale-95"
+                                              className="px-2 py-0.5 rounded-full bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 hover:border-purple-500/40 text-[8px] font-sans font-bold text-purple-300 transition flex items-center gap-0.5 active:scale-95"
                                             >
                                               <span>{cluster.collapsed.length} collapsed</span>
                                               <span>{isExpanded ? '▲' : '▼'}</span>
                                             </button>
                                           )}
                                         </div>
-                                        <span className="text-slate-500 font-mono text-[9px]">LIFT: <strong className="text-violet-400">{rep.lift.toFixed(2)}</strong></span>
+                                        <span className="text-slate-500 font-mono text-[9px]">LIFT: <strong className="text-amber-400">{rep.lift.toFixed(2)}</strong></span>
                                       </div>
                                       <div className="bg-[#0A0A0A] p-2.5 rounded-lg border border-slate-900 text-xs font-mono flex items-center justify-between text-slate-400 gap-4">
                                         <span className="truncate">{rep.antecedent}</span>
-                                        <span className="text-violet-400 font-bold">➔</span>
+                                        <span className="text-amber-400 font-bold">➔</span>
                                         <span className="text-rose-400 font-bold whitespace-nowrap">{rep.consequent}</span>
                                       </div>
                                       <div className="flex gap-4 text-[9px] font-mono text-slate-550">
@@ -2188,7 +2188,7 @@ function App() {
                                               </div>
                                               <div className="flex items-center justify-between gap-2">
                                                 <span className="truncate italic text-slate-350">{child.antecedent}</span>
-                                                <span className="text-violet-400">➔</span>
+                                                <span className="text-amber-400">➔</span>
                                                 <span className="text-rose-500/80">{child.consequent.split('=')[1] || child.consequent}</span>
                                               </div>
                                               <div className="flex gap-3 text-[8px] text-slate-500">
@@ -2232,16 +2232,16 @@ function App() {
                 {/* Dataset Upload Zone & Parameters */}
                 <div className="lg:col-span-1 space-y-6">
                   {/* File Uploader */}
-                  <div className="bg-[#111] border border-white/10 p-6 rounded-xl space-y-4">
+                  <div className="bg-[#111] border border-amber-500/20 p-6 rounded-xl space-y-4">
                     <h3 className="text-base font-bold text-white flex items-center gap-2">
-                      <Upload size={18} className="text-violet-400" />
+                      <Upload size={18} className="text-amber-400" />
                       <span>Dataset Ingestion</span>
                     </h3>
 
                     {/* Sample CSV Download */}
                     <button
                       onClick={handleDownloadSampleCsv}
-                      className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-[#0A0A0A] border border-white/10 hover:border-purple-500/50 text-slate-400 hover:text-purple-300 rounded-lg text-xs font-semibold transition"
+                      className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-[#0A0A0A] border border-amber-500/20 hover:border-purple-500/50 text-slate-400 hover:text-purple-300 rounded-lg text-xs font-semibold transition"
                     >
                       <Download size={12} />
                       <span>Download Sample CSV Template</span>
@@ -2252,7 +2252,7 @@ function App() {
                       onDragOver={handleDragOver}
                       onDrop={handleDrop}
                       onClick={() => fileInputRef.current?.click()}
-                      className="border-2 border-dashed border-white/10 hover:border-purple-650 transition rounded-xl p-8 text-center cursor-pointer space-y-2 bg-[#0A0A0A]/20"
+                      className="border-2 border-dashed border-amber-500/20 hover:border-purple-650 transition rounded-xl p-8 text-center cursor-pointer space-y-2 bg-[#0A0A0A]/20"
                     >
                       <input
                         type="file"
@@ -2262,12 +2262,12 @@ function App() {
                         className="hidden"
                       />
                       <Upload size={28} className="text-slate-500 mx-auto" />
-                      <p className="text-xs text-slate-400">Drag & drop CSV/JSON file here, or <span className="text-violet-400 font-bold">Browse</span></p>
+                      <p className="text-xs text-slate-400">Drag & drop CSV/JSON file here, or <span className="text-amber-400 font-bold">Browse</span></p>
                       <p className="text-[10px] text-slate-600">Required fields: module, subsystem, language, tech_stack, bug_type, severity</p>
                     </div>
 
                     {uploadFile && (
-                      <div className="p-3 bg-[#0A0A0A] border border-white/5 rounded-xl flex items-center justify-between text-xs gap-3">
+                      <div className="p-3 bg-[#0A0A0A] border border-amber-500/10 rounded-xl flex items-center justify-between text-xs gap-3">
                         <div className="truncate flex-1">
                           <p className="font-semibold text-slate-300 truncate">{uploadFile.name}</p>
                           <p className="text-[10px] text-slate-500 font-mono">{(uploadFile.size / 1024).toFixed(1)} KB</p>
@@ -2275,7 +2275,7 @@ function App() {
                         <button
                           onClick={handleUpload}
                           disabled={uploading}
-                          className="px-3 py-1.5 bg-violet-600 hover:bg-purple-700 text-white font-bold rounded-lg transition disabled:opacity-40"
+                          className="px-3 py-1.5 bg-amber-600 hover:bg-purple-700 text-white font-bold rounded-lg transition disabled:opacity-40"
                         >
                           {uploading ? 'Validating...' : 'Upload'}
                         </button>
@@ -2283,7 +2283,7 @@ function App() {
                     )}
 
                     {uploadResult && (
-                      <div className="p-4 bg-[#0A0A0A] border border-white/5 rounded-xl space-y-2 text-[10px] font-mono">
+                      <div className="p-4 bg-[#0A0A0A] border border-amber-500/10 rounded-xl space-y-2 text-[10px] font-mono">
                         <div className="flex justify-between items-center pb-2 border-b border-slate-900 text-xs">
                           <span className="text-slate-500 font-bold uppercase">Ingestion Status:</span>
                           <span className={`font-bold px-2 py-0.5 rounded ${
@@ -2325,7 +2325,7 @@ function App() {
                   </div>
 
                   {/* Scan Tuning Parameters */}
-                  <div className="bg-[#111] border border-white/10 p-6 rounded-xl">
+                  <div className="bg-[#111] border border-amber-500/20 p-6 rounded-xl">
                     <h3 className="text-base font-bold text-white mb-4">Pipeline Tuning</h3>
                     
                     <form onSubmit={handleRunStreamScan} className="space-y-4 text-xs">
@@ -2334,7 +2334,7 @@ function App() {
                         <select
                           value={dataSource}
                           onChange={(e) => setDataSource(e.target.value)}
-                          className="block w-full px-3 py-2 bg-[#0A0A0A] border border-white/5 rounded-lg text-white focus:outline-none"
+                          className="block w-full px-3 py-2 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-white focus:outline-none"
                         >
                           <option value="synthetic">Generated Synthetic Dataset</option>
                           {uploadResult && uploadResult.validation_status === 'valid' && (
@@ -2351,7 +2351,7 @@ function App() {
                               type="number"
                               value={scanRows}
                               onChange={(e) => setScanRows(parseInt(e.target.value))}
-                              className="block w-full px-3 py-2 bg-[#0A0A0A] border border-white/5 rounded-lg text-white focus:outline-none"
+                              className="block w-full px-3 py-2 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-white focus:outline-none"
                             />
                           </div>
                           <div>
@@ -2360,7 +2360,7 @@ function App() {
                               type="number"
                               value={scanSeed}
                               onChange={(e) => setScanSeed(parseInt(e.target.value))}
-                              className="block w-full px-3 py-2 bg-[#0A0A0A] border border-white/5 rounded-lg text-white focus:outline-none"
+                              className="block w-full px-3 py-2 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-white focus:outline-none"
                             />
                           </div>
                         </div>
@@ -2371,7 +2371,7 @@ function App() {
                         <select
                           value={scanAlgorithm}
                           onChange={(e) => setScanAlgorithm(e.target.value)}
-                          className="block w-full px-3 py-2 bg-[#0A0A0A] border border-white/5 rounded-lg text-white focus:outline-none"
+                          className="block w-full px-3 py-2 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-white focus:outline-none"
                         >
                           <option value="fpgrowth">FP-Growth (Frequent Pattern Tree)</option>
                           <option value="apriori">Apriori (Combinatorial Generation)</option>
@@ -2386,7 +2386,7 @@ function App() {
                             step="0.01"
                             value={scanSupport}
                             onChange={(e) => setScanSupport(parseFloat(e.target.value))}
-                            className="block w-full px-2 py-1.5 bg-[#0A0A0A] border border-white/5 rounded-lg text-white focus:outline-none"
+                            className="block w-full px-2 py-1.5 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-white focus:outline-none"
                           />
                         </div>
                         <div>
@@ -2396,7 +2396,7 @@ function App() {
                             step="0.05"
                             value={scanConfidence}
                             onChange={(e) => setScanConfidence(parseFloat(e.target.value))}
-                            className="block w-full px-2 py-1.5 bg-[#0A0A0A] border border-white/5 rounded-lg text-white focus:outline-none"
+                            className="block w-full px-2 py-1.5 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-white focus:outline-none"
                           />
                         </div>
                         <div>
@@ -2406,7 +2406,7 @@ function App() {
                             step="0.1"
                             value={scanLift}
                             onChange={(e) => setScanLift(parseFloat(e.target.value))}
-                            className="block w-full px-2 py-1.5 bg-[#0A0A0A] border border-white/5 rounded-lg text-white focus:outline-none"
+                            className="block w-full px-2 py-1.5 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-white focus:outline-none"
                           />
                         </div>
                       </div>
@@ -2415,13 +2415,13 @@ function App() {
                         <button
                           type="submit"
                           disabled={scanning}
-                          className="w-full mt-4 py-2.5 px-4 bg-violet-600 hover:bg-purple-700 disabled:bg-purple-800 text-white font-bold rounded-lg shadow-lg hover:shadow-purple-500/10 active:scale-[0.98] transition flex items-center justify-center gap-2"
+                          className="w-full mt-4 py-2.5 px-4 bg-amber-600 hover:bg-purple-700 disabled:bg-purple-800 text-white font-bold rounded-lg shadow-lg hover:shadow-purple-500/10 active:scale-[0.98] transition flex items-center justify-center gap-2"
                         >
                           <Activity size={14} className={scanning ? 'animate-pulse' : ''} />
                           <span>{scanning ? 'Scan processing streaming...' : 'Run Stream Scan'}</span>
                         </button>
                       ) : (
-                        <div className="p-3 bg-[#0A0A0A] border border-white/5 rounded-lg text-slate-500 text-center font-bold">
+                        <div className="p-3 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-slate-500 text-center font-bold">
                           Only Admin role can run scan executions.
                         </div>
                       )}
@@ -2430,19 +2430,19 @@ function App() {
                 </div>
 
                 {/* Pipeline visualizer progress panel */}
-                <div className="lg:col-span-2 bg-[#111] border border-white/10 p-6 rounded-xl flex flex-col justify-between min-h-[450px]">
+                <div className="lg:col-span-2 bg-[#111] border border-amber-500/20 p-6 rounded-xl flex flex-col justify-between min-h-[450px]">
                   <div>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border-b border-white/10/60 pb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border-b border-amber-500/20/60 pb-4">
                       <div>
                         <h3 className="text-base font-bold text-white tracking-tight flex items-center gap-2 m-0 font-sans">
                           {activePipelineView === 'profile' ? (
                             <>
-                              <Database size={16} className="text-violet-400" />
+                              <Database size={16} className="text-amber-400" />
                               <span>Dataset Intelligence Panel</span>
                             </>
                           ) : (
                             <>
-                              <Cpu size={16} className="text-indigo-400 animate-pulse" />
+                              <Cpu size={16} className="text-amber-400 animate-pulse" />
                               <span>Pipeline Execution Visualizer</span>
                             </>
                           )}
@@ -2454,13 +2454,13 @@ function App() {
                         </p>
                       </div>
 
-                      <div className="bg-[#0A0A0A] p-1 rounded-xl border border-white/5 flex items-center gap-1 self-start sm:self-auto font-sans">
+                      <div className="bg-[#0A0A0A] p-1 rounded-xl border border-amber-500/10 flex items-center gap-1 self-start sm:self-auto font-sans">
                         <button
                           type="button"
                           onClick={() => setActivePipelineView('profile')}
                           className={`px-3 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-all ${
                             activePipelineView === 'profile'
-                              ? 'bg-violet-600 text-white shadow-lg shadow-purple-500/15'
+                              ? 'bg-amber-600 text-white shadow-lg shadow-purple-500/15'
                               : 'text-slate-400 hover:text-slate-200 hover:bg-[#111]'
                           }`}
                         >
@@ -2471,7 +2471,7 @@ function App() {
                           onClick={() => setActivePipelineView('visualizer')}
                           className={`px-3 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5 ${
                             activePipelineView === 'visualizer'
-                              ? 'bg-violet-600 text-white shadow-lg shadow-purple-500/15'
+                              ? 'bg-amber-600 text-white shadow-lg shadow-purple-500/15'
                               : 'text-slate-400 hover:text-slate-200 hover:bg-[#111]'
                           }`}
                         >
@@ -2486,10 +2486,10 @@ function App() {
                         {/* Progress meter */}
                         <div className="space-y-2">
                           <div className="flex justify-between text-xs">
-                            <span className="text-violet-400 font-semibold uppercase">{sseStage || 'Idle / Awaiting connection'}</span>
+                            <span className="text-amber-400 font-semibold uppercase">{sseStage || 'Idle / Awaiting connection'}</span>
                             <span className="text-slate-400 font-mono">{sseProgress}%</span>
                           </div>
-                          <div className="w-full bg-[#0A0A0A] border border-white/5 h-3 rounded-full overflow-hidden p-0.5">
+                          <div className="w-full bg-[#0A0A0A] border border-amber-500/10 h-3 rounded-full overflow-hidden p-0.5">
                             <div
                               className="h-full bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full transition-all duration-300"
                               style={{ width: `${sseProgress}%` }}
@@ -2531,16 +2531,16 @@ function App() {
                           <div className="space-y-6">
                             
                             {/* Ingestion Header */}
-                            <div className="flex justify-between items-center border-b border-white/10 pb-3">
+                            <div className="flex justify-between items-center border-b border-amber-500/20 pb-3">
                               <div>
-                                <span className="text-[10px] text-violet-400 font-bold uppercase tracking-wider font-sans">Active Ingested Dataset Profile</span>
+                                <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider font-sans">Active Ingested Dataset Profile</span>
                                 <h4 className="text-sm font-bold text-white mt-0.5 capitalize font-sans">
                                   {datasetProfile.profile_type} Data Baseline
                                 </h4>
                               </div>
                               <span className={`text-[9px] font-mono px-2 py-0.5 rounded font-extrabold border ${
                                 datasetProfile.schema_status === 'healthy' 
-                                  ? 'bg-amber-500/10 text-amber-450 border-white/10' 
+                                  ? 'bg-amber-500/10 text-amber-450 border-amber-500/20' 
                                   : 'bg-rose-500/10 text-rose-450 border-rose-500/20'
                               }`}>
                                 {datasetProfile.schema_status.toUpperCase()} SCHEMA
@@ -2549,13 +2549,13 @@ function App() {
 
                             {/* Summary Metrics Cards */}
                             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center font-sans">
-                              <div className="p-3 bg-[#0A0A0A]/60 border border-white/5 rounded-xl space-y-1 relative overflow-hidden group">
+                              <div className="p-3 bg-[#0A0A0A]/60 border border-amber-500/10 rounded-xl space-y-1 relative overflow-hidden group">
                                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
                                 <span className="text-[9px] text-slate-500 uppercase font-bold">Total Ingest Rows</span>
                                 <p className="text-xl font-mono font-extrabold text-white">{datasetProfile.rows}</p>
                               </div>
                               
-                              <div className="p-3 bg-slate-955 border border-white/5 rounded-xl space-y-1 relative overflow-hidden group">
+                              <div className="p-3 bg-slate-955 border border-amber-500/10 rounded-xl space-y-1 relative overflow-hidden group">
                                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
                                 <span className="text-[9px] text-slate-500 uppercase font-bold">Duplicate Rows</span>
                                 <p className={`text-xl font-mono font-extrabold ${datasetProfile.duplicates > 0 ? 'text-amber-500' : 'text-slate-300'}`}>
@@ -2563,7 +2563,7 @@ function App() {
                                 </p>
                               </div>
                               
-                              <div className="p-3 bg-slate-955 border border-white/5 rounded-xl space-y-1 relative overflow-hidden group">
+                              <div className="p-3 bg-slate-955 border border-amber-500/10 rounded-xl space-y-1 relative overflow-hidden group">
                                 <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent pointer-events-none" />
                                 <span className="text-[9px] text-slate-500 uppercase font-bold">Null/Empty Cells</span>
                                 <p className={`text-xl font-mono font-extrabold ${datasetProfile.null_count > 0 ? 'text-rose-400' : 'text-slate-300'}`}>
@@ -2571,7 +2571,7 @@ function App() {
                                 </p>
                               </div>
 
-                              <div className="p-3 bg-[#0A0A0A]/60 border border-white/5 rounded-xl space-y-1 relative overflow-hidden group">
+                              <div className="p-3 bg-[#0A0A0A]/60 border border-amber-500/10 rounded-xl space-y-1 relative overflow-hidden group">
                                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
                                 <span className="text-[9px] text-slate-500 uppercase font-bold">Quality Profile Score</span>
                                 <p className="text-xl font-mono font-extrabold text-amber-450">{datasetProfile.quality_score}/100</p>
@@ -2583,16 +2583,16 @@ function App() {
                               {/* Column completeness */}
                               <div className="space-y-3">
                                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block font-sans">Column Completeness Rates:</span>
-                                <div className="p-4 bg-[#0A0A0A]/50 border border-white/5 rounded-xl space-y-3">
+                                <div className="p-4 bg-[#0A0A0A]/50 border border-amber-500/10 rounded-xl space-y-3">
                                   {Object.entries(datasetProfile.completeness).map(([col, rate], idx) => (
                                     <div key={idx} className="space-y-1 text-xs">
                                       <div className="flex justify-between items-center text-[10px] font-mono">
                                         <span className="font-semibold text-slate-400">{col}</span>
                                         <span className="font-bold text-slate-300">{rate}%</span>
                                       </div>
-                                      <div className="w-full h-1.5 bg-[#111] border border-white/5 rounded-full overflow-hidden">
+                                      <div className="w-full h-1.5 bg-[#111] border border-amber-500/10 rounded-full overflow-hidden">
                                         <div 
-                                          className={`h-full rounded-full ${rate === 100 ? 'bg-violet-600' : 'bg-amber-500'}`}
+                                          className={`h-full rounded-full ${rate === 100 ? 'bg-amber-600' : 'bg-amber-500'}`}
                                           style={{ width: `${rate}%` }}
                                         />
                                       </div>
@@ -2604,7 +2604,7 @@ function App() {
                               {/* Ingestion Sanity Verification Checks */}
                               <div className="space-y-3">
                                 <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block font-sans">Ingest Sanity Verification:</span>
-                                <div className="p-4 bg-[#0A0A0A]/50 border border-white/5 rounded-xl space-y-2.5 text-xs text-slate-300 font-sans">
+                                <div className="p-4 bg-[#0A0A0A]/50 border border-amber-500/10 rounded-xl space-y-2.5 text-xs text-slate-300 font-sans">
                                   <div className="flex items-center justify-between">
                                     <span>Schema Columns Check</span>
                                     <span className="font-bold font-mono text-amber-450 flex items-center gap-1">
@@ -2694,9 +2694,9 @@ function App() {
                     )}
                   </div>
 
-                  <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs">
+                  <div className="pt-4 border-t border-amber-500/10 flex items-center justify-between text-xs">
                     <span className="text-slate-500 flex items-center gap-1">
-                      <Info size={14} className="text-violet-500" />
+                      <Info size={14} className="text-amber-500" />
                       <span>Data streamed incrementally via Server Sent Events</span>
                     </span>
                     <button
@@ -2723,7 +2723,7 @@ function App() {
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Configuration side panel */}
-                <div className="lg:col-span-1 bg-[#111] border border-white/10 p-6 rounded-xl">
+                <div className="lg:col-span-1 bg-[#111] border border-amber-500/20 p-6 rounded-xl">
                   <h3 className="text-base font-bold text-white mb-4">Benchmark Parameters</h3>
                   
                   <form onSubmit={handleRunPlayground} className="space-y-4">
@@ -2732,7 +2732,7 @@ function App() {
                       <select
                         value={playgroundDataSource}
                         onChange={(e) => setPlaygroundDataSource(e.target.value)}
-                        className="block w-full px-3 py-2 bg-[#0A0A0A] border border-white/5 rounded-lg text-xs text-white focus:outline-none"
+                        className="block w-full px-3 py-2 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-xs text-white focus:outline-none"
                       >
                         <option value="synthetic">Synthetic Generator</option>
                         {uploadResult && uploadResult.validation_status === 'valid' && (
@@ -2749,7 +2749,7 @@ function App() {
                             type="number"
                             value={playgroundRows}
                             onChange={(e) => setPlaygroundRows(parseInt(e.target.value))}
-                            className="block w-full px-3 py-2 bg-[#0A0A0A] border border-white/5 rounded-lg text-xs text-white focus:outline-none"
+                            className="block w-full px-3 py-2 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-xs text-white focus:outline-none"
                           />
                         </div>
                         <div>
@@ -2758,7 +2758,7 @@ function App() {
                             type="number"
                             value={playgroundSeed}
                             onChange={(e) => setPlaygroundSeed(parseInt(e.target.value))}
-                            className="block w-full px-3 py-2 bg-[#0A0A0A] border border-white/5 rounded-lg text-xs text-white focus:outline-none"
+                            className="block w-full px-3 py-2 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-xs text-white focus:outline-none"
                           />
                         </div>
                       </div>
@@ -2797,7 +2797,7 @@ function App() {
                         step="0.1"
                         value={playgroundLift}
                         onChange={(e) => setPlaygroundLift(parseFloat(e.target.value))}
-                        className="block w-full px-3 py-2 bg-[#0A0A0A] border border-white/5 rounded-lg text-xs text-white focus:outline-none"
+                        className="block w-full px-3 py-2 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-xs text-white focus:outline-none"
                       />
                     </div>
 
@@ -2805,13 +2805,13 @@ function App() {
                       <button
                         type="submit"
                         disabled={comparing}
-                        className="w-full mt-4 py-2.5 px-4 bg-violet-600 hover:bg-purple-700 disabled:bg-purple-800 text-white text-xs font-bold rounded-lg transition flex items-center justify-center gap-2"
+                        className="w-full mt-4 py-2.5 px-4 bg-amber-600 hover:bg-purple-700 disabled:bg-purple-800 text-white text-xs font-bold rounded-lg transition flex items-center justify-center gap-2"
                       >
                         <Cpu size={14} className={comparing ? 'animate-spin' : ''} />
                         <span>{comparing ? 'Benchmarking algorithms...' : 'Run Benchmarks'}</span>
                       </button>
                     ) : (
-                      <div className="p-3 bg-[#0A0A0A] border border-white/5 rounded-lg text-slate-500 text-center font-bold text-[10px]">
+                      <div className="p-3 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-slate-500 text-center font-bold text-[10px]">
                         Only Admin role can run benchmark evaluations.
                       </div>
                     )}
@@ -2825,7 +2825,7 @@ function App() {
                       
                       {/* Metric cards */}
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="bg-[#111] border border-white/10 p-5 rounded-xl flex flex-col justify-between relative overflow-hidden group">
+                        <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col justify-between relative overflow-hidden group">
                           <span className="text-[10px] text-slate-550 uppercase font-bold tracking-wider">Speed Performance Winner</span>
                           <span className="text-xl font-bold text-white mt-1.5">
                             {playgroundResult.fpgrowth.total_time_ms < playgroundResult.apriori.total_time_ms ? 'FP-Growth' : 'Apriori / Equivalent'}
@@ -2837,13 +2837,13 @@ function App() {
                           </span>
                         </div>
 
-                        <div className="bg-[#111] border border-white/10 p-5 rounded-xl flex flex-col justify-between relative overflow-hidden group">
+                        <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col justify-between relative overflow-hidden group">
                           <span className="text-[10px] text-slate-550 uppercase font-bold tracking-wider">FP-Growth Execution</span>
                           <span className="text-xl font-mono font-extrabold text-white mt-1.5">{playgroundResult.fpgrowth.total_time_ms} ms</span>
                           <span className="text-[10px] text-slate-500 mt-1">{playgroundResult.fpgrowth.rules_count} rules generated</span>
                         </div>
 
-                        <div className="bg-[#111] border border-white/10 p-5 rounded-xl flex flex-col justify-between relative overflow-hidden group">
+                        <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col justify-between relative overflow-hidden group">
                           <span className="text-[10px] text-slate-550 uppercase font-bold tracking-wider">Apriori Execution</span>
                           <span className="text-xl font-mono font-extrabold text-white mt-1.5">{playgroundResult.apriori.total_time_ms} ms</span>
                           <span className="text-[10px] text-slate-500 mt-1">{playgroundResult.apriori.rules_count} rules generated</span>
@@ -2853,7 +2853,7 @@ function App() {
                       {/* Charts section */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Runtime comparison chart */}
-                        <div className="bg-[#111] border border-white/10 p-6 rounded-xl h-[300px] flex flex-col">
+                        <div className="bg-[#111] border border-amber-500/20 p-6 rounded-xl h-[300px] flex flex-col">
                           <h4 className="text-xs font-bold text-slate-450 uppercase mb-4">Runtime Comparison (ms)</h4>
                           <div className="flex-1 w-full text-[10px] font-mono">
                             <ResponsiveContainer width="100%" height="100%">
@@ -2882,7 +2882,7 @@ function App() {
                         </div>
 
                         {/* Rules count comparison chart */}
-                        <div className="bg-[#111] border border-white/10 p-6 rounded-xl h-[300px] flex flex-col">
+                        <div className="bg-[#111] border border-amber-500/20 p-6 rounded-xl h-[300px] flex flex-col">
                           <h4 className="text-xs font-bold text-slate-450 uppercase mb-4">Rule Count Comparison</h4>
                           <div className="flex-1 w-full text-[10px] font-mono">
                             <ResponsiveContainer width="100%" height="100%">
@@ -2912,8 +2912,8 @@ function App() {
                       </div>
 
                       {/* Performance insight text */}
-                      <div className="p-3 bg-[#0A0A0A] border border-white/5 rounded-lg text-xs text-slate-450 flex items-center gap-2">
-                        <Info size={16} className="text-violet-400 flex-shrink-0" />
+                      <div className="p-3 bg-[#0A0A0A] border border-amber-500/10 rounded-lg text-xs text-slate-450 flex items-center gap-2">
+                        <Info size={16} className="text-amber-400 flex-shrink-0" />
                         <span>
                           {playgroundResult.fpgrowth.total_time_ms < playgroundResult.apriori.total_time_ms
                             ? `FP-Growth is ${(playgroundResult.apriori.total_time_ms / Math.max(playgroundResult.fpgrowth.total_time_ms, 1)).toFixed(1)}x faster due to tree structure building vs Apriori combinatorial matrix loops.`
@@ -2922,7 +2922,7 @@ function App() {
                       </div>
                     </div>
                   ) : (
-                    <div className="bg-[#111] border border-white/10 p-24 rounded-xl text-center text-slate-500 flex flex-col items-center justify-center gap-2">
+                    <div className="bg-[#111] border border-amber-500/20 p-24 rounded-xl text-center text-slate-500 flex flex-col items-center justify-center gap-2">
                       <Cpu size={36} className="text-slate-700 animate-pulse" />
                       <span>Benchmark algorithms side-by-side to review computational performance differences.</span>
                     </div>
@@ -2943,7 +2943,7 @@ function App() {
                 <button
                   onClick={fetchScanHistory}
                   disabled={loadingHistory}
-                  className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-white/10 rounded-lg text-sm text-slate-300 transition hover:bg-white/5"
+                  className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-amber-500/20 rounded-lg text-sm text-slate-300 transition hover:bg-white/5"
                 >
                   <RefreshCw size={14} className={loadingHistory ? 'animate-spin' : ''} />
                   <span>Sync Timeline</span>
@@ -2952,7 +2952,7 @@ function App() {
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Timeline Selection Box */}
-                <div className="lg:col-span-1 bg-[#111] border border-white/10 p-6 rounded-xl space-y-4">
+                <div className="lg:col-span-1 bg-[#111] border border-amber-500/20 p-6 rounded-xl space-y-4">
                   <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">Historical Scans</h3>
                   
                   {loadingHistory ? (
@@ -2969,10 +2969,10 @@ function App() {
                       {scanHistory.map((scan) => (
                         <div
                           key={scan.id}
-                          className="p-3 bg-[#0A0A0A] border border-white/5 rounded-xl space-y-2 hover:border-white/20 transition"
+                          className="p-3 bg-[#0A0A0A] border border-amber-500/10 rounded-xl space-y-2 hover:border-amber-500/30 transition"
                         >
                           <div className="flex justify-between items-center text-xs">
-                            <span className="font-mono font-bold text-violet-400">Scan #{scan.id}</span>
+                            <span className="font-mono font-bold text-amber-400">Scan #{scan.id}</span>
                             <span className="text-slate-500 font-mono text-[10px]">{new Date(scan.timestamp).toLocaleString()}</span>
                           </div>
                           
@@ -2986,7 +2986,7 @@ function App() {
                             <button
                               onClick={() => setCompareScanA(scan.id)}
                               className={`flex-1 py-1 rounded text-center font-semibold transition ${
-                                compareScanA === scan.id ? 'bg-violet-600 text-white' : 'bg-[#111] hover:bg-slate-850 text-slate-450'
+                                compareScanA === scan.id ? 'bg-amber-600 text-white' : 'bg-[#111] hover:bg-slate-850 text-slate-450'
                               }`}
                             >
                               Scan A {compareScanA === scan.id && '✓'}
@@ -2994,7 +2994,7 @@ function App() {
                             <button
                               onClick={() => setCompareScanB(scan.id)}
                               className={`flex-1 py-1 rounded text-center font-semibold transition ${
-                                compareScanB === scan.id ? 'bg-indigo-600 text-white' : 'bg-[#111] hover:bg-slate-850 text-slate-450'
+                                compareScanB === scan.id ? 'bg-amber-600 text-white' : 'bg-[#111] hover:bg-slate-850 text-slate-450'
                               }`}
                             >
                               Scan B {compareScanB === scan.id && '✓'}
@@ -3008,7 +3008,7 @@ function App() {
                   {compareScanA !== null && compareScanB !== null && (
                     <button
                       onClick={compareSelectedScans}
-                      className="w-full py-2.5 px-4 bg-violet-600 text-white text-xs font-bold rounded-lg transition hover:bg-purple-700 flex items-center justify-center gap-1.5"
+                      className="w-full py-2.5 px-4 bg-amber-600 text-white text-xs font-bold rounded-lg transition hover:bg-purple-700 flex items-center justify-center gap-1.5"
                     >
                       <Clock size={14} />
                       <span>Compare Selected Runs</span>
@@ -3017,10 +3017,10 @@ function App() {
                 </div>
 
                 {/* Compare outcomes results panel */}
-                <div className="lg:col-span-2 bg-[#111] border border-white/10 p-6 rounded-xl min-h-[450px]">
+                <div className="lg:col-span-2 bg-[#111] border border-amber-500/20 p-6 rounded-xl min-h-[450px]">
                   {compareResults ? (
                     <div className="space-y-6">
-                      <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                      <div className="flex items-center justify-between border-b border-amber-500/20 pb-4">
                         <div>
                           <h3 className="text-lg font-bold text-white">Compare Scan #{compareResults.scanA.id} ➔ Scan #{compareResults.scanB.id}</h3>
                           <p className="text-xs text-slate-500 mt-0.5">Performance & risk index delta metrics</p>
@@ -3029,7 +3029,7 @@ function App() {
 
                       {/* Delta Dashboard */}
                       <div className="grid grid-cols-2 gap-4 text-center">
-                        <div className="p-4 bg-[#0A0A0A] border border-white/5 rounded-xl space-y-1">
+                        <div className="p-4 bg-[#0A0A0A] border border-amber-500/10 rounded-xl space-y-1">
                           <span className="text-[10px] text-slate-500 uppercase font-semibold">Runtime Delta</span>
                           <p className={`text-lg font-mono font-extrabold ${compareResults.runtimeDelta <= 0 ? 'text-amber-450' : 'text-rose-400'}`}>
                             {compareResults.runtimeDelta <= 0 ? '' : '+'}{compareResults.runtimeDelta} ms
@@ -3041,7 +3041,7 @@ function App() {
                           </p>
                         </div>
 
-                        <div className="p-4 bg-[#0A0A0A] border border-white/5 rounded-xl space-y-1">
+                        <div className="p-4 bg-[#0A0A0A] border border-amber-500/10 rounded-xl space-y-1">
                           <span className="text-[10px] text-slate-500 uppercase font-semibold">Mined Rules Delta</span>
                           <p className={`text-lg font-mono font-extrabold ${compareResults.rulesDelta >= 0 ? 'text-amber-450' : 'text-rose-450'}`}>
                             {compareResults.rulesDelta >= 0 ? '+' : ''}{compareResults.rulesDelta} rules
@@ -3059,7 +3059,7 @@ function App() {
                             <ShieldAlert size={14} />
                             <span>Risk Increased</span>
                           </span>
-                          <div className="bg-[#0A0A0A] border border-white/5 rounded-xl p-3 h-44 overflow-y-auto text-xs space-y-1 text-slate-350 scrollbar-thin">
+                          <div className="bg-[#0A0A0A] border border-amber-500/10 rounded-xl p-3 h-44 overflow-y-auto text-xs space-y-1 text-slate-350 scrollbar-thin">
                             {compareResults.riskIncreased.length === 0 ? (
                               <p className="text-slate-650 text-center py-12">No increased modules.</p>
                             ) : (
@@ -3073,7 +3073,7 @@ function App() {
                             <CheckCircle2 size={14} />
                             <span>Risk Decreased</span>
                           </span>
-                          <div className="bg-[#0A0A0A] border border-white/5 rounded-xl p-3 h-44 overflow-y-auto text-xs space-y-1 text-slate-350 scrollbar-thin">
+                          <div className="bg-[#0A0A0A] border border-amber-500/10 rounded-xl p-3 h-44 overflow-y-auto text-xs space-y-1 text-slate-350 scrollbar-thin">
                             {compareResults.riskDecreased.length === 0 ? (
                               <p className="text-slate-650 text-center py-12">No decreased modules.</p>
                             ) : (
@@ -3083,11 +3083,11 @@ function App() {
                         </div>
 
                         <div className="space-y-3">
-                          <span className="text-[11px] font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+                          <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
                             <ArrowRight size={14} />
                             <span>New Hotspots</span>
                           </span>
-                          <div className="bg-[#0A0A0A] border border-white/5 rounded-xl p-3 h-44 overflow-y-auto text-xs space-y-1 text-slate-350 scrollbar-thin">
+                          <div className="bg-[#0A0A0A] border border-amber-500/10 rounded-xl p-3 h-44 overflow-y-auto text-xs space-y-1 text-slate-350 scrollbar-thin">
                             {compareResults.newHotspots.length === 0 ? (
                               <p className="text-slate-650 text-center py-12">No new hotspots.</p>
                             ) : (
@@ -3104,7 +3104,7 @@ function App() {
                           {compareResults.newRules.length === 0 ? (
                             <p className="text-slate-600 text-center py-6">No new association rules introduced.</p>
                           ) : (
-                            compareResults.newRules.map((rule, i) => <p key={i} className="text-violet-400">• {rule}</p>)
+                            compareResults.newRules.map((rule, i) => <p key={i} className="text-amber-400">• {rule}</p>)
                           )}
                         </div>
                       </div>
@@ -3131,7 +3131,7 @@ function App() {
                 <button
                   onClick={fetchAnalyticsSummary}
                   disabled={loadingAnalytics}
-                  className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-white/10 rounded-lg text-sm text-slate-300 transition hover:bg-white/5"
+                  className="flex items-center gap-2 px-4 py-2 bg-[#111] border border-amber-500/20 rounded-lg text-sm text-slate-300 transition hover:bg-white/5"
                 >
                   <RefreshCw size={14} className={loadingAnalytics ? 'animate-spin' : ''} />
                   <span>Refresh</span>
@@ -3148,28 +3148,28 @@ function App() {
 
                   {/* KPI Cards Row */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-                    <div className="bg-[#111] border border-white/10 p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group">
+                    <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group">
                       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Mined Rules</span>
                       <span className="text-3xl font-mono font-extrabold text-white">{analyticsSummary.total_rules}</span>
                       <span className="text-[10px] text-amber-400 font-bold">Active in memory</span>
                     </div>
 
-                    <div className="bg-[#111] border border-white/10 p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group">
+                    <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group">
                       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent pointer-events-none" />
                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Avg Lift Factor</span>
                       <span className="text-3xl font-mono font-extrabold text-indigo-300">{analyticsSummary.avg_lift.toFixed(2)}x</span>
                       <span className="text-[10px] text-slate-500">Max: {analyticsSummary.max_lift.toFixed(2)}x</span>
                     </div>
 
-                    <div className="bg-[#111] border border-white/10 p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group">
+                    <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group">
                       <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent pointer-events-none" />
                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Avg Confidence</span>
                       <span className="text-3xl font-mono font-extrabold text-violet-300">{(analyticsSummary.avg_confidence * 100).toFixed(1)}%</span>
                       <span className="text-[10px] text-slate-500">Rule predictability</span>
                     </div>
 
-                    <div className="bg-[#111] border border-white/10 p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group">
+                    <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group">
                       <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent pointer-events-none" />
                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Top Hotspot Module</span>
                       <span className="text-2xl font-mono font-extrabold text-rose-300 truncate">{analyticsSummary.top_module || '—'}</span>
@@ -3181,7 +3181,7 @@ function App() {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                     {/* Rules by module bar chart */}
-                    <div className="bg-[#111] border border-white/10 p-6 rounded-xl">
+                    <div className="bg-[#111] border border-amber-500/20 p-6 rounded-xl">
                       <h3 className="text-sm font-bold text-white mb-1">Rules Mined Per Module</h3>
                       <p className="text-[10px] text-slate-500 mb-4">Association rules fired per codebase module</p>
                       <div className="h-64">
@@ -3205,7 +3205,7 @@ function App() {
                     </div>
 
                     {/* Severity distribution bar chart */}
-                    <div className="bg-[#111] border border-white/10 p-6 rounded-xl">
+                    <div className="bg-[#111] border border-amber-500/20 p-6 rounded-xl">
                       <h3 className="text-sm font-bold text-white mb-1">Severity Outcome Distribution</h3>
                       <p className="text-[10px] text-slate-500 mb-4">Rules grouped by consequent severity level</p>
                       <div className="h-64">
@@ -3243,7 +3243,7 @@ function App() {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                       {/* Rules count over time */}
-                      <div className="bg-[#111] border border-white/10 p-6 rounded-xl">
+                      <div className="bg-[#111] border border-amber-500/20 p-6 rounded-xl">
                         <h3 className="text-sm font-bold text-white mb-1">Rules Mined — Scan History Trend</h3>
                         <p className="text-[10px] text-slate-500 mb-4">Rules count per historical scan execution</p>
                         <div className="h-64">
@@ -3305,7 +3305,7 @@ function App() {
                       </div>
 
                       {/* Runtime over time */}
-                      <div className="bg-[#111] border border-white/10 p-6 rounded-xl">
+                      <div className="bg-[#111] border border-amber-500/20 p-6 rounded-xl">
                         <h3 className="text-sm font-bold text-white mb-1">Execution Runtime — Scan History Trend</h3>
                         <p className="text-[10px] text-slate-500 mb-4">Pipeline runtime (ms) per historical scan</p>
                         <div className="h-64">
@@ -3370,16 +3370,16 @@ function App() {
                   )}
 
                   {/* Risk level distribution table */}
-                  <div className="bg-[#111] border border-white/10 p-6 rounded-xl">
+                  <div className="bg-[#111] border border-amber-500/20 p-6 rounded-xl">
                     <h3 className="text-sm font-bold text-white mb-4">Module Risk Level Distribution</h3>
                     <div className="grid grid-cols-4 gap-4">
                       {['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map(level => (
-                        <div key={level} className="p-4 bg-[#0A0A0A] border border-white/5 rounded-xl text-center space-y-1">
+                        <div key={level} className="p-4 bg-[#0A0A0A] border border-amber-500/10 rounded-xl text-center space-y-1">
                           <span className="text-[10px] font-bold text-slate-500 uppercase">{level}</span>
                           <p className={`text-3xl font-mono font-extrabold ${
                             level === 'CRITICAL' ? 'text-rose-400' :
                             level === 'HIGH' ? 'text-orange-400' :
-                            level === 'MEDIUM' ? 'text-amber-400' : 'text-indigo-400'
+                            level === 'MEDIUM' ? 'text-amber-400' : 'text-amber-400'
                           }`}>
                             {analyticsSummary.risk_level_counts[level] || 0}
                           </p>
@@ -3420,16 +3420,16 @@ function App() {
               {/* Cache and Tracing Dashboard */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Redis Caching Console */}
-                <div className="bg-[#111] border border-white/10 p-6 rounded-xl space-y-4">
+                <div className="bg-[#111] border border-amber-500/20 p-6 rounded-xl space-y-4">
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
-                    <Database size={18} className="text-violet-400" />
+                    <Database size={18} className="text-amber-400" />
                     <span>Polymorphic Redis Cache</span>
                   </h3>
                   <p className="text-xs text-slate-450 leading-relaxed">
                     Gateway buffers mined rules and scored module lists to reduce heavy FastAPI network loads. Evict cached states manually to synchronize changes.
                   </p>
                   
-                  <div className="p-4 bg-[#0A0A0A] border border-white/5 rounded-xl space-y-2 text-xs font-mono">
+                  <div className="p-4 bg-[#0A0A0A] border border-amber-500/10 rounded-xl space-y-2 text-xs font-mono">
                     <div className="flex justify-between">
                       <span className="text-slate-500">Cache Buffer 1:</span>
                       <span className="text-purple-450 font-bold">"rules"</span>
@@ -3446,7 +3446,7 @@ function App() {
 
                   <button
                     onClick={handleEvictCache}
-                    className="py-2.5 px-4 bg-violet-600 hover:bg-purple-700 text-white text-xs font-bold rounded-lg transition shadow-lg hover:shadow-purple-500/10 flex items-center gap-1.5"
+                    className="py-2.5 px-4 bg-amber-600 hover:bg-purple-700 text-white text-xs font-bold rounded-lg transition shadow-lg hover:shadow-purple-500/10 flex items-center gap-1.5"
                   >
                     <Trash2 size={14} />
                     <span>Evict Redis Caches</span>
@@ -3454,16 +3454,16 @@ function App() {
                 </div>
 
                 {/* Request Tracing Tracing */}
-                <div className="bg-[#111] border border-white/10 p-6 rounded-xl space-y-4">
+                <div className="bg-[#111] border border-amber-500/20 p-6 rounded-xl space-y-4">
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
-                    <Activity size={18} className="text-violet-400" />
+                    <Activity size={18} className="text-amber-400" />
                     <span>Transaction ID Correlation</span>
                   </h3>
                   <p className="text-xs text-slate-450 leading-relaxed">
                     Unique request trace identifiers generated by Spring Boot gateway interceptors are propagated to FastAPI headers for unified, polyglot observability tracking.
                   </p>
 
-                  <div className="p-4 bg-[#0A0A0A] border border-white/5 rounded-xl space-y-3 text-xs font-mono">
+                  <div className="p-4 bg-[#0A0A0A] border border-amber-500/10 rounded-xl space-y-3 text-xs font-mono">
                     <div>
                       <span className="text-slate-500 block">Gateway Outbound Port:</span>
                       <span className="text-slate-300">8080 (React CORS mapped)</span>
@@ -3481,8 +3481,8 @@ function App() {
               </div>
 
               {/* DB Audit Logs Table */}
-              <div className="bg-[#111] border border-white/10 rounded-xl overflow-hidden">
-                <div className="p-6 border-b border-white/10">
+              <div className="bg-[#111] border border-amber-500/20 rounded-xl overflow-hidden">
+                <div className="p-6 border-b border-amber-500/20">
                   <h3 className="text-base font-bold text-white">Gateway Database Audit Logs</h3>
                   <p className="text-xs text-slate-500 mt-1">Live audit entries persisted in PostgreSQL table: <code className="bg-[#0A0A0A] px-1 py-0.5 rounded">audit_logs</code></p>
                 </div>
@@ -3500,7 +3500,7 @@ function App() {
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse text-xs">
                       <thead>
-                        <tr className="bg-[#0A0A0A]/60 border-b border-white/5 text-slate-400 font-bold uppercase tracking-wider">
+                        <tr className="bg-[#0A0A0A]/60 border-b border-amber-500/10 text-slate-400 font-bold uppercase tracking-wider">
                           <th className="py-4 px-6">ID</th>
                           <th className="py-4 px-6">Operator</th>
                           <th className="py-4 px-6">Action</th>
@@ -3511,13 +3511,13 @@ function App() {
                       <tbody className="divide-y divide-slate-850/30 font-mono text-slate-350">
                         {auditLogs.map((logItem) => (
                           <tr key={logItem.id} className="hover:bg-[#111]/20 transition">
-                            <td className="py-4 px-6 text-violet-400">#{logItem.id}</td>
+                            <td className="py-4 px-6 text-amber-400">#{logItem.id}</td>
                             <td className="py-4 px-6 text-slate-200">{logItem.username}</td>
                             <td className="py-4 px-6 font-semibold">{logItem.action}</td>
                             <td className="py-4 px-6">
                               <span className={`px-2 py-0.5 rounded font-bold text-[10px] ${
                                 logItem.status === 'SUCCESS'
-                                  ? 'bg-amber-500/10 text-amber-450 border border-white/10'
+                                  ? 'bg-amber-500/10 text-amber-450 border border-amber-500/20'
                                   : 'bg-rose-500/10 text-rose-450 border border-rose-500/20'
                               }`}>
                                 {logItem.status}
@@ -3544,16 +3544,16 @@ function App() {
             className="absolute inset-0 bg-[#0A0A0A]/60 backdrop-blur-sm transition-opacity duration-300"
             onClick={() => { setExplainModule(null); setExplainData(null); }}
           />
-          <div className="relative w-full max-w-lg h-full bg-[#0d1322]/95 border-l border-white/10 shadow-2xl backdrop-blur-md p-6 flex flex-col justify-between transform transition-transform duration-300 ease-out overflow-y-auto text-slate-200 scrollbar-thin">
+          <div className="relative w-full max-w-lg h-full bg-[#0d1322]/95 border-l border-amber-500/20 shadow-2xl backdrop-blur-md p-6 flex flex-col justify-between transform transition-transform duration-300 ease-out overflow-y-auto text-slate-200 scrollbar-thin">
             
-            <div className="flex justify-between items-start border-b border-white/10 pb-4 mb-6">
+            <div className="flex justify-between items-start border-b border-amber-500/20 pb-4 mb-6">
               <div>
-                <span className="text-[10px] font-bold text-violet-400 uppercase tracking-wider">Module Hotspot Drilldown</span>
+                <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Module Hotspot Drilldown</span>
                 <h3 className="text-xl font-bold text-white font-mono mt-1">{explainModule}</h3>
               </div>
               <button 
                 onClick={() => { setExplainModule(null); setExplainData(null); }}
-                className="p-1 rounded-lg bg-[#0A0A0A]/50 border border-white/5 hover:border-white/20 transition text-slate-400 hover:text-white"
+                className="p-1 rounded-lg bg-[#0A0A0A]/50 border border-amber-500/10 hover:border-amber-500/30 transition text-slate-400 hover:text-white"
               >
                 <X size={16} />
               </button>
@@ -3561,13 +3561,13 @@ function App() {
 
             {loadingExplain ? (
               <div className="flex-1 flex flex-col items-center justify-center gap-2 py-12 text-slate-500">
-                <RefreshCw className="animate-spin text-violet-500" size={24} />
+                <RefreshCw className="animate-spin text-amber-500" size={24} />
                 <span>Generating explainability data...</span>
               </div>
             ) : explainData ? (
               <div className="flex-1 space-y-6">
                 
-                <div className="flex items-center gap-6 p-4 bg-[#0A0A0A]/50 border border-white/5 rounded-xl relative overflow-hidden group">
+                <div className="flex items-center gap-6 p-4 bg-[#0A0A0A]/50 border border-amber-500/10 rounded-xl relative overflow-hidden group">
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
                   
                   <div className="relative flex items-center justify-center w-20 h-20 flex-shrink-0">
@@ -3592,8 +3592,8 @@ function App() {
                     <span className={`inline-block px-2 py-0.5 rounded font-extrabold text-[9px] border ${
                       explainData.risk_level === 'CRITICAL' ? 'bg-rose-500/10 text-rose-450 border-rose-500/20' :
                       explainData.risk_level === 'HIGH' ? 'bg-orange-500/10 text-orange-450 border-orange-500/20' :
-                      explainData.risk_level === 'MEDIUM' ? 'bg-amber-500/10 text-amber-450 border-white/10' :
-                      'bg-indigo-500/10 text-blue-450 border-indigo-500/20'
+                      explainData.risk_level === 'MEDIUM' ? 'bg-amber-500/10 text-amber-450 border-amber-500/20' :
+                      'bg-amber-500/10 text-blue-450 border-amber-500/20'
                     }`}>
                       {explainData.risk_level} Severity
                     </span>
@@ -3603,14 +3603,14 @@ function App() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="p-4 bg-purple-950/10 border border-purple-900/30 rounded-xl space-y-2 relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
-                    <div className="flex items-center gap-1.5 text-violet-400 font-bold text-[10px] uppercase tracking-wider">
+                    <div className="flex items-center gap-1.5 text-amber-400 font-bold text-[10px] uppercase tracking-wider">
                       <ShieldAlert size={14} />
                       <span>Explainability Brief</span>
                     </div>
                     <p className="text-[11px] text-slate-300 leading-relaxed font-sans">{explainData.explanation}</p>
                   </div>
                   
-                  <div className="p-4 bg-[#0A0A0A]/50 border border-white/5 rounded-xl space-y-2 relative overflow-hidden flex flex-col justify-between">
+                  <div className="p-4 bg-[#0A0A0A]/50 border border-amber-500/10 rounded-xl space-y-2 relative overflow-hidden flex flex-col justify-between">
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
                     <div>
                       <div className="flex items-center gap-1.5 text-purple-450 font-bold text-[10px] uppercase tracking-wider">
@@ -3628,14 +3628,14 @@ function App() {
 
                 <div className="space-y-3">
                   <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Contribution Strength Analysis:</span>
-                  <div className="p-4 bg-[#0A0A0A]/40 border border-white/5 rounded-xl space-y-3">
+                  <div className="p-4 bg-[#0A0A0A]/40 border border-amber-500/10 rounded-xl space-y-3">
                     {explainData.contributions.map((contrib, idx) => (
                       <div key={idx} className="space-y-1 text-xs">
                         <div className="flex justify-between items-center text-[10px] font-sans">
                           <span className="font-semibold text-slate-350">{contrib.category}</span>
                           <span className="font-mono font-bold text-slate-400">{contrib.percentage}%</span>
                         </div>
-                        <div className="w-full h-2 bg-[#111] border border-white/5 rounded-full overflow-hidden">
+                        <div className="w-full h-2 bg-[#111] border border-amber-500/10 rounded-full overflow-hidden">
                           <div 
                             className={`h-full rounded-full transition-all duration-500 ${
                               contrib.category.startsWith("Security") ? 'bg-rose-500 shadow-[0_0_10px_rgba(239,68,68,0.2)]' :
@@ -3662,7 +3662,7 @@ function App() {
                         return (
                           <div 
                             key={cluster.id} 
-                            className="p-3 bg-slate-955 border border-slate-900 rounded-xl space-y-2 hover:border-white/10 transition relative overflow-hidden"
+                            className="p-3 bg-slate-955 border border-slate-900 rounded-xl space-y-2 hover:border-amber-500/20 transition relative overflow-hidden"
                           >
                             <div className="flex justify-between items-center text-[10px]">
                               <div className="flex items-center gap-1.5">
@@ -3670,7 +3670,7 @@ function App() {
                                 {cluster.collapsed.length > 0 && (
                                   <button
                                     onClick={() => setExpandedRules(prev => ({ ...prev, [cluster.id]: !prev[cluster.id] }))}
-                                    className="px-1.5 py-0.5 rounded-full bg-purple-500/15 hover:bg-purple-500/25 border border-violet-500/20 hover:border-purple-500/40 text-[7px] font-sans font-bold text-purple-300 transition flex items-center gap-0.5 active:scale-95"
+                                    className="px-1.5 py-0.5 rounded-full bg-purple-500/15 hover:bg-purple-500/25 border border-amber-500/20 hover:border-purple-500/40 text-[7px] font-sans font-bold text-purple-300 transition flex items-center gap-0.5 active:scale-95"
                                   >
                                     <span>{cluster.collapsed.length} collapsed</span>
                                     <span>{isExpanded ? '▲' : '▼'}</span>
@@ -3682,7 +3682,7 @@ function App() {
                             
                             <div className="p-2 bg-[#0A0A0A] border border-slate-900 rounded-lg text-[9px] font-mono flex items-center justify-between text-slate-400 gap-2">
                               <span className="truncate">{rep.antecedent}</span>
-                              <span className="text-violet-400 font-bold">➔</span>
+                              <span className="text-amber-400 font-bold">➔</span>
                               <span className="text-rose-450 font-bold whitespace-nowrap">{rep.consequent}</span>
                             </div>
                             
@@ -3702,7 +3702,7 @@ function App() {
                                     </div>
                                     <div className="flex items-center justify-between gap-1">
                                       <span className="truncate italic text-slate-350">{child.antecedent}</span>
-                                      <span className="text-violet-400">➔</span>
+                                      <span className="text-amber-400">➔</span>
                                       <span className="text-rose-500/80">{child.consequent.split('=')[1] || child.consequent}</span>
                                     </div>
                                     <div className="flex gap-2 text-[7px] text-slate-500">
@@ -3727,10 +3727,10 @@ function App() {
               </div>
             )}
 
-            <div className="border-t border-white/10 pt-4 mt-6">
+            <div className="border-t border-amber-500/20 pt-4 mt-6">
               <button
                 onClick={() => { setExplainModule(null); setExplainData(null); }}
-                className="w-full py-2 px-4 bg-[#0A0A0A] border border-white/10 hover:border-white/20 rounded-lg text-xs font-bold text-slate-350 transition hover:bg-slate-850 flex items-center justify-center gap-1.5"
+                className="w-full py-2 px-4 bg-[#0A0A0A] border border-amber-500/20 hover:border-amber-500/30 rounded-lg text-xs font-bold text-slate-350 transition hover:bg-slate-850 flex items-center justify-center gap-1.5"
               >
                 <span>Dismiss Spotlight</span>
               </button>
@@ -3747,10 +3747,10 @@ function App() {
             className="absolute inset-0 bg-slate-955/80 backdrop-blur-sm transition-opacity"
             onClick={() => setShowFormulaInfo(false)}
           />
-          <div className="relative bg-[#0d1322]/98 border border-white/10 shadow-2xl p-6 rounded-xl max-w-md w-full backdrop-blur-md text-slate-200 space-y-4">
-            <div className="flex justify-between items-center border-b border-white/5 pb-3">
+          <div className="relative bg-[#0d1322]/98 border border-amber-500/20 shadow-2xl p-6 rounded-xl max-w-md w-full backdrop-blur-md text-slate-200 space-y-4">
+            <div className="flex justify-between items-center border-b border-amber-500/10 pb-3">
               <h4 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <Cpu size={14} className="text-violet-400" />
+                <Cpu size={14} className="text-amber-400" />
                 <span>Defect Risk Index Methodology</span>
               </h4>
               <button 
@@ -3765,13 +3765,13 @@ function App() {
               <p>
                 The platform computes a dynamic hotspot risk index per module through multi-parameter association rule mining.
               </p>
-              <div className="p-3.5 bg-[#0A0A0A] border border-white/5 rounded-xl space-y-2 font-mono text-[9px] text-slate-300">
-                <p className="font-bold text-violet-400">1. Raw Risk Formula:</p>
-                <p className="text-slate-400 leading-normal pl-2 border-l border-white/10">
+              <div className="p-3.5 bg-[#0A0A0A] border border-amber-500/10 rounded-xl space-y-2 font-mono text-[9px] text-slate-300">
+                <p className="font-bold text-amber-400">1. Raw Risk Formula:</p>
+                <p className="text-slate-400 leading-normal pl-2 border-l border-amber-500/20">
                   RawRisk(M) = Σ (support × confidence × lift) for all matching rules in module M.
                 </p>
-                <p className="font-bold text-violet-400 mt-2">2. Min-Max Normalization:</p>
-                <p className="text-slate-400 leading-normal pl-2 border-l border-white/10">
+                <p className="font-bold text-amber-400 mt-2">2. Min-Max Normalization:</p>
+                <p className="text-slate-400 leading-normal pl-2 border-l border-amber-500/20">
                   RiskIndex(M) = [ (RawRisk(M) - MinRawRisk) / (MaxRawRisk - MinRawRisk) ] × 100
                 </p>
               </div>
