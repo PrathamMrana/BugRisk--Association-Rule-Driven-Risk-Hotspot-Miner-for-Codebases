@@ -62,10 +62,10 @@ function App() {
         axios.defaults.headers.common['Authorization'] = `Bearer ${parsed.token}`;
         return parsed;
       } catch (e) {
-        return { username: 'demo', token: 'demo-token' };
+        return { username: 'demo', token: 'demo-token', role: 'ROLE_ADMIN' };
       }
     }
-    return { username: 'demo', token: 'demo-token' };
+    return { username: 'demo', token: 'demo-token', role: 'ROLE_ADMIN' };
   });
 
   const [activeTab, setActiveTab] = useState(() => {
@@ -1219,7 +1219,7 @@ function App() {
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-300 leading-tight">{user.username}</p>
-              <p className="text-xs text-slate-500 capitalize">{user.role.toLowerCase()}</p>
+              <p className="text-xs text-slate-500 capitalize">{(user.role || 'demo').toLowerCase().replace('role_', '')}</p>
             </div>
           </div>
 
