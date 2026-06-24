@@ -455,7 +455,8 @@ function App() {
     try {
       const params = scanId ? { scanId } : {};
       const res = await axios.get(`${API_BASE}/analytics/summary`, { params });
-      setAnalyticsSummary(res.data);
+      const sevRes = await axios.get(`${API_BASE}/analytics/severities`, { params });
+      setAnalyticsSummary({ ...res.data, severityDistribution: sevRes.data.severityDistribution });
     } catch (err) {
       console.error(err);
       triggerNotification('Failed to fetch analytics summary.', 'error');
@@ -3375,29 +3376,29 @@ function App() {
                     <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group">
                       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Mined Rules</span>
-                      <span className="text-3xl font-mono font-extrabold text-white">{analyticsSummary.total_rules}</span>
+                      <span className="text-3xl font-mono font-extrabold text-white">{analyticsSummary.totalRules}</span>
                       <span className="text-[10px] text-amber-400 font-bold">Active in memory</span>
                     </div>
 
                     <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group">
                       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent pointer-events-none" />
                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Avg Lift Factor</span>
-                      <span className="text-3xl font-mono font-extrabold text-indigo-300">{analyticsSummary.avg_lift.toFixed(2)}x</span>
-                      <span className="text-[10px] text-slate-500">Max: {analyticsSummary.max_lift.toFixed(2)}x</span>
+                      <span className="text-3xl font-mono font-extrabold text-indigo-300">{analyticsSummary.avgLift?.toFixed(2)}x</span>
+                      <span className="text-[10px] text-slate-500">Max: {analyticsSummary.maxLift?.toFixed(2)}x</span>
                     </div>
 
                     <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group">
                       <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent pointer-events-none" />
                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Avg Confidence</span>
-                      <span className="text-3xl font-mono font-extrabold text-violet-300">{(analyticsSummary.avg_confidence * 100).toFixed(1)}%</span>
+                      <span className="text-3xl font-mono font-extrabold text-violet-300">{((analyticsSummary.avgConfidence || 0) * 100).toFixed(1)}%</span>
                       <span className="text-[10px] text-slate-500">Rule predictability</span>
                     </div>
 
                     <div className="bg-[#111] border border-amber-500/20 p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group">
                       <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent pointer-events-none" />
                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Top Hotspot Module</span>
-                      <span className="text-2xl font-mono font-extrabold text-rose-300 truncate">{analyticsSummary.top_module || '—'}</span>
-                      <span className="text-[10px] text-rose-500 font-bold">Score: {(analyticsSummary.top_module_risk_score).toFixed(0)}/100</span>
+                      <span className="text-2xl font-mono font-extrabold text-rose-300 truncate">{analyticsSummary.topModule || '—'}</span>
+                      <span className="text-[10px] text-rose-500 font-bold">Score: {(analyticsSummary.topModuleRiskScore || 0).toFixed(0)}/100</span>
                     </div>
                   </div>
 
@@ -3411,7 +3412,7 @@ function App() {
                       <div className="h-64">
                         <ResponsiveContainer width="100%" height="100%">
                           <ReChartsBarChart
-                            data={Object.entries(analyticsSummary.rules_by_module || {}).map(([mod, count]) => ({ module: mod, Rules: count }))}
+                            data={Object.entries(analyticsSummary.rulesByModule || {}).map(([mod, count]) => ({ module: mod, Rules: count }))}
                             margin={{ top: 10, right: 10, left: -20, bottom: 40 }}
                           >
                             <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
@@ -3435,7 +3436,7 @@ function App() {
                       <div className="h-64">
                         <ResponsiveContainer width="100%" height="100%">
                           <ReChartsBarChart
-                            data={Object.entries(analyticsSummary.severity_distribution || {}).map(([sev, count]) => ({ severity: sev, Count: count }))}
+                            data={Object.entries(analyticsSummary.severityDistribution || {}).map(([sev, count]) => ({ severity: sev, Count: count }))}
                             margin={{ top: 10, right: 10, left: -20, bottom: 10 }}
                           >
                             <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
@@ -3447,7 +3448,7 @@ function App() {
                               labelStyle={{ color: '#94a3b8', fontWeight: 'bold' }}
                             />
                             <ReChartsBar dataKey="Count" radius={[4, 4, 0, 0]}>
-                              {Object.keys(analyticsSummary.severity_distribution || {}).map((sev, i) => (
+                              {Object.keys(analyticsSummary.severityDistribution || {}).map((sev, i) => (
                                 <ReChartsCell key={i} fill={
                                   sev === 'critical' ? '#ef4444' :
                                   sev === 'high' ? '#f97316' :
@@ -3605,7 +3606,7 @@ function App() {
                             level === 'HIGH' ? 'text-orange-400' :
                             level === 'MEDIUM' ? 'text-amber-400' : 'text-amber-400'
                           }`}>
-                            {analyticsSummary.risk_level_counts[level] || 0}
+                            {analyticsSummary.riskLevelCounts?.[level] || 0}
                           </p>
                           <span className="text-[10px] text-slate-500">modules</span>
                         </div>
