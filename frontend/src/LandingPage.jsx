@@ -195,69 +195,123 @@ const BAR_DATA = [
   { label: 'notif', val: 22, color: '#22c55e' },
 ];
 const LINE_POINTS = [20,35,28,55,42,68,51,75,62,80,70,85];
+
+function useCounter(target, duration=1200, delay=0) {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    const t0 = setTimeout(() => {
+      const start = performance.now();
+      const step = (now) => {
+        const p = Math.min((now - start) / duration, 1);
+        setVal(Math.round(p * target));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }, delay);
+    return () => clearTimeout(t0);
+  }, [target]);
+  return val;
+}
+
+const BAR_H = 110;
+
 function AnalyticsPreview() {
   const [show, setShow] = useState(false);
-  useEffect(()=>{ const t=setTimeout(()=>setShow(true),300); return()=>clearTimeout(t); },[]);
-  const svgW=200, svgH=60;
-  const pts = LINE_POINTS.map((v,i)=>({ x:(i/(LINE_POINTS.length-1))*svgW, y:svgH-v*(svgH/100) }));
-  const pathD = pts.map((p,i)=>`${i===0?'M':'L'}${p.x},${p.y}`).join(' ');
+  useEffect(() => { const t = setTimeout(() => setShow(true), 300); return () => clearTimeout(t); }, []);
+
+  const avgRisk     = Math.round(BAR_DATA.reduce((s,b) => s+b.val, 0) / BAR_DATA.length);
+  const maxRisk     = Math.max(...BAR_DATA.map(b => b.val));
+  const critCount   = BAR_DATA.filter(b => b.val >= 80).length;
+  const highCount   = BAR_DATA.filter(b => b.val >= 60 && b.val < 80).length;
+
+  const avgC  = useCounter(show ? avgRisk   : 0, 1200, 500);
+  const maxC  = useCounter(show ? maxRisk   : 0, 1000, 300);
+  const critC = useCounter(show ? critCount : 0,  800, 700);
+  const highC = useCounter(show ? highCount : 0,  800, 800);
+
+  const svgW = 200, svgH = 60;
+  const pts  = LINE_POINTS.map((v,i) => ({ x: (i/(LINE_POINTS.length-1))*svgW, y: svgH - v*(svgH/100) }));
+  const pathD = pts.map((p,i) => `${i===0?'M':'L'}${p.x},${p.y}`).join(' ');
   const areaD = `${pathD} L${svgW},${svgH} L0,${svgH} Z`;
 
   return (
-    <div className="w-full h-full bg-[#040404] rounded-2xl border border-amber-500/15 overflow-hidden flex flex-col gap-0">
+    <div className="w-full h-full bg-[#040404] rounded-2xl border border-amber-500/15 overflow-hidden flex flex-col">
+      {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-black/50 flex-shrink-0">
         <span className="text-xs font-mono text-amber-400/80">ML ANALYTICS ENGINE</span>
         <div className="flex items-center gap-1 text-[10px] text-green-400 font-bold">
-          <CheckCircle className="w-3 h-3"/>Model Accuracy: 94.2%
+          <CheckCircle className="w-3 h-3"/>Live Risk Analysis
         </div>
       </div>
-      <div className="flex-1 grid grid-cols-2 gap-0 p-3 overflow-hidden">
-        {/* Risk trend line chart */}
-        <div className="flex flex-col gap-2 pr-3 border-r border-white/5">
-          <span className="text-[9px] font-bold text-slate-600 uppercase tracking-wider">Risk Score Trend</span>
-          <div className="flex-1 relative">
+
+      {/* Charts */}
+      <div className="flex-1 grid grid-cols-2 gap-0 p-3 overflow-hidden min-h-0">
+        {/* Line chart */}
+        <div className="flex flex-col gap-2 pr-3 border-r border-white/5 min-h-0">
+          <span className="text-[9px] font-bold text-slate-600 uppercase tracking-wider flex-shrink-0">Risk Score Trend</span>
+          <div className="flex-1 relative min-h-0">
             <svg width="100%" height="100%" viewBox={`0 0 ${svgW} ${svgH}`} preserveAspectRatio="none">
               <defs>
-                <linearGradient id="lg-area" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.3"/>
+                <linearGradient id="lg-area2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.35"/>
                   <stop offset="100%" stopColor="#f59e0b" stopOpacity="0"/>
                 </linearGradient>
-                <clipPath id="clip-line">
-                  <motion.rect x="0" y="0" height={svgH} initial={{width:0}} animate={{width:show?svgW:0}} transition={{duration:2,ease:'easeInOut'}}/>
+                <clipPath id="clip-line2">
+                  <motion.rect x="0" y="0" height={svgH}
+                    initial={{width:0}} animate={{width: show ? svgW : 0}}
+                    transition={{duration:2, ease:'easeInOut'}}/>
                 </clipPath>
               </defs>
-              <path d={areaD} fill="url(#lg-area)" clipPath="url(#clip-line)"/>
-              <path d={pathD} fill="none" stroke="#f59e0b" strokeWidth="1.5" strokeLinecap="round" clipPath="url(#clip-line)"/>
-              {pts.map((p,i)=>(
-                <motion.circle key={i} cx={p.x} cy={p.y} r="2.5" fill="#f59e0b" initial={{opacity:0,scale:0}} animate={{opacity:show?1:0,scale:show?1:0}} transition={{delay:1.5+(i*0.1),duration:0.3}}/>
+              <path d={areaD} fill="url(#lg-area2)" clipPath="url(#clip-line2)"/>
+              <path d={pathD} fill="none" stroke="#f59e0b" strokeWidth="1.5" strokeLinecap="round" clipPath="url(#clip-line2)"/>
+              {pts.map((p,i) => (
+                <motion.circle key={i} cx={p.x} cy={p.y} r="2.5" fill="#f59e0b"
+                  initial={{opacity:0, scale:0}}
+                  animate={{opacity: show?1:0, scale: show?1:0}}
+                  transition={{delay: 1.5+i*0.1, duration:0.3}}/>
               ))}
             </svg>
           </div>
-          <div className="flex justify-between text-[9px] text-slate-600 font-mono">
+          <div className="flex justify-between text-[9px] text-slate-600 font-mono flex-shrink-0">
             <span>Sprint 1</span><span>Sprint 6</span><span>Sprint 12</span>
           </div>
         </div>
 
-        {/* Bar chart */}
-        <div className="flex flex-col gap-2 pl-3">
-          <span className="text-[9px] font-bold text-slate-600 uppercase tracking-wider">Module Risk Scores</span>
-          <div className="flex-1 flex items-end gap-1.5">
-            {BAR_DATA.map((b,i)=>(
-              <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                <div className="w-full relative" style={{height:'100%',minHeight:80,display:'flex',alignItems:'flex-end'}}>
-                  <motion.div className="w-full rounded-t" style={{background:b.color,opacity:0.75}}
-                    initial={{height:0}} animate={{height:show?`${b.val}%`:'0%'}} transition={{duration:0.8,delay:0.2+i*0.08,ease:'easeOut'}}/>
-                </div>
-                <span className="text-[8px] font-mono text-slate-600">{b.label}</span>
-              </div>
-            ))}
+        {/* Bar chart — fixed pixel height for reliable rendering */}
+        <div className="flex flex-col gap-2 pl-3 min-h-0">
+          <span className="text-[9px] font-bold text-slate-600 uppercase tracking-wider flex-shrink-0">Module Risk Scores</span>
+          <div className="flex-1 flex flex-col justify-end min-h-0">
+            <div className="flex items-end gap-1" style={{height: BAR_H}}>
+              {BAR_DATA.map((b, i) => {
+                const px = show ? Math.round((b.val / 100) * BAR_H) : 0;
+                return (
+                  <div key={i} className="flex-1 flex flex-col items-center gap-0.5" style={{height: BAR_H}}>
+                    <div className="flex-1 flex items-end w-full">
+                      <motion.div
+                        className="w-full rounded-t"
+                        style={{background: b.color, opacity: 0.78}}
+                        initial={{height: 0}}
+                        animate={{height: px}}
+                        transition={{duration: 0.9, delay: 0.15 + i*0.1, ease:'easeOut'}}
+                      />
+                    </div>
+                    <span className="text-[8px] font-mono text-slate-600">{b.label}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Metrics row */}
+      {/* Metrics — derived from BAR_DATA, animated counters */}
       <div className="grid grid-cols-4 border-t border-white/5 flex-shrink-0">
-        {[['240','Rules Mined'],['94.2%','Accuracy'],['5.65x','Avg Lift'],['86%','Confidence']].map(([v,l])=>(
+        {[
+          [avgC,  'Avg Risk Score'],
+          [maxC,  'Peak Risk Score'],
+          [critC, 'Critical Modules'],
+          [highC, 'High Risk Modules'],
+        ].map(([v, l]) => (
           <div key={l} className="flex flex-col items-center py-2.5 border-r border-white/5 last:border-0">
             <span className="text-sm font-bold text-amber-400">{v}</span>
             <span className="text-[9px] text-slate-600">{l}</span>
