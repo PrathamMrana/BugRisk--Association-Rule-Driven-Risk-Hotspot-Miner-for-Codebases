@@ -369,10 +369,10 @@ const Navbar = ({ onNavigate, onLogin, activePreview, setActivePreview }) => {
           </div>
         </div>
 
-        <button onClick={() => onNavigate('dashboard')}
+        <button onClick={onLogin}
           className="group relative px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-[#030303] text-sm font-bold rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] overflow-hidden">
           <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"/>
-          <span className="relative z-10">Launch Demo</span>
+          <span className="relative z-10">Login</span>
         </button>
       </div>
     </nav>
