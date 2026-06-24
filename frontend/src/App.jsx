@@ -1076,14 +1076,27 @@ function App() {
   const [showLanding, setShowLanding] = useState(true);
   
   if (showLanding) {
-    return <LandingPage onLogin={() => {
-      if (user) {
-        setShowLanding(false);
-      } else {
-        setShowLanding(false);
-        setShowLogin(true);
-      }
-    }} isLoggedIn={!!user} />;
+    return <LandingPage 
+      onLogin={() => {
+        if (user) {
+          setShowLanding(false);
+        } else {
+          setShowLanding(false);
+          setShowLogin(true);
+        }
+      }} 
+      onNavigate={(tab) => {
+        if (!user && tab !== 'dashboard') {
+          triggerNotification(`Please log in to access ${tab}.`, 'error');
+          setShowLanding(false);
+          setShowLogin(true);
+        } else {
+          setActiveTab(tab);
+          setShowLanding(false);
+        }
+      }}
+      isLoggedIn={!!user} 
+    />;
   }
 
   if (!user) {
