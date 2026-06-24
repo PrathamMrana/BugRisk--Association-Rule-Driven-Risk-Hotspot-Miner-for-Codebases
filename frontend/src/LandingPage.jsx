@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Network, Database, Activity, ShieldAlert, ChevronRight, ExternalLink, BarChart2, Zap, GitMerge, Search, LayoutDashboard, TrendingUp, AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react';
+import { Network, Database, Activity, ShieldAlert, ChevronRight, ExternalLink, BarChart2, Zap, GitMerge, Search, LayoutDashboard, TrendingUp, AlertTriangle, CheckCircle, ArrowRight, X, Lock, User, Eye, EyeOff } from 'lucide-react';
 
 /* ─── Background ─── */
 const Background = () => (
@@ -423,6 +423,117 @@ const TechStack = () => (
   </section>
 );
 
+/* ─── Login Modal ─── */
+function LoginModal({ onClose, onLogin }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPwd, setShowPwd] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const res = await fetch('/api/v1/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      if (!res.ok) throw new Error('Invalid credentials');
+      const data = await res.json();
+      localStorage.setItem('bugrisk_session', JSON.stringify(data));
+      onLogin(data);
+    } catch (err) {
+      setError(err.message || 'Login failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 z-[100] flex items-center justify-center px-4"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      >
+        {/* Backdrop */}
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-md" onClick={onClose}/>
+
+        {/* Modal */}
+        <motion.div
+          className="relative z-10 w-full max-w-md"
+          initial={{ opacity: 0, scale: 0.92, y: 24 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.92, y: 24 }}
+          transition={{ type: 'spring', bounce: 0.25, duration: 0.4 }}
+        >
+          <div className="bg-[#0d0d0d] border border-amber-500/20 rounded-2xl p-8 shadow-[0_0_80px_rgba(245,158,11,0.15)]">
+            {/* Close */}
+            <button onClick={onClose} className="absolute top-4 right-4 p-2 rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition">
+              <X className="w-4 h-4"/>
+            </button>
+
+            {/* Header */}
+            <div className="flex flex-col items-center mb-8">
+              <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center mb-4 shadow-[0_0_25px_rgba(245,158,11,0.2)]">
+                <ShieldAlert className="w-7 h-7 text-amber-400"/>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">Welcome back</h2>
+              <p className="text-slate-500 text-sm mt-1">Sign in to access the BugRisk platform</p>
+            </div>
+
+            {/* Credentials hint */}
+            <div className="bg-amber-500/5 border border-amber-500/15 rounded-xl px-4 py-3 mb-6 text-xs font-mono">
+              <p className="text-amber-400 font-bold mb-1">Demo credentials</p>
+              <p className="text-slate-400">Admin: <span className="text-white">admin / admin123</span></p>
+              <p className="text-slate-400">Engineer: <span className="text-white">engineer / engineer123</span></p>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="relative">
+                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-500/50"/>
+                <input
+                  type="text" required placeholder="Username"
+                  value={username} onChange={e => setUsername(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-black/40 border border-white/10 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 transition text-sm"
+                />
+              </div>
+              <div className="relative">
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-500/50"/>
+                <input
+                  type={showPwd ? 'text' : 'password'} required placeholder="Password"
+                  value={password} onChange={e => setPassword(e.target.value)}
+                  className="w-full pl-10 pr-10 py-3 bg-black/40 border border-white/10 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30 transition text-sm"
+                />
+                <button type="button" onClick={() => setShowPwd(v => !v)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-600 hover:text-slate-400 transition">
+                  {showPwd ? <EyeOff className="w-4 h-4"/> : <Eye className="w-4 h-4"/>}
+                </button>
+              </div>
+
+              {error && (
+                <div className="flex items-center gap-2 text-rose-400 text-xs bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2">
+                  <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0"/>{error}
+                </div>
+              )}
+
+              <button type="submit" disabled={loading}
+                className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold rounded-xl hover:from-amber-400 hover:to-amber-500 transition-all shadow-[0_0_20px_rgba(245,158,11,0.25)] hover:shadow-[0_0_30px_rgba(245,158,11,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                {loading ? (
+                  <><span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin"/>Signing in...</>
+                ) : 'Sign In'}
+              </button>
+            </form>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
 /* ─── Footer ─── */
 const Footer = () => (
   <footer className="relative z-10 border-t border-amber-500/10 bg-[#030303] py-10 px-6">
@@ -443,6 +554,7 @@ const Footer = () => (
 /* ─── Main Export ─── */
 export default function LandingPage({ onLogin, isLoggedIn, onNavigate }) {
   const [activePreview, setActivePreview] = useState('graph');
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
     const h = (e) => setActivePreview(e.detail);
@@ -450,14 +562,36 @@ export default function LandingPage({ onLogin, isLoggedIn, onNavigate }) {
     return () => document.removeEventListener('setPreview', h);
   }, []);
 
+  const handleLoginSuccess = (data) => {
+    setShowLoginModal(false);
+    onLogin();
+  };
+
   return (
     <div className="min-h-screen bg-[#030303] text-slate-200 font-sans overflow-x-hidden">
       <Background/>
-      <Navbar onLogin={onLogin} isLoggedIn={isLoggedIn} onNavigate={onNavigate} activePreview={activePreview} setActivePreview={(id)=>{ setActivePreview(id); const el=document.getElementById('features'); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }}/>
+      <Navbar
+        onLogin={() => setShowLoginModal(true)}
+        isLoggedIn={isLoggedIn}
+        onNavigate={onNavigate}
+        activePreview={activePreview}
+        setActivePreview={(id) => {
+          setActivePreview(id);
+          const el = document.getElementById('features');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }}
+      />
       <Hero onNavigate={onNavigate}/>
       <TechStack/>
       <FeatureShowcase activePreview={activePreview} onNavigate={onNavigate}/>
       <Footer/>
+
+      {showLoginModal && (
+        <LoginModal
+          onClose={() => setShowLoginModal(false)}
+          onLogin={handleLoginSuccess}
+        />
+      )}
     </div>
   );
 }
