@@ -265,14 +265,18 @@ const AdvancedFeatures = () => {
             </div>
             <div className="flex-1 w-full border border-slate-800 bg-[#020202] p-6 text-xs text-slate-500">
               <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-2">
-                <span className="font-bold text-amber-500">PIPELINE.LOG</span>
+                <span className="font-bold text-amber-500">DEMO_PIPELINE_REPLAY.LOG</span>
+                <span className="text-[10px] text-slate-600 bg-slate-900 px-2 py-0.5 rounded">*Based on real completed scan</span>
               </div>
-              <div className="space-y-2">
-                <div>&gt; [STAGE 1/8] Dataset Validation...</div>
-                <div>&gt; [STAGE 2/8] Quality Scoring: 98.4%</div>
-                <div>&gt; [STAGE 3/8] FP-Growth Mining...</div>
-                <div>&gt; [STAGE 4/8] Rule Generation Complete</div>
-                <div className="text-slate-300">&gt; [STAGE 8/8] Dashboard Streaming Active</div>
+              <div className="space-y-2 font-mono">
+                <div className="text-slate-500">&gt; [INFO] Connecting to FastAPI ML Service... OK</div>
+                <div>&gt; [STAGE 1] Ingesting 15,482 telemetry records...</div>
+                <div>&gt; [STAGE 2] Profiling dataset... Quality Score: 98.4%</div>
+                <div>&gt; [STAGE 3] Executing FP-Growth Algorithm (minSupport=0.15, minConfidence=0.7)</div>
+                <div className="text-amber-500">&gt; [MINER] Generated 2,403 raw association rules in 0.43s</div>
+                <div>&gt; [STAGE 4] Applying Jaccard Deduplication (threshold=0.85)...</div>
+                <div className="text-amber-500">&gt; [MINER] Retained 18 high-confidence risk hotspots</div>
+                <div className="text-emerald-500">&gt; [STAGE 8] Syncing to Redis & Streaming to Dashboard... ACTIVE</div>
               </div>
             </div>
           </div>
