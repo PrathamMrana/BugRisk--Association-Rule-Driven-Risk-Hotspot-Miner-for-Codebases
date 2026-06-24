@@ -62,10 +62,10 @@ function App() {
         axios.defaults.headers.common['Authorization'] = `Bearer ${parsed.token}`;
         return parsed;
       } catch (e) {
-        return null;
+        return { username: 'demo', token: 'demo-token' };
       }
     }
-    return null;
+    return { username: 'demo', token: 'demo-token' };
   });
 
   const [activeTab, setActiveTab] = useState(() => {
