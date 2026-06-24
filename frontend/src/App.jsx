@@ -846,7 +846,7 @@ function App() {
             </p>
             <p className="flex justify-between gap-4">
               <span className="text-slate-500 font-sans uppercase font-semibold">Runtime:</span>
-              <span className="text-cyan-400 font-bold">{data.runtimeMs}ms</span>
+              <span className="text-amber-400 font-bold">{data.runtimeMs}ms</span>
             </p>
             <p className="flex justify-between gap-4">
               <span className="text-slate-500 font-sans uppercase font-semibold">Rules Mined:</span>
@@ -1078,14 +1078,18 @@ function App() {
       return <LandingPage onLogin={() => setShowLogin(true)} />;
     }
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#05050A] px-4 overflow-hidden relative font-sans">
+      <div className="min-h-screen flex items-center justify-center bg-[#050505] px-4 overflow-hidden relative font-sans">
+      {/* Strict Monochrome Grid Background */}
+      <div className="fixed inset-0 z-0 bg-[#050505] overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+      </div>
         {/* Ambient Background matching Landing Page */}
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-600/10 blur-[120px] mix-blend-screen animate-[pulse_8s_ease-in-out_infinite] pointer-events-none"></div>
-        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-600/10 blur-[120px] mix-blend-screen animate-[pulse_10s_ease-in-out_infinite_reverse] pointer-events-none"></div>
+        
+        
 
-        <div className="w-full max-w-md bg-slate-900/40 backdrop-blur-3xl border border-emerald-500/20 p-10 rounded-3xl shadow-[0_0_50px_rgba(16,185,129,0.1)] relative z-10">
+        <div className="w-full max-w-md bg-slate-900/40 backdrop-blur-3xl border border-amber-500/20 p-10 rounded-3xl shadow-[0_0_50px_rgba(16,185,129,0.1)] relative z-10">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-500 to-cyan-500 shadow-[0_0_30px_rgba(16,185,129,0.4)] mb-6">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-500 shadow-[0_0_30px_rgba(16,185,129,0.4)] mb-6">
               <Activity className="h-8 w-8 text-white" />
             </div>
             <h1 className="text-4xl font-black text-white tracking-tight mb-2">Deploy Engine</h1>
@@ -1096,7 +1100,7 @@ function App() {
             <div>
               <label className="block text-sm font-bold text-slate-300 mb-2">IAM Identity</label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-emerald-500/50">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-amber-500/50">
                   <User size={18} />
                 </span>
                 <input
@@ -1105,7 +1109,7 @@ function App() {
                   placeholder="admin or engineer"
                   value={loginUsername}
                   onChange={(e) => setLoginUsername(e.target.value)}
-                  className="block w-full pl-12 pr-4 py-3.5 bg-slate-950/50 border border-slate-800 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-white placeholder-slate-600 transition-all font-mono"
+                  className="block w-full pl-12 pr-4 py-3.5 bg-slate-950/50 border border-slate-800 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white placeholder-slate-600 transition-all font-mono"
                 />
               </div>
             </div>
@@ -1113,7 +1117,7 @@ function App() {
             <div>
               <label className="block text-sm font-bold text-slate-300 mb-2">Access Token</label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-emerald-500/50">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-amber-500/50">
                   <Key size={18} />
                 </span>
                 <input
@@ -1122,20 +1126,20 @@ function App() {
                   placeholder="••••••••"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="block w-full pl-12 pr-4 py-3.5 bg-slate-950/50 border border-slate-800 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-white placeholder-slate-600 transition-all font-mono"
+                  className="block w-full pl-12 pr-4 py-3.5 bg-slate-950/50 border border-slate-800 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-white placeholder-slate-600 transition-all font-mono"
                 />
               </div>
             </div>
 
-            <div className="bg-emerald-500/5 border border-emerald-500/10 p-4 rounded-xl text-xs text-slate-400 space-y-2 font-mono">
-              <p className="font-bold text-emerald-400 mb-2 border-b border-emerald-500/10 pb-2">PRE-CONFIGURED ENVIRONMENT:</p>
+            <div className="bg-amber-500/5 border border-amber-500/10 p-4 rounded-xl text-xs text-slate-400 space-y-2 font-mono">
+              <p className="font-bold text-amber-400 mb-2 border-b border-amber-500/10 pb-2">PRE-CONFIGURED ENVIRONMENT:</p>
               <p>› ROOT: <code className="text-white">admin / admin123</code></p>
               <p>› READ: <code className="text-white">engineer / engineer123</code></p>
             </div>
 
             <button
               type="submit"
-              className="w-full py-4 px-4 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_35px_rgba(16,185,129,0.5)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
+              className="w-full py-4 px-4 bg-gradient-to-r from-amber-500 to-amber-500 hover:from-amber-400 hover:to-amber-400 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_35px_rgba(16,185,129,0.5)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
             >
               <span>Initialize Pipeline</span>
               <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
@@ -1145,7 +1149,7 @@ function App() {
               <button
                 type="button"
                 onClick={() => setShowLogin(false)}
-                className="text-sm text-slate-400 hover:text-emerald-400 transition-colors inline-flex items-center gap-1 font-bold bg-transparent border-none cursor-pointer"
+                className="text-sm text-slate-400 hover:text-amber-400 transition-colors inline-flex items-center gap-1 font-bold bg-transparent border-none cursor-pointer"
               >
                 <ChevronLeft size={16} />
                 <span>Return to Platform Engine</span>
@@ -1161,12 +1165,16 @@ function App() {
   const flowData = getGraphElements(rules.slice(0, 15)); // Display top 15 rules on graph for visualization clarity
 
   return (
-    <div className="min-h-screen bg-[#05050A] text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-[#050505] text-slate-100 flex flex-col relative">
+      {/* Strict Monochrome Grid Background */}
+      <div className="fixed inset-0 z-0 bg-[#050505] overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+      </div>
       {/* Toast Notification */}
       {notification && (
         <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg border shadow-xl transition-all duration-300 animate-slide-in ${
           notification.type === 'success'
-            ? 'bg-emerald-950/90 border-emerald-800 text-emerald-400'
+            ? 'bg-amber-950/90 border-amber-800 text-amber-400'
             : 'bg-rose-950/90 border-rose-800 text-rose-400'
         }`}>
           {notification.type === 'success' ? <CheckCircle2 size={20} /> : <AlertTriangle size={20} />}
@@ -1370,7 +1378,7 @@ function App() {
                   <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">Mined Defect Rules</span>
                   <div className="flex justify-between items-baseline mt-2">
                     <span className="text-3xl font-mono font-extrabold text-white">{totalRulesCount}</span>
-                    <span className="text-emerald-450 text-[10px] font-bold flex items-center gap-0.5">
+                    <span className="text-amber-450 text-[10px] font-bold flex items-center gap-0.5">
                       <TrendingUp size={10} />
                       <span>Active</span>
                     </span>
@@ -2257,7 +2265,7 @@ function App() {
                           <span className="text-slate-500 font-bold uppercase">Ingestion Status:</span>
                           <span className={`font-bold px-2 py-0.5 rounded ${
                             uploadResult.validation_status === 'valid'
-                              ? 'bg-emerald-500/10 text-emerald-450'
+                              ? 'bg-amber-500/10 text-amber-450'
                               : 'bg-rose-500/10 text-rose-450'
                           }`}>
                             {uploadResult.validation_status.toUpperCase()}
@@ -2472,7 +2480,7 @@ function App() {
                           <div className="bg-slate-955 border border-slate-900 rounded-xl p-4 h-64 overflow-y-auto font-mono text-[10px] text-slate-450 space-y-1.5 scrollbar-thin">
                             {sseLogs.length > 0 ? (
                               sseLogs.map((logLine, idx) => (
-                                <p key={idx} className={logLine.includes('[ERROR]') ? 'text-rose-400' : logLine.includes('COMPLETED') ? 'text-emerald-450' : 'text-slate-350'}>
+                                <p key={idx} className={logLine.includes('[ERROR]') ? 'text-rose-400' : logLine.includes('COMPLETED') ? 'text-amber-450' : 'text-slate-350'}>
                                   {logLine}
                                 </p>
                               ))
@@ -2509,7 +2517,7 @@ function App() {
                               </div>
                               <span className={`text-[9px] font-mono px-2 py-0.5 rounded font-extrabold border ${
                                 datasetProfile.schema_status === 'healthy' 
-                                  ? 'bg-emerald-500/10 text-emerald-450 border-emerald-500/20' 
+                                  ? 'bg-amber-500/10 text-amber-450 border-amber-500/20' 
                                   : 'bg-rose-500/10 text-rose-450 border-rose-500/20'
                               }`}>
                                 {datasetProfile.schema_status.toUpperCase()} SCHEMA
@@ -2541,9 +2549,9 @@ function App() {
                               </div>
 
                               <div className="p-3 bg-slate-950/60 border border-slate-850 rounded-xl space-y-1 relative overflow-hidden group">
-                                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none" />
+                                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
                                 <span className="text-[9px] text-slate-500 uppercase font-bold">Quality Profile Score</span>
-                                <p className="text-xl font-mono font-extrabold text-emerald-450">{datasetProfile.quality_score}/100</p>
+                                <p className="text-xl font-mono font-extrabold text-amber-450">{datasetProfile.quality_score}/100</p>
                               </div>
                             </div>
 
@@ -2576,25 +2584,25 @@ function App() {
                                 <div className="p-4 bg-slate-950/50 border border-slate-850 rounded-xl space-y-2.5 text-xs text-slate-300 font-sans">
                                   <div className="flex items-center justify-between">
                                     <span>Schema Columns Check</span>
-                                    <span className="font-bold font-mono text-emerald-450 flex items-center gap-1">
+                                    <span className="font-bold font-mono text-amber-450 flex items-center gap-1">
                                       {datasetProfile.quality_checks.missing_columns.length === 0 ? 'PASS ✓' : 'FAIL ✗'}
                                     </span>
                                   </div>
                                   <div className="flex items-center justify-between">
                                     <span>Duplicate Data Check</span>
-                                    <span className={`font-bold font-mono flex items-center gap-1 ${datasetProfile.duplicates === 0 ? 'text-emerald-450' : 'text-amber-500'}`}>
+                                    <span className={`font-bold font-mono flex items-center gap-1 ${datasetProfile.duplicates === 0 ? 'text-amber-450' : 'text-amber-500'}`}>
                                       {datasetProfile.duplicates === 0 ? 'PASS ✓' : `${datasetProfile.duplicates} DUPs ⚠`}
                                     </span>
                                   </div>
                                   <div className="flex items-center justify-between">
                                     <span>Data Cell Completeness</span>
-                                    <span className={`font-bold font-mono flex items-center gap-1 ${datasetProfile.null_count === 0 ? 'text-emerald-450' : 'text-rose-450'}`}>
+                                    <span className={`font-bold font-mono flex items-center gap-1 ${datasetProfile.null_count === 0 ? 'text-amber-450' : 'text-rose-450'}`}>
                                       {datasetProfile.null_count === 0 ? 'PASS ✓' : 'WARN ⚠'}
                                     </span>
                                   </div>
                                   <div className="flex items-center justify-between">
                                     <span>Category Compliance Check</span>
-                                    <span className="font-bold font-mono text-emerald-450 flex items-center gap-1">
+                                    <span className="font-bold font-mono text-amber-450 flex items-center gap-1">
                                       {datasetProfile.quality_checks.unsupported_categories.length === 0 ? 'PASS ✓' : 'FAIL ✗'}
                                     </span>
                                   </div>
@@ -2799,7 +2807,7 @@ function App() {
                           <span className="text-xl font-bold text-white mt-1.5">
                             {playgroundResult.fpgrowth.total_time_ms < playgroundResult.apriori.total_time_ms ? 'FP-Growth' : 'Apriori / Equivalent'}
                           </span>
-                          <span className="text-[10px] text-emerald-450 font-bold mt-1">
+                          <span className="text-[10px] text-amber-450 font-bold mt-1">
                             {playgroundResult.fpgrowth.total_time_ms < playgroundResult.apriori.total_time_ms
                               ? `${(playgroundResult.apriori.total_time_ms / Math.max(playgroundResult.fpgrowth.total_time_ms, 1)).toFixed(1)}x faster execution`
                               : 'Similar performance delta'}
@@ -3000,7 +3008,7 @@ function App() {
                       <div className="grid grid-cols-2 gap-4 text-center">
                         <div className="p-4 bg-slate-950 border border-slate-850 rounded-xl space-y-1">
                           <span className="text-[10px] text-slate-500 uppercase font-semibold">Runtime Delta</span>
-                          <p className={`text-lg font-mono font-extrabold ${compareResults.runtimeDelta <= 0 ? 'text-emerald-450' : 'text-rose-400'}`}>
+                          <p className={`text-lg font-mono font-extrabold ${compareResults.runtimeDelta <= 0 ? 'text-amber-450' : 'text-rose-400'}`}>
                             {compareResults.runtimeDelta <= 0 ? '' : '+'}{compareResults.runtimeDelta} ms
                           </p>
                           <p className="text-[9px] text-slate-500 font-mono">
@@ -3012,7 +3020,7 @@ function App() {
 
                         <div className="p-4 bg-slate-950 border border-slate-850 rounded-xl space-y-1">
                           <span className="text-[10px] text-slate-500 uppercase font-semibold">Mined Rules Delta</span>
-                          <p className={`text-lg font-mono font-extrabold ${compareResults.rulesDelta >= 0 ? 'text-emerald-450' : 'text-rose-450'}`}>
+                          <p className={`text-lg font-mono font-extrabold ${compareResults.rulesDelta >= 0 ? 'text-amber-450' : 'text-rose-450'}`}>
                             {compareResults.rulesDelta >= 0 ? '+' : ''}{compareResults.rulesDelta} rules
                           </p>
                           <p className="text-[9px] text-slate-500 font-mono">
@@ -3038,7 +3046,7 @@ function App() {
                         </div>
 
                         <div className="space-y-3">
-                          <span className="text-[11px] font-bold text-emerald-450 uppercase tracking-wider flex items-center gap-1.5">
+                          <span className="text-[11px] font-bold text-amber-450 uppercase tracking-wider flex items-center gap-1.5">
                             <CheckCircle2 size={14} />
                             <span>Risk Decreased</span>
                           </span>
@@ -3121,7 +3129,7 @@ function App() {
                       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Mined Rules</span>
                       <span className="text-3xl font-mono font-extrabold text-white">{analyticsSummary.total_rules}</span>
-                      <span className="text-[10px] text-emerald-400 font-bold">Active in memory</span>
+                      <span className="text-[10px] text-amber-400 font-bold">Active in memory</span>
                     </div>
 
                     <div className="bg-slate-900/40 border border-slate-800 p-5 rounded-2xl flex flex-col gap-2 relative overflow-hidden group">
@@ -3486,7 +3494,7 @@ function App() {
                             <td className="py-4 px-6">
                               <span className={`px-2 py-0.5 rounded font-bold text-[10px] ${
                                 logItem.status === 'SUCCESS'
-                                  ? 'bg-emerald-500/10 text-emerald-450 border border-emerald-500/20'
+                                  ? 'bg-amber-500/10 text-amber-450 border border-amber-500/20'
                                   : 'bg-rose-500/10 text-rose-450 border border-rose-500/20'
                               }`}>
                                 {logItem.status}

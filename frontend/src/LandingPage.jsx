@@ -4,16 +4,13 @@ import { Activity, ShieldAlert, GitBranch, Terminal, Layers, ArrowRight, Databas
 
 const GITHUB_URL = 'https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases';
 
-// Dynamic Ambient Background with Glowing Orbs
+// Strict Grid Background with Advanced Subtlety
 const AmbientBackground = () => (
-  <div className="fixed inset-0 z-0 bg-[#05050A] overflow-hidden pointer-events-none">
-    {/* Grid overlay */}
-    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px] opacity-30"></div>
-    
-    {/* Glowing Orbs */}
-    <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-emerald-500/20 rounded-full blur-[120px] mix-blend-screen animate-pulse" style={{ animationDuration: '8s' }}></div>
-    <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-cyan-500/20 rounded-full blur-[120px] mix-blend-screen animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }}></div>
-    <div className="absolute top-[40%] left-[60%] w-[30%] h-[30%] bg-purple-500/10 rounded-full blur-[100px] mix-blend-screen animate-pulse" style={{ animationDuration: '12s' }}></div>
+  <div className="fixed inset-0 z-0 bg-[#050505] overflow-hidden pointer-events-none">
+    {/* Monotone grid overlay */}
+    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+    {/* Subtle amber ambient glow in the center */}
+    <div className="absolute top-[20%] left-[30%] w-[40%] h-[40%] bg-amber-500/5 rounded-full blur-[150px] mix-blend-screen animate-pulse pointer-events-none" style={{ animationDuration: '8s' }}></div>
   </div>
 );
 
@@ -28,24 +25,24 @@ const SystemStatus = () => {
   }, []);
 
   return (
-    <div className="absolute top-28 left-6 flex flex-col gap-2 font-mono text-xs z-50">
-      <div className="text-slate-400 mb-1 tracking-widest uppercase font-bold">System Status</div>
+    <div className="absolute top-24 left-6 flex flex-col gap-2 font-mono text-xs z-50">
+      <div className="text-slate-500 mb-1 tracking-widest font-bold">SYSTEM STATUS</div>
       <div className="flex items-center gap-3">
-        <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse"></span>
+        <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.6)]"></span>
         <span className="text-slate-300 w-24">Frontend:</span>
-        <span className="text-emerald-400 font-bold">Online</span>
+        <span className="text-amber-500 font-bold">Online</span>
       </div>
       <div className="flex items-center gap-3">
-        <span className={`w-2 h-2 rounded-full shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse ${status.backend === 'Online' ? 'bg-emerald-400' : 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]'}`}></span>
+        <span className={`w-2 h-2 rounded-full animate-pulse ${status.backend === 'Online' ? 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]' : 'bg-rose-500 shadow-[0_0_8px_rgba(243,24,70,0.6)]'}`}></span>
         <span className="text-slate-300 w-24">Backend:</span>
-        <span className={`font-bold ${status.backend === 'Online' ? 'text-emerald-400' : 'text-amber-400'}`}>
+        <span className={`font-bold ${status.backend === 'Online' ? 'text-amber-500' : 'text-rose-500'}`}>
           {status.backend || 'Warming Up'}
         </span>
       </div>
       <div className="flex items-center gap-3">
-        <span className={`w-2 h-2 rounded-full shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse ${status.mlService === 'Online' ? 'bg-emerald-400' : 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]'}`}></span>
+        <span className={`w-2 h-2 rounded-full animate-pulse ${status.mlService === 'Online' ? 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]' : 'bg-rose-500 shadow-[0_0_8px_rgba(243,24,70,0.6)]'}`}></span>
         <span className="text-slate-300 w-24">ML Service:</span>
-        <span className={`font-bold ${status.mlService === 'Online' ? 'text-emerald-400' : 'text-amber-400'}`}>
+        <span className={`font-bold ${status.mlService === 'Online' ? 'text-amber-500' : 'text-rose-500'}`}>
           {status.mlService || 'Warming Up'}
         </span>
       </div>
@@ -53,7 +50,7 @@ const SystemStatus = () => {
   );
 };
 
-// Premium Glassmorphism Nav
+// Strict Monochrome Nav - Made Advanced and Clickable
 const Navbar = ({ onLogin }) => {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -66,39 +63,39 @@ const Navbar = ({ onLogin }) => {
     <motion.nav 
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#05050A]/70 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-6'}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#050505]/80 backdrop-blur-xl border-b border-white/5 py-4 shadow-2xl' : 'bg-transparent py-6'}`}
     >
       <div className="max-w-[1400px] mx-auto px-6 flex items-center justify-between">
         <div className="flex items-center gap-12">
           <div className="flex items-center gap-3 cursor-pointer group" onClick={onLogin}>
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 shadow-[0_0_20px_rgba(52,211,153,0.3)] group-hover:shadow-[0_0_30px_rgba(52,211,153,0.5)] transition-all">
-              <Activity className="h-5 w-5 text-white" />
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 shadow-[0_0_20px_rgba(245,158,11,0.3)] group-hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] transition-all">
+              <Activity className="h-5 w-5 text-[#050505]" />
             </div>
-            <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight">BugRisk</span>
+            <span className="text-2xl font-black text-white tracking-tight uppercase group-hover:text-amber-500 transition-colors">BugRisk</span>
           </div>
           
-          <div className="hidden lg:flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-2 py-1 backdrop-blur-md">
-            <button onClick={onLogin} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-all">
-              <Network className="w-4 h-4 text-emerald-400" /> Topology Map
+          <div className="hidden lg:flex items-center gap-2 font-mono bg-white/5 px-2 py-1.5 rounded border border-white/5 backdrop-blur-md">
+            <button onClick={onLogin} className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-slate-400 hover:text-[#050505] hover:bg-amber-500 transition-all uppercase rounded group">
+              <Network className="w-4 h-4 text-slate-400 group-hover:text-[#050505] transition-colors" /> [ Topology Map ]
             </button>
-            <button onClick={onLogin} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-all">
-              <Database className="w-4 h-4 text-cyan-400" /> Rules Engine
+            <button onClick={onLogin} className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-slate-400 hover:text-[#050505] hover:bg-amber-500 transition-all uppercase rounded group">
+              <Database className="w-4 h-4 text-slate-400 group-hover:text-[#050505] transition-colors" /> [ Rules Engine ]
             </button>
-            <button onClick={onLogin} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-all">
-              <Activity className="w-4 h-4 text-purple-400" /> Analytics
+            <button onClick={onLogin} className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-slate-400 hover:text-[#050505] hover:bg-amber-500 transition-all uppercase rounded group">
+              <Activity className="w-4 h-4 text-slate-400 group-hover:text-[#050505] transition-colors" /> [ Analytics ]
             </button>
           </div>
         </div>
 
-        <div className="flex items-center gap-6 font-medium">
-          <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="hidden md:flex text-sm text-slate-400 hover:text-white transition-colors">
+        <div className="flex items-center gap-6 font-mono">
+          <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="hidden md:flex text-xs font-bold text-slate-400 hover:text-white transition-colors uppercase">
             GitHub
           </a>
           <button 
             onClick={onLogin}
-            className="px-6 py-2.5 bg-white/10 hover:bg-white/20 border border-white/10 backdrop-blur-md rounded-full text-white font-semibold text-sm transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_25px_rgba(255,255,255,0.1)] flex items-center gap-2"
+            className="px-6 py-2.5 bg-amber-500 text-[#050505] font-bold text-xs hover:bg-amber-400 transition-all uppercase tracking-widest shadow-[0_0_15px_rgba(245,158,11,0.4)] hover:shadow-[0_0_25px_rgba(245,158,11,0.6)] flex items-center gap-2 rounded-sm"
           >
-            Sign In <ArrowRight className="w-4 h-4" />
+            Deploy Engine <ArrowRight className="w-4 h-4"/>
           </button>
         </div>
       </div>
@@ -111,17 +108,17 @@ const HeroSection = ({ onLogin }) => {
     <section id="engine" className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-20 z-10 overflow-hidden">
       <SystemStatus />
       
-      <div className="max-w-[1200px] mx-auto px-6 text-center flex flex-col items-center mt-10">
+      <div className="max-w-[1200px] mx-auto px-6 text-center flex flex-col items-center">
         
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          className="mb-8 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-md text-sm text-emerald-300 font-medium shadow-[0_0_20px_rgba(52,211,153,0.15)]"
+          className="mb-8 inline-flex items-center gap-2 px-4 py-2 border border-amber-500/30 bg-amber-500/10 backdrop-blur-md font-mono text-xs text-amber-500 uppercase tracking-widest shadow-[0_0_15px_rgba(245,158,11,0.1)] rounded-sm"
         >
-          <span className="relative flex h-2.5 w-2.5 mr-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+          <span className="relative flex h-2 w-2 mr-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
           </span>
           Engineering Intelligence Platform v2.0
         </motion.div>
@@ -130,98 +127,97 @@ const HeroSection = ({ onLogin }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-5xl md:text-7xl lg:text-[85px] font-black tracking-tight leading-[1.05] mb-8 text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-slate-400"
+          className="text-5xl md:text-7xl lg:text-[80px] font-black tracking-tighter leading-[1.05] mb-8 uppercase text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-200 to-slate-500"
         >
-          Predictive Risk <br/><span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-500">Analytics.</span>
+          Predictive Risk <br/><span className="text-amber-500 drop-shadow-[0_0_15px_rgba(245,158,11,0.3)]">Analytics.</span>
         </motion.h1>
 
         <motion.p 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-lg md:text-xl text-slate-400 max-w-3xl leading-relaxed mb-12 font-light"
+          className="text-lg md:text-xl text-slate-400 max-w-3xl font-mono leading-relaxed mb-12"
         >
-          Deploy the ultimate ML pattern analysis tool. Mine association rules across telemetry using <strong className="text-white font-semibold">FP-Growth & Apriori</strong> to expose defect hotspots before your CI/CD pipeline breaks.
+          Deploy the ultimate ML pattern analysis tool. Mine association rules across telemetry using <strong className="text-amber-500">FP-Growth & Apriori</strong> to expose defect hotspots before your CI/CD pipeline breaks.
         </motion.p>
 
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center"
+          className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center font-mono"
         >
           <button 
             onClick={onLogin}
-            className="w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold text-base hover:from-emerald-400 hover:to-cyan-400 transition-all flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(52,211,153,0.4)] hover:shadow-[0_0_50px_rgba(52,211,153,0.6)] transform hover:-translate-y-1"
+            className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-[#050505] font-bold text-sm hover:from-amber-400 hover:to-amber-500 transition-all flex items-center justify-center gap-3 uppercase tracking-widest shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_35px_rgba(245,158,11,0.5)] hover:-translate-y-0.5 rounded-sm"
           >
             Initialize Platform
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="w-4 h-4" />
           </button>
-          <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="w-full sm:w-auto px-10 py-4 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-white font-bold text-base hover:bg-white/10 transition-all flex items-center justify-center gap-3">
-            <Terminal className="w-5 h-5" />
+          <button onClick={onLogin} className="w-full sm:w-auto px-10 py-4 border border-slate-700 bg-white/5 backdrop-blur-sm text-slate-300 font-bold text-sm hover:bg-white/10 hover:border-slate-500 transition-all flex items-center justify-center gap-3 uppercase tracking-widest rounded-sm">
+            <Terminal className="w-4 h-4 text-amber-500" />
             Explore Documentation
-          </a>
+          </button>
         </motion.div>
       </div>
 
-      {/* Premium Glassmorphic App Feature Mockup */}
+      {/* Austere App Feature Mockup - Upgraded */}
       <motion.div 
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, delay: 0.8 }}
-        className="mt-24 w-full max-w-[1300px] px-6 relative"
+        className="mt-20 w-full max-w-[1300px] px-6 relative"
       >
-        <div className="relative rounded-2xl border border-white/10 bg-[#0A0B10]/80 backdrop-blur-2xl shadow-2xl overflow-hidden ring-1 ring-white/5">
+        <div className="relative border border-slate-800 bg-[#0A0A0A]/80 backdrop-blur-xl overflow-hidden shadow-2xl ring-1 ring-white/5 rounded-sm">
           
-          <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-white/5">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-rose-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
-              <div className="ml-4 font-mono text-[10px] text-slate-400 tracking-widest uppercase">BUGRISK_ENGINE_TERMINAL // DRI_ACTIVE</div>
+          <div className="flex items-center justify-between px-6 py-3 border-b border-slate-800 bg-[#050505]/90">
+            <div className="flex items-center gap-3">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-slate-800"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-slate-800"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-slate-800"></div>
+              </div>
+              <div className="font-mono text-[10px] text-slate-500 tracking-widest uppercase ml-4">BUGRISK_ENGINE_TERMINAL // DRI_ACTIVE</div>
             </div>
-            <div className="flex items-center gap-2 text-emerald-400 font-mono text-[10px] px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 shadow-[0_0_10px_rgba(52,211,153,0.2)]">
-              <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+            <div className="flex items-center gap-2 text-amber-500 font-mono text-[10px] px-3 py-1 border border-amber-500/20 bg-amber-500/10 rounded-sm shadow-[0_0_10px_rgba(245,158,11,0.1)]">
+              <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span>
               LIVE DATA STREAM
             </div>
           </div>
 
-          <div className="p-8 grid grid-cols-1 md:grid-cols-4 gap-6 bg-gradient-to-br from-white/[0.02] to-transparent">
+          <div className="p-8 grid grid-cols-1 md:grid-cols-4 gap-6 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-opacity-5">
             
             {/* Defect Risk Index Panel */}
-            <div className="md:col-span-1 rounded-xl border border-white/5 bg-white/[0.02] p-8 flex flex-col justify-center items-center text-center shadow-inner relative overflow-hidden group">
-               <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-               <div className="text-xs font-semibold text-emerald-400 uppercase tracking-widest mb-6 relative z-10">Defect Risk Index (DRI)</div>
-               <div className="text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 mb-2 relative z-10">90</div>
-               <div className="text-[10px] text-slate-500 font-mono relative z-10">QUALITY_IDX</div>
+            <div className="md:col-span-1 border border-slate-800 bg-[#080808]/80 backdrop-blur-sm p-6 flex flex-col justify-center items-center text-center shadow-inner hover:border-amber-500/30 transition-colors duration-500">
+               <div className="text-[10px] font-mono text-amber-500 uppercase tracking-widest mb-4 font-bold">Defect Risk Index (DRI)</div>
+               <div className="text-6xl font-mono text-white mb-2 drop-shadow-md">90</div>
+               <div className="text-[10px] text-slate-500 font-mono">QUALITY_IDX</div>
             </div>
 
             {/* Pattern Analysis Streaming */}
-            <div className="md:col-span-3 rounded-xl border border-white/5 bg-white/[0.02] p-8 shadow-inner">
-              <div className="flex items-center justify-between mb-8">
-                <div className="text-sm font-semibold text-slate-200 flex items-center gap-3">
-                  <div className="p-2 bg-cyan-500/20 rounded-lg">
-                    <Database className="w-4 h-4 text-cyan-400" />
-                  </div>
+            <div className="md:col-span-3 border border-slate-800 bg-[#080808]/80 backdrop-blur-sm p-6 shadow-inner hover:border-white/10 transition-colors duration-500">
+              <div className="flex items-center justify-between mb-6 border-b border-slate-800 pb-4">
+                <div className="text-xs font-mono text-amber-500 flex items-center gap-3 uppercase tracking-widest font-bold">
+                  <Database className="w-4 h-4" />
                   Jaccard Rule Deduplication Stream
                 </div>
               </div>
-              <div className="space-y-4 font-mono text-sm">
+              <div className="space-y-4 font-mono text-xs">
                 {[
                   { m: "auth_module", t: "jwt, java", risk: "CRITICAL", c: "94.3%", d: "0.89 DRI" },
                   { m: "payment_gateway", t: "stripe, node", risk: "HIGH", c: "88.1%", d: "0.75 DRI" },
                   { m: "user_session", t: "redis, cache", risk: "WARNING", c: "64.2%", d: "0.45 DRI" }
                 ].map((row, i) => (
-                  <div key={i} className="flex items-center justify-between border-b border-white/5 pb-4 hover:bg-white/[0.02] px-4 -mx-4 rounded-lg transition-colors cursor-pointer">
-                    <div className="flex items-center gap-6">
-                      <span className="text-slate-200 w-36 truncate font-medium">{row.m}</span>
-                      <ArrowRight className="w-4 h-4 text-slate-600 hidden sm:block" />
-                      <span className="text-slate-400 hidden sm:block">{row.t}</span>
+                  <div key={i} className="flex items-center justify-between border-b border-slate-800 pb-3 hover:bg-white/[0.02] -mx-4 px-4 transition-colors cursor-pointer">
+                    <div className="flex items-center gap-4">
+                      <span className="text-slate-200 font-semibold w-32 truncate">{row.m}</span>
+                      <ArrowRight className="w-3 h-3 text-slate-600 hidden sm:block" />
+                      <span className="text-slate-500 hidden sm:block">{row.t}</span>
                     </div>
-                    <div className="flex items-center gap-8">
+                    <div className="flex items-center gap-6">
                       <span className="text-slate-500 hidden md:block">lift: {(Math.random() * 5 + 1).toFixed(2)}x</span>
-                      <span className="text-cyan-400 font-semibold">{row.c}</span>
-                      <span className={`px-3 py-1 text-[10px] rounded-full font-bold tracking-wider ${row.risk === 'CRITICAL' ? 'bg-rose-500/20 text-rose-400' : row.risk === 'HIGH' ? 'bg-amber-500/20 text-amber-400' : 'bg-slate-500/20 text-slate-300'}`}>
+                      <span className="text-amber-500 font-bold">{row.c}</span>
+                      <span className={`px-3 py-1 text-[10px] border tracking-wider font-bold uppercase rounded-sm ${row.risk === 'CRITICAL' ? 'border-rose-500/50 bg-rose-500/10 text-rose-500' : row.risk === 'HIGH' ? 'border-amber-500/50 bg-amber-500/10 text-amber-500' : 'border-slate-500/50 bg-slate-500/10 text-slate-400'}`}>
                         {row.risk}
                       </span>
                     </div>
@@ -237,75 +233,65 @@ const HeroSection = ({ onLogin }) => {
   );
 };
 
+// Huge Advanced App Features
 const AdvancedFeatures = () => {
   return (
-    <section id="features" className="relative w-full py-32 z-10 bg-[#05050A] border-y border-white/5">
+    <section id="features" className="relative w-full py-32 z-10 bg-[#050505] border-y border-slate-800">
       <div className="max-w-[1300px] mx-auto px-6">
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">System Architecture</h2>
-          <p className="text-lg text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
+        <div className="text-center mb-24">
+          <h2 className="text-3xl md:text-5xl font-black text-white mb-6 uppercase tracking-tight">System Architecture</h2>
+          <p className="text-sm text-slate-400 max-w-3xl mx-auto font-mono leading-relaxed">
             BugRisk is engineered with machine learning algorithms to map the entire DNA of your codebase and isolate failure vectors.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-mono">
           
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-8 hover:bg-white/[0.04] transition-colors group">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400/20 to-cyan-500/20 flex items-center justify-center mb-6 border border-emerald-500/20 group-hover:scale-110 transition-transform">
-              <Network className="text-emerald-400 w-6 h-6" />
-            </div>
-            <h3 className="text-lg font-bold text-white mb-3">FP-Growth & Apriori</h3>
-            <p className="text-slate-400 leading-relaxed text-sm font-light">
+          <div className="border border-slate-800 bg-[#0A0A0A] p-8 hover:bg-[#0D0D0D] hover:border-slate-700 transition-colors cursor-default">
+            <h3 className="text-sm font-bold text-amber-500 mb-4 uppercase tracking-widest flex items-center gap-3"><Network className="w-5 h-5"/> FP-Growth & Apriori</h3>
+            <p className="text-slate-400 leading-relaxed text-xs">
               Advanced association rule mining extracting deep correlation patterns across millions of telemetry events to find hidden failure vectors.
             </p>
           </div>
 
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-8 hover:bg-white/[0.04] transition-colors group">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-400/20 to-pink-500/20 flex items-center justify-center mb-6 border border-purple-500/20 group-hover:scale-110 transition-transform">
-              <Activity className="text-purple-400 w-6 h-6" />
-            </div>
-            <h3 className="text-lg font-bold text-white mb-3">Defect Risk Index (DRI)</h3>
-            <p className="text-slate-400 leading-relaxed text-sm font-light">
+          <div className="border border-slate-800 bg-[#0A0A0A] p-8 hover:bg-[#0D0D0D] hover:border-slate-700 transition-colors cursor-default">
+            <h3 className="text-sm font-bold text-amber-500 mb-4 uppercase tracking-widest flex items-center gap-3"><Activity className="w-5 h-5"/> Defect Risk Index</h3>
+            <p className="text-slate-400 leading-relaxed text-xs">
               Automated ingestion profiling that computes schema validation, completeness scoring, and a dynamic Quality Score Index instantly.
             </p>
           </div>
 
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-8 hover:bg-white/[0.04] transition-colors group lg:col-span-1">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400/20 to-blue-500/20 flex items-center justify-center mb-6 border border-cyan-500/20 group-hover:scale-110 transition-transform">
-              <Database className="text-cyan-400 w-6 h-6" />
-            </div>
-            <h3 className="text-lg font-bold text-white mb-3">Jaccard Deduplication</h3>
-            <p className="text-slate-400 leading-relaxed text-sm font-light">
+          <div className="border border-slate-800 bg-[#0A0A0A] p-8 lg:col-span-1 hover:bg-[#0D0D0D] hover:border-slate-700 transition-colors cursor-default">
+            <h3 className="text-sm font-bold text-amber-500 mb-4 uppercase tracking-widest flex items-center gap-3"><Database className="w-5 h-5"/> Jaccard Deduplication</h3>
+            <p className="text-slate-400 leading-relaxed text-xs">
               Continuous Jaccard indexing running in a FastAPI microservice to deduplicate and isolate the highest-risk anomalies.
             </p>
           </div>
 
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-8 lg:col-span-3 flex flex-col md:flex-row gap-12 overflow-hidden relative">
-            <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-emerald-500/5 to-transparent pointer-events-none"></div>
-            <div className="flex-1 relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold mb-6">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                REAL-TIME
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-4">8-Stage SSE Pipeline</h3>
-              <p className="text-slate-400 leading-relaxed text-base font-light">
+          <div className="border border-slate-800 bg-[#0A0A0A] p-8 lg:col-span-3 flex flex-col md:flex-row gap-10 hover:border-amber-500/30 transition-colors">
+            <div className="flex-1">
+              <h3 className="text-sm font-bold text-amber-500 mb-4 uppercase tracking-widest flex items-center gap-3">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                8-Stage SSE Pipeline
+              </h3>
+              <p className="text-slate-400 leading-relaxed text-xs">
                 A Server-Sent Events (SSE) architecture powered by Spring Boot 3 & Redis Cache to stream millions of processed metrics to your dashboard in milliseconds.
               </p>
             </div>
-            <div className="flex-1 w-full rounded-xl border border-white/10 bg-[#020205] p-6 text-xs text-slate-500 shadow-inner relative z-10">
-              <div className="flex items-center justify-between mb-4 border-b border-white/5 pb-3">
-                <span className="font-bold text-slate-300 flex items-center gap-2"><Terminal className="w-4 h-4"/> PIPELINE_REPLAY.LOG</span>
-                <span className="text-[10px] text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20">SSE_STREAM_ACTIVE</span>
+            <div className="flex-1 w-full border border-slate-800 bg-[#050505] p-6 text-xs text-slate-500 shadow-inner">
+              <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                <span className="font-bold text-amber-500">DEMO_PIPELINE_REPLAY.LOG</span>
+                <span className="text-[10px] text-slate-400 bg-white/5 border border-white/10 px-2 py-0.5 rounded-sm">*Based on real completed scan</span>
               </div>
-              <div className="space-y-3 font-mono">
-                <div className="text-slate-400">&gt; [INFO] Connecting to FastAPI ML Service... <span className="text-emerald-400">OK</span></div>
+              <div className="space-y-2 font-mono">
+                <div className="text-slate-400">&gt; [INFO] Connecting to FastAPI ML Service... <span className="text-amber-500">OK</span></div>
                 <div>&gt; [STAGE 1] Ingesting 15,482 telemetry records...</div>
-                <div>&gt; [STAGE 2] Profiling dataset... Quality Score: <span className="text-cyan-400">98.4%</span></div>
+                <div>&gt; [STAGE 2] Profiling dataset... Quality Score: 98.4%</div>
                 <div>&gt; [STAGE 3] Executing FP-Growth Algorithm (minSupport=0.15, minConfidence=0.7)</div>
-                <div className="text-emerald-400">&gt; [MINER] Generated 2,403 raw association rules in 0.43s</div>
+                <div className="text-amber-500 font-bold">&gt; [MINER] Generated 2,403 raw association rules in 0.43s</div>
                 <div>&gt; [STAGE 4] Applying Jaccard Deduplication (threshold=0.85)...</div>
-                <div className="text-emerald-400">&gt; [MINER] Retained 18 high-confidence risk hotspots</div>
-                <div className="text-cyan-400 font-semibold">&gt; [STAGE 8] Syncing to Redis & Streaming to Dashboard... ACTIVE</div>
+                <div className="text-amber-500 font-bold">&gt; [MINER] Retained 18 high-confidence risk hotspots</div>
+                <div className="text-emerald-500 font-bold">&gt; [STAGE 8] Syncing to Redis & Streaming to Dashboard... ACTIVE</div>
               </div>
             </div>
           </div>
@@ -318,7 +304,7 @@ const AdvancedFeatures = () => {
 
 export default function LandingPage({ onLogin }) {
   return (
-    <div className="min-h-screen bg-[#05050A] text-slate-200 selection:bg-emerald-500/30 selection:text-emerald-200 font-sans">
+    <div className="min-h-screen bg-[#050505] text-slate-200 selection:bg-amber-500/30 selection:text-amber-200 font-sans">
       <AmbientBackground />
       <Navbar onLogin={onLogin} />
       <HeroSection onLogin={onLogin} />
