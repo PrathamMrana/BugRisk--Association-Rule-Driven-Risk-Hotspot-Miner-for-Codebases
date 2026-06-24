@@ -181,9 +181,10 @@ function App() {
       (response) => response,
       (error) => {
         if (error.response && error.response.status === 403) {
-          localStorage.removeItem('bugrisk_session');
-          setUser(null);
-          triggerNotification('Session expired or unauthorized. Please log in again.', 'error');
+          // localStorage.removeItem('bugrisk_session');
+          // setUser(null);
+          // triggerNotification('Session expired or unauthorized. Please log in again.', 'error');
+          console.warn("403 Forbidden received. Ignoring for public demo access.");
         }
         return Promise.reject(error);
       }

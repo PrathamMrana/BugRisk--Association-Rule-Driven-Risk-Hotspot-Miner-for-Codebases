@@ -66,9 +66,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/api/v1/auth/login", "/api/v1/auth/register", "/api/v1/status").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/actuator/**").permitAll()
-                .requestMatchers("/api/v1/scan/run", "/api/v1/scan/stream", "/api/v1/scan/upload", "/api/v1/scan/playground/compare", "/api/v1/export/**").hasRole("ADMIN")
-                .requestMatchers("/api/v1/analytics/**").authenticated()
-                .requestMatchers("/api/v1/**").authenticated()
+                .requestMatchers("/api/v1/**").permitAll()
                 .anyRequest().permitAll()
             );
 
