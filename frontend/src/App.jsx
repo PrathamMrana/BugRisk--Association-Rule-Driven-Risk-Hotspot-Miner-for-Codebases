@@ -1086,14 +1086,8 @@ function App() {
         }
       }} 
       onNavigate={(tab) => {
-        if (!user && tab !== 'dashboard') {
-          triggerNotification(`Please log in to access ${tab}.`, 'error');
-          setShowLanding(false);
-          setShowLogin(true);
-        } else {
-          setActiveTab(tab);
-          setShowLanding(false);
-        }
+        setActiveTab(tab);
+        setShowLanding(false);
       }}
       isLoggedIn={!!user} 
     />;

@@ -272,8 +272,11 @@ const ProductPreview = () => {
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 hover:opacity-100 transition-opacity duration-300 z-30">
             <BarChart2 className="w-16 h-16 text-amber-500 mb-4" />
             <h3 className="text-2xl font-bold text-white mb-2 tracking-tight">Interactive Dashboard Preview</h3>
-            <p className="text-slate-300 mb-6 font-medium">Sign in to access live visualizers</p>
-            <button className="px-6 py-3 bg-amber-500 text-black font-bold rounded-md hover:bg-amber-400 transition-colors shadow-[0_0_20px_rgba(245,158,11,0.4)]">
+            <p className="text-amber-500/80 mb-6 font-bold tracking-wide">No sign in required. Explore instantly.</p>
+            <button 
+              onClick={() => onNavigate('dashboard')}
+              className="px-6 py-3 bg-amber-500 text-black font-bold rounded-md hover:bg-amber-400 transition-colors shadow-[0_0_20px_rgba(245,158,11,0.4)]"
+            >
               Launch Demo
             </button>
           </div>
