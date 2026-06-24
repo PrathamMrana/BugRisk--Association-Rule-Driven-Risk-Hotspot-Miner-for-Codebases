@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Network, Database, Activity, ShieldAlert, ChevronRight, ExternalLink, BarChart2 } from 'lucide-react';
+import { Network, Database, Activity, ShieldAlert, ChevronRight, ExternalLink, BarChart2, Zap, GitMerge, Search, LayoutDashboard } from 'lucide-react';
 
 const IntelligenceBackground = () => (
   <div className="fixed inset-0 z-0 bg-[#030303] overflow-hidden pointer-events-none">
@@ -28,19 +28,28 @@ const Navbar = ({ onNavigate, isLoggedIn, onLogin }) => {
             <span className="text-xl font-bold text-white tracking-tight">BugRisk</span>
           </div>
           
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-2 bg-[#0A0A0A]/50 border border-amber-500/10 p-1.5 rounded-xl shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] relative">
             {[
-              { label: 'Graph Explorer', tab: 'graph' },
-              { label: 'Rules Explorer', tab: 'rules' },
-              { label: 'Module Hotspots', tab: 'dashboard' },
-              { label: 'ML Analytics', tab: 'analytics' }
+              { label: 'Graph Explorer', tab: 'graph', icon: GitMerge },
+              { label: 'Rules Explorer', tab: 'rules', icon: Search },
+              { label: 'Module Hotspots', tab: 'dashboard', icon: LayoutDashboard },
+              { label: 'ML Analytics', tab: 'analytics', icon: Zap }
             ].map((item, i) => (
               <button 
                 key={i} 
                 onClick={() => onNavigate(item.tab)} 
-                className="text-sm font-medium text-slate-400 hover:text-amber-400 transition-colors"
+                className="group relative flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all overflow-hidden"
               >
-                {item.label}
+                {/* Glow effect on hover */}
+                <div className="absolute inset-0 bg-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                {/* Top border highlight on hover */}
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center"></div>
+
+                <item.icon className="w-4 h-4 text-slate-500 group-hover:text-amber-400 transition-colors z-10" />
+                <span className="text-slate-400 group-hover:text-white transition-colors z-10 tracking-wide drop-shadow-md">
+                  {item.label}
+                </span>
               </button>
             ))}
           </div>
