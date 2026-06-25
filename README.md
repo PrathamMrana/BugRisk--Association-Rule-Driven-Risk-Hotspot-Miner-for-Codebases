@@ -9,7 +9,7 @@
   [![FastAPI ML](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](#)
   [![React 19](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](#)
 
-  [Live Production Environment](https://bugrisk.vercel.app) • [Swagger API Documentation](https://bugrisk-backend.onrender.com/swagger-ui.html) • [Watch Architecture Demo](https://youtube.com/)
+  [Local Frontend Application](http://localhost:5173) • [Backend Swagger API](http://localhost:8080/swagger-ui.html) • [ML Microservice Docs](http://localhost:8000/docs)
 </div>
 
 <br />
