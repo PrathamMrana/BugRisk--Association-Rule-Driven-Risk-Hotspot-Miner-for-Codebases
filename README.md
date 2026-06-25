@@ -3,7 +3,7 @@
   <h1>BugRisk — Engineering Intelligence Platform v2.0</h1>
   <p><strong>Predictive Risk Analytics Engine Powered by Association-Rule Mining</strong></p>
 
-  [![Build Passing](https://img.shields.io/github/actions/workflow/status/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases/main.yml?branch=master&label=Build%20%26%20Deploy&style=for-the-badge)](https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases/actions)
+  [![Build Passing](https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases/actions)
   [![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](#)
   [![Spring Boot 3](https://img.shields.io/badge/Spring_Boot_3-6DB33F?style=for-the-badge&logo=spring&logoColor=white)](#)
   [![FastAPI ML](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](#)
