@@ -164,7 +164,6 @@ npm run dev
 ## 📈 Author
 
 Engineered by **Pratham Rana** 
-- [LinkedIn](#)
-- [GitHub](https://github.com/PrathamMrana)
+- [GitHub Profile](https://github.com/PrathamMrana)
 
 *Seeking roles in Full Stack Development, Platform Engineering, and ML Infrastructure.*
