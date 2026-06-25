@@ -3,13 +3,13 @@
   <h1>BugRisk — Engineering Intelligence Platform v2.0</h1>
   <p><strong>Predictive Risk Analytics Engine Powered by Association-Rule Mining</strong></p>
 
-  [![Build Passing](https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases/actions)
+  [![Build Passing](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge&logo=github)](https://github.com/PrathamMrana/BugRisk--Association-Rule-Driven-Risk-Hotspot-Miner-for-Codebases/actions)
   [![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](#)
   [![Spring Boot 3](https://img.shields.io/badge/Spring_Boot_3-6DB33F?style=for-the-badge&logo=spring&logoColor=white)](#)
   [![FastAPI ML](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](#)
   [![React 19](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](#)
 
-  [Local Frontend Application](http://localhost:5173) • [Backend Swagger API](http://localhost:8080/swagger-ui.html) • [ML Microservice Docs](http://localhost:8000/docs)
+  [Live Production Environment](https://bugrisk.vercel.app) • [Swagger API Documentation](https://bugrisk-backend.onrender.com/swagger-ui.html) • [ML Microservice Docs](https://bugrisk-ml.onrender.com/docs)
 </div>
 
 <br />
